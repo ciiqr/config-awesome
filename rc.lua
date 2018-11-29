@@ -7,8 +7,7 @@ awful.rules = require("awful.rules")
               require("awful.autofocus")
               require("awful.remote")
 wibox       = require("wibox")
-beautiful   = require("beautiful");
-xresources  = require("beautiful.xresources");
+beautiful   = require("beautiful")
 naughty     = require("naughty")
 -- Config
 inspect     = require("third-party.inspect")

@@ -1,5 +1,4 @@
 local beautiful = beautiful or require("beautiful")
-local xresources = require("beautiful.xresources");
 local gears = gears or require("gears")
 local calendar_popup = require('awful.widget.calendar_popup')
 
