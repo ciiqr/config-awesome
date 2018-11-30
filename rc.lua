@@ -99,12 +99,8 @@ awful.screen.connect_for_each_screen(function(s)
         awful.tag.setmwfact(1/3, tag)
     end
 
-    -- Popup Terminal/Process Info/Notes
-    widget_manager:initPopupTerminal(s)
-    widget_manager:initPopupCPU(s)
-    widget_manager:initPopupMemory(s)
-    widget_manager:initPopupNotes(s)
-    widget_manager:initKeepass(s)
+    -- Popup Terminal/Process Info/Notes/etc
+    widget_manager:initPopups(s)
 
     --Wiboxes w/ Widgets
     --Left Widgets
@@ -294,12 +290,6 @@ globalKeys = awful.util.table.join(
     -- Launcher Style
     awful.key({SUPER}, "w", function() awful.util.spawn_with_shell(insertScreenWorkingAreaYIntoFormat(CONFIG.commands.fileOpener)) end),
     awful.key({SUPER}, "s", function() awful.util.spawn_with_shell(insertScreenWorkingAreaYIntoFormat(CONFIG.commands.windowSwitcher)) end),
-    -- Quake Style
-    awful.key({SUPER, SHIFT}, "t", function() widget_manager:togglePopupTerminal() end),
-    awful.key({SUPER, SHIFT}, "n", function() widget_manager:togglePopupNotes() end),
-    awful.key({SUPER, SHIFT}, "c", function() widget_manager:togglePopupCPU() end),
-    awful.key({SUPER, SHIFT}, "m", function() widget_manager:togglePopupMemory() end),
-    awful.key({SUPER, SHIFT}, "k", function() widget_manager:toggleKeepass() end),
 
     --Programs
     awful.key({SUPER}, "t", function() awful.util.spawn(CONFIG.commands.terminal) end),
@@ -379,6 +369,12 @@ for i = 1, numberOfTags do
         -- NOTE: Never Used
         awful.key({SUPER, SHIFT},       iKey, function() toggleTag(i) end),
         awful.key({SUPER, CONTROL, ALT},iKey, function() toggleClientTag(i) end)) -- TODO: Change to Control, Alt Shift to be more like mod shift for toggling a tag visibility
+end
+-- Popup keys
+for _,popup in ipairs(CONFIG.popups) do
+    globalKeys = awful.util.table.join(globalKeys,
+        awful.key({SUPER, SHIFT}, popup.key, function() widget_manager:togglePopup(popup.name) end)
+    )
 end
 
 --Set Global Keys

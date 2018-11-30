@@ -5,6 +5,7 @@ local quake = quake or require("quake")
 local WidgetManager = {
     -- TODO: should pass this in when I create a new widget manager...
     config = CONFIG.widgets or {},
+    quake = {},
 }
 
 WidgetManager.wifiDevice = trim(execForOutput("ls /sys/class/net/wl* >/dev/null 2>&1 && basename /sys/class/net/wl*"))
@@ -12,87 +13,28 @@ WidgetManager.ethDevice = trim(execForOutput("ls /sys/class/net/e* >/dev/null 2>
 WidgetManager.batteryDevice = trim(execForOutput("ls /sys/class/power_supply/BAT* >/dev/null 2>&1 && basename /sys/class/power_supply/BAT*"))
 
 -- Popup Terminal
-function WidgetManager:initPopupTerminal(s)
-    -- Ensure we have a table
-    if not self.quake_terminal then
-        self.quake_terminal = {}
+function WidgetManager:initPopups(s)
+    for _,popup in ipairs(CONFIG.popups) do
+        -- Ensure we have a table
+        if not self.quake[popup.name] then
+            self.quake[popup.name] = {}
+        end
+
+        -- get options
+        local defaults = {
+            screen = s,
+            border = 0,
+        }
+        local options = popup.options or {}
+        local quakeOptions = awful.util.table.join(defaults, options)
+
+        -- Create Popup
+        self.quake[popup.name][s] = quake(quakeOptions)
     end
-
-    -- Create Popup Terminal
-    self.quake_terminal[s] = quake({ app = CONFIG.commands.terminal, height = 0.35, screen = s, width = 0.5, border=0})
-
-    return self.quake_terminal[s]
 end
-function WidgetManager:togglePopupTerminal(s)
+function WidgetManager:togglePopup(name, screen)
     -- Toggle Popup
-    self.quake_terminal[s or mouse.screen]:toggle()
-end
-
--- Popup CPU
-function WidgetManager:initPopupCPU(s)
-    -- Ensure we have a table
-    if not self.quake_htop_cpu_terminal then
-        self.quake_htop_cpu_terminal = {}
-    end
-
-    -- Create Popup CPU
-    self.quake_htop_cpu_terminal[s] = quake({app=CONFIG.commands.terminal, argname="-name %s -e "..CONFIG.commands.taskManagerCpu, name="QUAKE_COMMAND_TASK_MANAGER_CPU", height=0.75, screen=s, width=0.5, horiz="right", border=0})
-
-    return self.quake_htop_cpu_terminal[s]
-end
-function WidgetManager:togglePopupCPU(s)
-    -- Toggle Popup
-    self.quake_htop_cpu_terminal[s or mouse.screen]:toggle()
-end
-
--- Popup Memory
-function WidgetManager:initPopupMemory(s)
-    -- Ensure we have a table
-    if not self.quake_htop_mem_terminal then
-        self.quake_htop_mem_terminal = {}
-    end
-
-    -- Create Popup Memory
-    self.quake_htop_mem_terminal[s] = quake({app=CONFIG.commands.terminal, argname="-name %s -e "..CONFIG.commands.taskManagerMem, name="QUAKE_COMMAND_TASK_MANAGER_MEM", height=0.75, screen=s, width=0.5, horiz="left", border=0})
-
-    return self.quake_htop_mem_terminal[s]
-end
-function WidgetManager:togglePopupMemory(s)
-    -- Toggle Popup
-    self.quake_htop_mem_terminal[s or mouse.screen]:toggle()
-end
-
--- Popup Notes
-function WidgetManager:initPopupNotes(s)
-    -- Ensure we have a table
-    if not self.quake_leafpad_quick_note then
-        self.quake_leafpad_quick_note = {}
-    end
-
-    -- Create Popup Notes
-    self.quake_leafpad_quick_note[s] = quake({app = "leafpad", argname="--name=%s", name="LEAFPAD_QUICK_NOTE", height = 0.35, screen = s, width = 0.5, border=0})
-
-    return self.quake_leafpad_quick_note[s]
-end
-function WidgetManager:togglePopupNotes(s)
-    -- Toggle Popup
-    self.quake_leafpad_quick_note[s or mouse.screen]:toggle()
-end
-
-function WidgetManager:initKeepass(s)
-    -- Ensure we have a table
-    if not self.quake_keepass then
-        self.quake_keepass = {}
-    end
-
-    -- Create Popup Notes
-    self.quake_keepass[s] = quake({app = "keepassx2", name="keepassx2", height = 0.75, screen = s, width = 0.5, border=0})
-
-    return self.quake_keepass[s]
-end
-function WidgetManager:toggleKeepass(s)
-    -- Toggle Popup
-    self.quake_keepass[s or mouse.screen]:toggle()
+    self.quake[name][screen or mouse.screen]:toggle()
 end
 
 -- Volume
@@ -146,7 +88,7 @@ function WidgetManager:getMemory(vertical)
     end
     vicious.register(self.memory, vicious.widgets.mem, "<span fgcolor='#138dff' weight='bold'>$1% $2MB</span>", 13) --DFDFDF
     self.memory:buttons(awful.util.table.join(
-        awful.button({}, 1, function() self:togglePopupMemory() end)
+        awful.button({}, 1, function() self:togglePopup('cpu') end)
     ))
     return self.memory
 end
@@ -161,7 +103,7 @@ function WidgetManager:getCPU(vertical)
     cpuwidget:set_color({ type = "linear", from = { 25, 0 }, to = { 25,22 }, stops = { {0, "#FF0000" }, {0.5, "#de5705"}, {1, "#00ff00"} }  })
     vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
     cpuwidget:buttons(awful.util.table.join(
-        awful.button({}, 1, function() self:togglePopupCPU() end)
+        awful.button({}, 1, function() self:togglePopup('mem') end)
     ))
     return cpuwidget
 end
