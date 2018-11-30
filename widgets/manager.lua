@@ -193,10 +193,10 @@ function WidgetManager:getIP()
 
     self:updateIP()
 
-    -- self.ip:buttons(awful.util.table.join(
-    --  awful.button({}, 1, function() awful.util.spawn_with_shell(CONFIG.commands.terminalExec.."'ip addr show; read -n'") end)
-    --  -- ,awful.button({}, 3, function() self.ip:updateIP() end)
-    -- ))
+    self.ip:buttons(awful.util.table.join(
+     awful.button({}, 1, function() awful.util.spawn(CONFIG.commands.ipInfo) end)
+     -- ,awful.button({}, 3, function() self.ip:updateIP() end)
+    ))
     return self.ip
 end
 
@@ -344,10 +344,13 @@ function WidgetManager:getNetUsage(vertical)
     end
 
     local networkDevice = ternary(self.ethDevice == "", self.wifiDevice, self.ethDevice)
+    local networkTrafficCmd = evalTemplate(CONFIG.commands.networkTraffic, {
+        device = networkDevice,
+    })
 
     vicious.register(self.netwidget, vicious.widgets.net, '<span foreground="#97D599" weight="bold">↑${'..networkDevice..' up_mb}</span> <span foreground="#CE5666" weight="bold">↓${'..networkDevice..' down_mb}</span>', 1) --#585656
     self.netwidget:buttons(awful.util.table.join(
-        awful.button({}, 1, function() awful.util.spawn(CONFIG.commands.terminalExec.." sudo nethogs "..networkDevice.."") end)
+        awful.button({}, 1, function() awful.util.spawn(networkTrafficCmd) end)
     ))
 
     -- TODO

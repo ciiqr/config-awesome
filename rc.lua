@@ -119,7 +119,6 @@ awful.screen.connect_for_each_screen(function(s)
     -- TODO: hmm
     if s.index == screen.count() then -- Main Widgets on Far Right
         local right_widgets = {
-            -- require("widgets.tester"):init(),
             widget_manager:getNetUsage(),
             widget_manager:getBatteryWidget(),
             widget_manager:getTemperature(),
@@ -328,12 +327,6 @@ globalKeys = awful.util.table.join(
     awful.key({}, "XF86MonBrightnessDown", function() changeBrightness("-", CONFIG.brightness.change.normal) end),
     awful.key({SHIFT}, "XF86MonBrightnessUp", function() changeBrightness("+", CONFIG.brightness.change.small) end),
     awful.key({SHIFT}, "XF86MonBrightnessDown", function() changeBrightness("-", CONFIG.brightness.change.small) end),
-    -- TODO: Clean up
-    -- TODO: Consider, Or in then mythical future when I write lfwm, use the code that xbacklight uses
-    -- awful.key({}, "XF86MonBrightnessUp", function() awful.util.spawn("xbacklight -inc 10 -time 0") end),
-    -- awful.key({}, "XF86MonBrightnessDown", function() awful.util.spawn("xbacklight -dec 10 -time 0") end),
-    -- awful.key({SHIFT}, "XF86MonBrightnessUp", function() awful.util.spawn("xbacklight -inc 1 -time 0") end),
-    -- awful.key({SHIFT}, "XF86MonBrightnessDown", function() awful.util.spawn("xbacklight -dec 1 -time 0") end),
 
     -- Invert Screen
     awful.key({SUPER}, "i", function() awful.util.spawn_with_shell(CONFIG.commands.screenInvert) end),

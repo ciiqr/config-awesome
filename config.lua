@@ -55,7 +55,6 @@ return {
     },
     commands = {
         terminal = "urxvt",
-        terminalExec = "urxvt -e ",
         fileManager = "spacefm",
         editor = "sublime",
         graphicalSudo = "gksudo",
@@ -68,5 +67,8 @@ return {
         taskManagerMem = "sudo htop --delay 5 --sort-key PERCENT_MEM",
         taskManagerCpu = "sudo htop --delay 5 --sort-key PERCENT_CPU",
         isRunning = "is-running",
+        setWallpaper = "feh --xinerama-index {screen} --randomize --bg-fill {directory}/*",
+        ipInfo = "urxvt -e bash -c 'ip addr show; cat'",
+        networkTraffic = "urxvt -e bash -c 'sudo nethogs {device}'",
     },
 }

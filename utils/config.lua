@@ -276,23 +276,31 @@ function captureScreenSnip()
 end
 
 function insertScreenWorkingAreaYIntoFormat(format)
+    -- TODO: use new template
     return string.format(format, math.floor(mouse.screen.workarea.y))
+end
+
+function evalTemplate(template, data)
+    return template:gsub("{(%w+)}", data)
 end
 
 function screenSetWallpaper(s)
     local resolutionPathTpl = CONFIG.theme.wallpapers.resolutionPath
     local normalPathTpl = CONFIG.theme.wallpapers.normalPath
 
-    local resolutionPath = expandUser(resolutionPathTpl:gsub("{(%w+)}", s.geometry))
-    local normalPath = expandUser(resolutionPathTpl:gsub("{(%w+)}", {
+    local resolutionPath = expandUser(evalTemplate(resolutionPathTpl, s.geometry))
+    local normalPath = expandUser(evalTemplate(resolutionPathTpl, {
         theme_path = THEME_PATH,
     }))
 
     local wallpapersPath = ternary(gears.filesystem.dir_readable(resolutionPath), resolutionPath, normalPath)
 
-    -- TODO: cleanup
     -- Random Background
-    awful.util.spawn_with_shell("feh --xinerama-index " .. (s.index - 1) .. " --randomize --bg-fill " .. wallpapersPath .. "/*")
+    local cmd = evalTemplate(CONFIG.commands.setWallpaper, {
+        screen = (s.index - 1),
+        directory = wallpapersPath,
+    })
+    awful.util.spawn_with_shell(cmd)
 end
 
 
