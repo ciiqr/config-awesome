@@ -213,7 +213,7 @@ local globalKeys = gears.table.join(
     -- Add Tag
     awful.key({SUPER}, "y", function()
         -- Add Tag
-        local newTag = awful.tag.add("Tag "..(#mouse.screen.tags) + 1, {
+        local newTag = awful.tag.add("Tag "..(#awful.screen.focused().tags) + 1, {
             layout = thrizen,
         })
         -- Switch to it
@@ -222,7 +222,7 @@ local globalKeys = gears.table.join(
 
     -- Remove Tags
     awful.key({SUPER, SHIFT}, "y", function()
-        local selectedTags = awful.tag.selectedlist(mouse.screen.index)
+        local selectedTags = awful.tag.selectedlist(awful.screen.focused().index)
         for tag, _ in pairs(selectedTags) do
             awful.tag.delete(_, tag)
         end
@@ -325,7 +325,7 @@ local globalKeys = gears.table.join(
 )
 --Tag Keys
 -- Uses keycodes to make it works on any keyboard layout
-local numberOfTags = #mouse.screen.tags
+local numberOfTags = #awful.screen.focused().tags
 for i = 1, numberOfTags do
     local iKey = "#"..(i + 9)
     globalKeys = gears.table.join(globalKeys,
@@ -387,7 +387,7 @@ local clientkeys = gears.table.join(
             c.floating = true
 
             -- Get screen dimensions
-            local screenRect = mouse.screen.geometry
+            local screenRect = awful.screen.focused().geometry
             -- Set window dimensions and position based on screen size...
             local PIP_SIZE_RATIO = 3
             local newWidth = screenRect.width / PIP_SIZE_RATIO
@@ -493,7 +493,7 @@ awful.rules.rules = {
             floating = true,
             callback = function(c)
                 -- Get screen dimensions
-                local workingArea = mouse.screen.workarea
+                local workingArea = awful.screen.focused().workarea
                 -- Set window dimensions and position based on screen size...
                 local newWidth = workingArea.width / 2
                 c:geometry({
@@ -558,7 +558,7 @@ awful.rules.rules = {
                             awful.client.floating.set(c, true)
                             -- Set Ontop
                             -- Change Size
-                            local screenDimens = mouse.screen.workarea
+                            local screenDimens = awful.screen.focused().workarea
                             local screenHeight = screenDimens.height
                             c:geometry({width = screenDimens.width - (2 * beautiful.border_width), height = screenHeight / 2, y = screenHeight/  4, x=0})
 
@@ -653,7 +653,7 @@ awful.rules.rules = {
         properties = {
             border_width = 0,
             callback = function(c)
-                local screenDimens = mouse.screen.workarea
+                local screenDimens = awful.screen.focused().workarea
                 local width = 322 -- TODO: Should probably get the actual size OR the actual minimum
                 local height = 883
                 c:geometry({
@@ -672,7 +672,7 @@ awful.rules.rules = {
         },
         properties = {
             callback = function(c)
-                local screenDimens = mouse.screen.workarea
+                local screenDimens = awful.screen.focused().workarea
                 local clientDimens = c:geometry()
                 c:geometry({
                     x = (screenDimens.width - clientDimens.width) / 2,
@@ -688,7 +688,7 @@ awful.rules.rules = {
         properties = {
             callback = function(c)
                 local existingDimens = c:geometry()
-                local screenDimens = mouse.screen.workarea
+                local screenDimens = awful.screen.focused().workarea
                 local width = existingDimens.width
                 local height = existingDimens.height
                 c:geometry({
@@ -706,7 +706,7 @@ awful.rules.rules = {
         },
         properties = {
             callback = function(c)
-                local screenDimens = mouse.screen.workarea
+                local screenDimens = awful.screen.focused().workarea
                 local clientDimens = c:geometry()
                 c:geometry({
                     x = (screenDimens.width - clientDimens.width) / 2,
@@ -729,7 +729,7 @@ awful.rules.rules = {
             class = {"Skype", "yakyak"},
         },
         properties = {
-            tag = mouse.screen.tags[6]
+            tag = awful.screen.focused().tags[6]
             -- callback = function(c)
             --  -- Floating Windows have a north west gravity, others have static
             --  -- False Assumption
@@ -762,7 +762,7 @@ awful.rules.rules = {
             instance = {"TeamViewer.exe"}
         },
         properties = {
-            tag = mouse.screen.tags[5]
+            tag = awful.screen.focused().tags[5]
         }
     }
     ,{
@@ -783,7 +783,7 @@ awful.rules.rules = {
                 -- Change Size of Normal Window Only
                 -- if c.type == "floating" then
                     -- existingDimens = c:geometry()
-                    local screenDimens = mouse.screen.workarea
+                    local screenDimens = awful.screen.focused().workarea
                     local height = screenDimens.height * 0.75
                     c:geometry({
                         y = (screenDimens.height - height) / 2,

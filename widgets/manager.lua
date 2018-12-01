@@ -36,7 +36,7 @@ function WidgetManager:initPopups(s)
 end
 function WidgetManager:togglePopup(name, screen)
     -- Toggle Popup
-    self.quake[name][screen or mouse.screen]:toggle()
+    self.quake[name][screen or awful.screen.focused()]:toggle()
 end
 
 -- Volume

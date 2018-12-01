@@ -13,24 +13,24 @@ end
 -- Layout
 function switchToMaximizedLayout()
     -- If No Layout Stored Then
-    if (not preMaximizeLayouts[mouse.screen.index][awful.tag.selected()]) then
+    if (not preMaximizeLayouts[awful.screen.focused().index][awful.tag.selected()]) then
         -- Store Current Layout
-        preMaximizeLayouts[mouse.screen.index][awful.tag.selected()] = awful.layout.get(mouse.screen.index)
+        preMaximizeLayouts[awful.screen.focused().index][awful.tag.selected()] = awful.layout.get(awful.screen.focused().index)
         -- Change to Maximized
         awful.layout.set(awful.layout.suit.max)
     end
 end
 function revertFromMaximizedLayout()
     -- Revert Maximize
-    if (awful.layout.get(mouse.screen.index) == awful.layout.suit.max) then
-        awful.layout.set(preMaximizeLayouts[mouse.screen.index][awful.tag.selected()])
+    if (awful.layout.get(awful.screen.focused().index) == awful.layout.suit.max) then
+        awful.layout.set(preMaximizeLayouts[awful.screen.focused().index][awful.tag.selected()])
         -- Nil so it is garbage collected
-        preMaximizeLayouts[mouse.screen.index][awful.tag.selected()] = nil
+        preMaximizeLayouts[awful.screen.focused().index][awful.tag.selected()] = nil
     end
 end
 function goToLayout(direction) -- -1 for back, 1 for forward
     -- if maximized to go first/last layout
-    if awful.layout.get(mouse.screen.index) == awful.layout.suit.max then
+    if awful.layout.get(awful.screen.focused().index) == awful.layout.suit.max then
         -- Determine Index
         local index
         if direction == -1 then
@@ -41,7 +41,7 @@ function goToLayout(direction) -- -1 for back, 1 for forward
         --  Set Layout
         awful.layout.set(awful.layout.layouts[index])
         -- Clear Maximized Layout
-        preMaximizeLayouts[mouse.screen.index][awful.tag.selected()] = nil
+        preMaximizeLayouts[awful.screen.focused().index][awful.tag.selected()] = nil
     else
         awful.layout.inc(direction)
     end
@@ -87,14 +87,14 @@ function debugClient(c)
     -- debug_print("type: " .. inspect(c.type))
 
     -- Object Info
-    -- notify_send("InfoWibox:"..inspect(infoWibox[mouse.screen.index], 2))
+    -- notify_send("InfoWibox:"..inspect(infoWibox[awful.screen.focused().index], 2))
 
-    -- notify_send("InfoLayout:"..inspect(infoWibox[mouse.screen.index].drawin.height, 3))
+    -- notify_send("InfoLayout:"..inspect(infoWibox[awful.screen.focused().index].drawin.height, 3))
 
     -- -- infoLayout:set_max_widget_size(100)
     -- notify_send("InfoLayout:"..inspect(infoLayout, 3))
-    -- notify_send("Drawable:"..inspect(infoWibox[mouse.screen.index]._drawable, 2))
-    -- notify_send("Drawable.Widget:"..inspect(infoWibox[mouse.screen.index]._drawable.widget, 2))
+    -- notify_send("Drawable:"..inspect(infoWibox[awful.screen.focused().index]._drawable, 2))
+    -- notify_send("Drawable.Widget:"..inspect(infoWibox[awful.screen.focused().index]._drawable.widget, 2))
 
     -- Root Object Info
     -- notify_send(inspect(root, 4))
@@ -277,7 +277,7 @@ end
 
 function insertScreenWorkingAreaYIntoFormat(format)
     -- TODO: use new template
-    return string.format(format, math.floor(mouse.screen.workarea.y))
+    return string.format(format, math.floor(awful.screen.focused().workarea.y))
 end
 
 function evalTemplate(template, data)

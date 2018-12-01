@@ -121,7 +121,7 @@ function XRandR:cycle()
         text = label,
         icon = icon,
         timeout = 4,
-        screen = mouse.screen.index, -- Important, not all screens may be visible
+        screen = awful.screen.focused().index, -- Important, not all screens may be visible
         font = "Free Sans 18",
         replaces_id = self.id
     }).id
@@ -252,7 +252,7 @@ return bindFunc(XRandR.cycle, XRandR)
 --    state.cid = naughty.notify({ text = label,
 --              icon = icon,
 --              timeout = 4,
---              screen = mouse.screen.index, -- Important, not all screens may be visible
+--              screen = awful.screen.focused().index, -- Important, not all screens may be visible
 --              font = "Free Sans 18",
 --              replaces_id = state.cid }).id
 

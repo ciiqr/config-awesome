@@ -151,19 +151,19 @@ switchClient = awful.client.focus.byidx
 
 -- Tags
 function toggleTag(tagNum)
-    local tag = mouse.screen.tags[tagNum]
+    local tag = awful.screen.focused().tags[tagNum]
     if tag then
         awful.tag.viewtoggle(tag)
     end
 end
 function switchToTag(tagNum)
-    local tag = mouse.screen.tags[tagNum]
+    local tag = awful.screen.focused().tags[tagNum]
     if tag then
         awful.tag.viewonly(tag)
     end
 end
 function switchToLastTag()
-    local tags = mouse.screen.tags
+    local tags = awful.screen.focused().tags
     local tag = tags[#tags]
     if tag then
         awful.tag.viewonly(tag)
@@ -171,7 +171,7 @@ function switchToLastTag()
     return tag
 end
 function switchToFirstTag()
-    local tags = mouse.screen.tags
+    local tags = awful.screen.focused().tags
     local tag = tags[1]
     if tag then
         awful.tag.viewonly(tag)
@@ -251,7 +251,7 @@ end
 
 -- Wibox
 function toggleWibox(wibox, s)
-    local s = s or mouse.screen
+    local s = s or awful.screen.focused()
     local lwibox = s[wibox]
     lwibox.visible = not lwibox.visible
 
