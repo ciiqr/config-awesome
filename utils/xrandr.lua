@@ -127,7 +127,7 @@ function XRandR:cycle()
     }).id
 
     -- Setup the timer
-    self.timer = timer { timeout = 4 }
+    self.timer = gears.timer({timeout = 4})
     self.timer:connect_signal("timeout", function()
         self.timer:stop()
         self.timer = nil
@@ -257,7 +257,7 @@ return bindFunc(XRandR.cycle, XRandR)
 --              replaces_id = state.cid }).id
 
 --    -- Setup the timer
---    state.timer = timer { timeout = 4 }
+--    state.timer = gears.timer({timeout = 4})
 --    state.timer:connect_signal("timeout",
 --            function()
 --               state.timer:stop()

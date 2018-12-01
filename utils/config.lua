@@ -2,35 +2,32 @@
 -- Actions: Toggle, Switch, Move, Follow, restore, minimize
 -- Descriptors: Left, Right, First, Last
 
--- Declarations & setup
-local preMaximizeLayouts = {}
-for s = 1, screen.count() do
-    preMaximizeLayouts[s] = {}
-end
-
-
-
 -- Layout
 function switchToMaximizedLayout()
     -- If No Layout Stored Then
-    if (not preMaximizeLayouts[awful.screen.focused().index][awful.tag.selected()]) then
+    local screen = awful.screen.focused()
+    local tag = screen.selected_tag
+    if (not tag.preMaximizeLayout) then
         -- Store Current Layout
-        preMaximizeLayouts[awful.screen.focused().index][awful.tag.selected()] = awful.layout.get(awful.screen.focused().index)
+        tag.preMaximizeLayout = tag.layout
         -- Change to Maximized
-        awful.layout.set(awful.layout.suit.max)
+        tag.layout = awful.layout.suit.max
     end
 end
 function revertFromMaximizedLayout()
     -- Revert Maximize
-    if (awful.layout.get(awful.screen.focused().index) == awful.layout.suit.max) then
-        awful.layout.set(preMaximizeLayouts[awful.screen.focused().index][awful.tag.selected()])
-        -- Nil so it is garbage collected
-        preMaximizeLayouts[awful.screen.focused().index][awful.tag.selected()] = nil
+    local screen = awful.screen.focused()
+    local tag = screen.selected_tag
+    if (tag.layout == awful.layout.suit.max) then
+        tag.layout = tag.preMaximizeLayout
+        tag.preMaximizeLayout = nil
     end
 end
 function goToLayout(direction) -- -1 for back, 1 for forward
     -- if maximized to go first/last layout
-    if awful.layout.get(awful.screen.focused().index) == awful.layout.suit.max then
+    local screen = awful.screen.focused()
+    local tag = screen.selected_tag
+    if tag.layout == awful.layout.suit.max then
         -- Determine Index
         local index
         if direction == -1 then
@@ -39,9 +36,9 @@ function goToLayout(direction) -- -1 for back, 1 for forward
             index = direction   -- First
         end
         --  Set Layout
-        awful.layout.set(awful.layout.layouts[index])
+        tag.layout = awful.layout.layouts[index]
         -- Clear Maximized Layout
-        preMaximizeLayouts[awful.screen.focused().index][awful.tag.selected()] = nil
+        tag.preMaximizeLayout = nil
     else
         awful.layout.inc(direction)
     end
@@ -50,8 +47,8 @@ end
 -- Client
 -- TODO: Determine if I can make the window adjust when the screen's working area changes, add listener when fullscreen, remove when not
 function toggleClientMultiFullscreen(c)
-     awful.client.floating.toggle(c)
-     if awful.client.floating.get(c) then
+     c.floating = not c.floating
+     if c.floating then
          local clientX = screen[1].workarea.x
          local clientY = screen[1].workarea.y
          local clientWidth = 0
@@ -267,7 +264,7 @@ function clientShouldAttemptFocus(c)
     -- NOTE: ALSO: Experimental support for not changing focus to fullscreen windows automatically, intended to help with the fact that fullscreen windows are displayed over top of wiboxes
     -- NOTE: Also with the fullscreen note above, the or current client floating means that I can quickly switch between a fullscreen window & say my calculator
     -- DEFAULT: and awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-    if (not client.focus) or awful.client.focus.filter(c) and ((not client.focus) or client.focus.transient_for ~= c) and (not c.fullscreen or awful.client.floating.get(client.focus)) then
+    if (not client.focus) or awful.client.focus.filter(c) and ((not client.focus) or client.focus.transient_for ~= c) and (not c.fullscreen or client.focus.floating) then
         client.focus = c
     end
 end

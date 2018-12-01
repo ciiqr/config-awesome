@@ -76,8 +76,8 @@ function toggleClient(c)
     c.minimized = true
   else
     c.minimized = false
-    if not c:isvisible() then
-        c:tags()[1]:view_only()
+    if not c:isvisible() and c.first_tag then
+        c.first_tag:view_only()
     end
     client.focus = c
   end
@@ -113,7 +113,7 @@ end
 -- TODO: Maybe think of a clean way to modularize below 2, would be nice to use moveClientToTagAndFollow
 function moveClientLeftAndFollow(c)
     local tags = client.focus.screen.tags
-    local curidx = awful.tag.getidx()
+    local curidx = awful.screen.focused().selected_tag.index
     local tag
     if curidx == 1 then
         tag = tags[#tags]
@@ -126,7 +126,7 @@ function moveClientLeftAndFollow(c)
 end
 function moveClientRightAndFollow(c)
     local tags = client.focus.screen.tags
-    local curidx = awful.tag.getidx()
+    local curidx = awful.screen.focused().selected_tag.index
     local tag
     if curidx == #tags then
         tag = tags[1]
@@ -178,8 +178,8 @@ function switchToFirstTag()
     end
     return tag
 end
-function increaseMwfact(add, t)
-    local new_mwfact = awful.tag.getmwfact(t) + add
+function increaseMwfact(add)
+    local new_mwfact = awful.screen.focused().selected_tag.master_width_factor + add
     -- Only change the mwfact if it's not going to make things invisible
     if new_mwfact < 1 and new_mwfact > 0 then
         awful.tag.incmwfact(add, t)
@@ -189,10 +189,10 @@ end
 --     local c = c or client.focus
 --     if not c then return end
 
---     local t = awful.tag.selected(c.screen)
+--     local t = c.screen.selected_tag
 --     local w = awful.client.idx(c)
---     local nmaster = awful.tag.getnmaster(t)
---     local data = awful.tag.getproperty(t, "windowfact") or {}
+--     local nmaster = t.master_count
+--     local data = t.windowfact or {}
 --     local colfact = data[w.col]
 --     return colfact[w.idx] or 1
 -- end
@@ -225,7 +225,7 @@ end
 
 --  local lay = awful.layout.get(c.screen)
 --  local wa = c.screen.workarea
---  local mwfact = awful.tag.getmwfact()
+--  local mwfact = awful.screen.focused().selected_tag.master_width_factor
 --  local g = c:geometry()
 --  -- local x,y
 
@@ -259,7 +259,7 @@ function toggleWibox(wibox, s)
     -- Adjust the sysInfoWibox's height when the top/bottom wiboxes are resized
     -- TODO: Move this to the signal handler for "property::visible"
     -- OR more reasonably "property::workarea" of the screen
-    local position = awful.wibar.get_position(lwibox)
+    local position = awful.wibar.get_position(lwibox) -- TODO: deprecated: awful.wibar.get_position
     if position == "top" or position == "bottom" then
 
         s.sysInfoWibox.y = s.workarea.y

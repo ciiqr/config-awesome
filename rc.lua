@@ -69,8 +69,8 @@ awful.screen.connect_for_each_screen(function(s)
     awful.tag(CONFIG.screens.tags, s, awful.layout.layouts[1])
     -- - Columns
     for _,tag in pairs(s.tags) do
-        awful.tag.setncol(3, tag)
-        awful.tag.setmwfact(1/3, tag)
+        tag.column_count = 3
+        tag.master_width_factor = 1/3
     end
 
     -- Popup Terminal/Process Info/Notes/etc
@@ -222,9 +222,9 @@ local globalKeys = gears.table.join(
 
     -- Remove Tags
     awful.key({SUPER, SHIFT}, "y", function()
-        local selectedTags = awful.tag.selectedlist(awful.screen.focused().index)
-        for tag, _ in pairs(selectedTags) do
-            awful.tag.delete(_, tag)
+        local selectedTags = awful.screen.focused().selected_tags
+        for i, tag in pairs(selectedTags) do
+            tag:delete()
         end
     end),
 
@@ -367,7 +367,7 @@ local clientkeys = gears.table.join(
     ,awful.key({SUPER, CONTROL}, "Down", minimizeClient)
 
     --Floating
-    ,awful.key({SUPER, ALT}, "space", awful.client.floating.toggle)
+    ,awful.key({SUPER, ALT}, "space", function(c) c.floating = not c.floating end)
 
     -- Sticky
     ,awful.key({SUPER, ALT}, "s", function(c) c.sticky = not c.sticky end)
@@ -555,7 +555,7 @@ awful.rules.rules = {
                         -- Check what the new name is
                         if string.find(c.name, "Tab Organizer") then -- Properties
                             -- Set Floating
-                            awful.client.floating.set(c, true)
+                            c.floating = true
                             -- Set Ontop
                             -- Change Size
                             local screenDimens = awful.screen.focused().workarea
@@ -565,10 +565,10 @@ awful.rules.rules = {
 
                         elseif string.find(c.name, "Select the email service you use") then -- Properties
                             -- Set Floating
-                            awful.client.floating.set(c, true)
+                            c.floating = true
                         elseif string.find(c.name, "Hangouts") then -- Properties
                             -- NOT Floating
-                            awful.client.floating.set(c, false)
+                            c.floating = false
                             -- On Social Tag
                             local tags = c.screen.tags
                             c:move_to_tag(tags[6]) -- TODO: Add constant for Social Tag Index...
@@ -734,7 +734,7 @@ awful.rules.rules = {
     --         --  -- Floating Windows have a north west gravity, others have static
     --         --  -- False Assumption
     --         --  -- if c.size_hints.win_gravity == "north_west" then
-    --         --  --  awful.client.floating.set(c, true)
+    --         --  --  c.floating = true
     --         --  -- end
     --         -- end
     --     }

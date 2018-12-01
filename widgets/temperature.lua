@@ -15,7 +15,7 @@ temperature.init = function(self)
     self:reload()
 
     -- Timer for every 10 seconds
-    self.updateTimer = timer({timeout = CONFIG.widgets.temperature.interval})
+    self.updateTimer = gears.timer({timeout = CONFIG.widgets.temperature.interval})
 
     -- Event Handler
     self.updateTimer:connect_signal("timeout", function()
