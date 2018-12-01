@@ -14,7 +14,7 @@
 
 
 -- Retrieve from globals if they exist or require if they don't
-local wibox = wibox or require('wibox')
+local wibox = require('wibox')
 
 -- Utilities
 -- Widget Instance

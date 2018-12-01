@@ -1,3 +1,5 @@
+local wibox = require("wibox")
+
 temperature = wibox.widget.textbox()
 temperature:set_align("center")
 

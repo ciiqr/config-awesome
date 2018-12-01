@@ -1,14 +1,13 @@
 local beautiful = beautiful or require("beautiful")
 local vicious = vicious or require("vicious")
-local quake = quake or require("quake")
-local awful = awful or require("awful")
-local wibox = wibox or require("wibox")
+local awful = require("awful")
+local wibox = require("wibox")
+local quake = require("quake")
+local spacer = require("widgets.spacer")
 
-local WidgetManager = {
-    -- TODO: should pass this in when I create a new widget manager...
-    config = CONFIG.widgets or {},
-    quake = {},
-}
+-- TODO: it's been great but I think it's time for us to split
+
+local WidgetManager = {}
 
 WidgetManager.wifiDevice = trim(execForOutput("ls /sys/class/net/wl* >/dev/null 2>&1 && basename /sys/class/net/wl*"))
 WidgetManager.ethDevice = trim(execForOutput("ls /sys/class/net/e* >/dev/null 2>&1 && basename /sys/class/net/e*"))
@@ -18,8 +17,8 @@ WidgetManager.batteryDevice = trim(execForOutput("ls /sys/class/power_supply/BAT
 function WidgetManager:initPopups(s)
     for _,popup in ipairs(CONFIG.popups) do
         -- Ensure we have a table
-        if not self.quake[popup.name] then
-            self.quake[popup.name] = {}
+        if not s.quake then
+            s.quake = {}
         end
 
         -- get options
@@ -31,12 +30,105 @@ function WidgetManager:initPopups(s)
         local quakeOptions = gears.table.join(defaults, options)
 
         -- Create Popup
-        self.quake[popup.name][s] = quake(quakeOptions)
+        s.quake[popup.name] = quake(quakeOptions)
     end
 end
 function WidgetManager:togglePopup(name, screen)
-    -- Toggle Popup
-    self.quake[name][screen or awful.screen.focused()]:toggle()
+    local screen = screen or awful.screen.focused()
+    screen.quake[name]:toggle()
+end
+
+-- Wibars/Wiboxes
+function WidgetManager:initWiboxes(s)
+    local SPACING = spacer:init(beautiful.spacer_size)
+    local panel_height = beautiful.panel.height(s)
+
+    -- Top Wibar
+    s.topWibar = awful.wibar({position = "top", screen = s, height = panel_height})
+    s.topWibar:setup {
+        layout = wibox.layout.align.horizontal,
+        expand = "none",
+        {
+            layout = wibox.layout.fixed.horizontal,
+            self:getTagsList(s),
+        },
+        {
+            layout = wibox.layout.flex.horizontal,
+            self:getClock(),
+        },
+        {
+            layout = wibox.layout.fixed.horizontal,
+            {
+                layout = awful.widget.only_on_screen,
+                screen = "primary",
+                {
+                    layout = wibox.layout.fixed.horizontal,
+                    self:getNetUsage(),
+                    SPACING,
+                    self:getBatteryWidget(),
+                    SPACING,
+                    self:getTemperature(),
+                    SPACING,
+                    self:getVolume(),
+                    SPACING,
+                    self:getMemory(),
+                    SPACING,
+                    self:getCPU(),
+                    SPACING,
+                    self:getSystemTray(),
+                    SPACING,
+                },
+            },
+            self:getLayoutBox(s)
+        },
+    }
+
+    -- Bottom Wibar
+    s.bottomWibar = awful.wibar({position = "bottom", screen = s, height = panel_height})
+    s.bottomWibar:setup {
+        widget = self:getTaskBox(s),
+    }
+
+    -- All Windows Wibox
+    s.allWindowsWibox = self:getAllWindowsWibox(s)
+    s.allWindowsWibox:setup {
+        widget = self:getTaskBox(s, true),
+    }
+
+    -- System Info wibox
+
+    function sysInfoLabel(text)
+        local label = wibox.widget.textbox(text)
+        label:set_align("center")
+        return label
+    end
+
+    s.sysInfoWibox = self:getSysInfoWibox(s)
+    s.sysInfoWibox:setup {
+        layout = wibox.layout.fixed.vertical,
+
+        -- SPACING,
+        -- sysInfoLabel("Network"), -- SYS-INFO-TITLES
+
+        SPACING,
+        self:getIP(),
+        -- SPACING,
+        -- self:getNetUsage(true),
+
+        -- SPACING, -- SYS-INFO-TITLES
+        -- sysInfoLabel("Temperature"), -- SYS-INFO-TITLES
+        -- SPACING,
+
+        -- self:getTemperature(),
+
+        -- SPACING, -- SYS-INFO-TITLES
+        -- sysInfoLabel("System"), -- SYS-INFO-TITLES
+        -- SPACING,
+
+        -- self:getMemory(true),
+        -- SPACING,
+        -- self:getCPU(true),
+    }
 end
 
 -- Volume
@@ -154,7 +246,7 @@ end
 
 -- Text Clock
 function WidgetManager:getClock()
-    self.clock = wibox.widget.textclock(self.config.clock.text, 10)
+    self.clock = wibox.widget.textclock(CONFIG.widgets.clock.text, 10)
 
     -- add popup calendar
     require("widgets.cal").register(self.clock)

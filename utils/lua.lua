@@ -30,16 +30,6 @@ function bindFunc(func, ...)
     end
 end
 
--- This is a wrapper function which passes a boolean to it's first parameter, it then inverts the boolean for the next time it is called
--- If it is given a second parameter, this parameter is the starting boolean (default is false)
-function toggleStateFunc(functionToToggle, state)
-    local state = state or false
-    return function()
-        functionToToggle(state)
-        state = not state
-    end
-end
-
 -- If the condition is true, returns the tVal, else it returns the fVal
 function ternary(condition, tVal, fVal)
   if condition then return tVal else return fVal end

@@ -1,3 +1,4 @@
+local awful = require("awful")
 -- Type: Tag, Client, Screen, Layout, Wibox
 -- Actions: Toggle, Switch, Move, Follow, restore, minimize
 -- Descriptors: Left, Right, First, Last
@@ -254,6 +255,18 @@ function clientDidMouseEnter(c)
     end
 end
 
+function setupClientRequestActivate()
+    -- from: http://new.awesomewm.org/apidoc/documentation/90-FAQ.md.html
+    client.disconnect_signal("request::activate", awful.ewmh.activate)
+    function awful.ewmh.activate(c)
+        if c:isvisible() then
+            client.focus = c
+            c:raise()
+        end
+    end
+    client.connect_signal("request::activate", awful.ewmh.activate)
+end
+
 function screenPropertyGeometry(s)
     screenSetWallpaper(s)
 end
@@ -267,6 +280,20 @@ function clientShouldAttemptFocus(c)
     if (not client.focus) or awful.client.focus.filter(c) and ((not client.focus) or client.focus.transient_for ~= c) and (not c.fullscreen or client.focus.floating) then
         client.focus = c
     end
+end
+
+function screenInit(s)
+    -- Wallpaper
+    screenSetWallpaper(s)
+
+    --Tags
+    awful.tag(CONFIG.screens.tags, s, awful.layout.layouts[1])
+
+    -- Popup Terminal/Process Info/Notes/etc
+    widget_manager:initPopups(s)
+
+    --Wiboxes w/ Widgets
+    widget_manager:initWiboxes(s)
 end
 
 --Utility
@@ -337,15 +364,6 @@ function notify_send(text, timeout, preset)
                     screen=screen.count(),
                    timeout=timeout or 0})
 end
-toggleNaughtyNotifications = toggleStateFunc(function(enabled)
-    if enabled then -- Disable Naughty
-        notify_send("Naughty Suspended", 1)
-        naughty.suspend()
-    else -- Enable Naughty
-        naughty.resume()
-        notify_send("Naughty Resumed", 1)
-    end
-end, true)
 
 -- System --
 ------------
@@ -367,4 +385,11 @@ end
 function toggleInfoWiboxes()
     toggleWibox("allWindowsWibox")
     toggleWibox("sysInfoWibox")
+end
+
+function startupPrograms()
+    -- TODO: run_once takes a while, probably due to system calls, try making a script that takes a list of files and runs them with the same commands as before)
+    for _,program in pairs(CONFIG.startup.programs) do
+        run_once(program)
+    end
 end

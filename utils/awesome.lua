@@ -1,3 +1,4 @@
+local awful = require("awful")
 -- Description:
 --      Functions & Functionality that should be provided automatically by awesome (IMO)
 
