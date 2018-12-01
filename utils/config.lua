@@ -157,7 +157,7 @@ function setup_network_connectivity_change_listener()
     dbus.add_match("system", "interface='org.freedesktop.NetworkManager',member='PropertiesChanged'")
     dbus.connect_signal("org.freedesktop.NetworkManager", function(first, second, ...) -- Doesn't seem to be a third
         -- Change ip widget
-        widget_manager:updateIP()
+        WIDGET_MANAGER:updateIP()
     end)
 end
 
@@ -178,7 +178,7 @@ end
 --      -- end
 
 --      -- Change ip widget
---      widget_manager:updateIP()
+--      WIDGET_MANAGER:updateIP()
 
 --      -- TODO: Have a table to contain all of the callbacks & itterate through & run them
 
@@ -311,10 +311,10 @@ function screenInit(s)
     awful.tag(CONFIG.screens.tags, s, awful.layout.layouts[1])
 
     -- Popup Terminal/Process Info/Notes/etc
-    widget_manager:initPopups(s)
+    WIDGET_MANAGER:initPopups(s)
 
     --Wiboxes w/ Widgets
-    widget_manager:initWiboxes(s)
+    WIDGET_MANAGER:initWiboxes(s)
 end
 
 --Utility

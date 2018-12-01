@@ -11,8 +11,8 @@ local beautiful = require("beautiful")
 
 -- TODO: globals, clean up
 CONFIG = require("config")
-widget_manager = require("widgets.manager") -- TODO: fix CONFIG
-THEME_PATH = gears.filesystem.get_configuration_dir() .. "/theme"
+WIDGET_MANAGER = require("widgets.manager") -- TODO: fix CONFIG
+THEME_PATH = gears.filesystem.get_configuration_dir() .. "theme"
 
 -- Theme
 beautiful.init(THEME_PATH .. "/theme.lua")

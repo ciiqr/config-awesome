@@ -104,11 +104,11 @@ local globalKeys = gears.table.join(
 
     --System
     -- Volume
-    awful.key({}, "XF86AudioMute", function() widget_manager:toggleMute() end),
-    awful.key({}, "XF86AudioLowerVolume", function() widget_manager:changeVolume("-", CONFIG.volume.change.normal) end),
-    awful.key({}, "XF86AudioRaiseVolume", function() widget_manager:changeVolume("+", CONFIG.volume.change.normal) end),
-    awful.key({SHIFT}, "XF86AudioLowerVolume", function() widget_manager:changeVolume("-", CONFIG.volume.change.small) end),
-    awful.key({SHIFT}, "XF86AudioRaiseVolume", function() widget_manager:changeVolume("+", CONFIG.volume.change.small) end),
+    awful.key({}, "XF86AudioMute", function() WIDGET_MANAGER:toggleMute() end),
+    awful.key({}, "XF86AudioLowerVolume", function() WIDGET_MANAGER:changeVolume("-", CONFIG.volume.change.normal) end),
+    awful.key({}, "XF86AudioRaiseVolume", function() WIDGET_MANAGER:changeVolume("+", CONFIG.volume.change.normal) end),
+    awful.key({SHIFT}, "XF86AudioLowerVolume", function() WIDGET_MANAGER:changeVolume("-", CONFIG.volume.change.small) end),
+    awful.key({SHIFT}, "XF86AudioRaiseVolume", function() WIDGET_MANAGER:changeVolume("+", CONFIG.volume.change.small) end),
 
     -- Brightness
     -- TODO: only setup keybindings if brightness can be adjusted...
@@ -175,7 +175,7 @@ end
 -- Popup keys
 for _,popup in ipairs(CONFIG.popups) do
     globalKeys = gears.table.join(globalKeys,
-        awful.key({SUPER, SHIFT}, popup.key, function() widget_manager:togglePopup(popup.name) end)
+        awful.key({SUPER, SHIFT}, popup.key, function() WIDGET_MANAGER:togglePopup(popup.name) end)
     )
 end
 
