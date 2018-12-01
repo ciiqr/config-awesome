@@ -1,24 +1,23 @@
--- Include --
--------------
--- Standard
-gears       = require("gears")
-awful       = require("awful")
-              require("awful.autofocus")
-              require("awful.remote")
-wibox       = require("wibox")
-beautiful   = require("beautiful")
-naughty     = require("naughty")
--- Config
-inspect     = require("third-party.inspect")
-spacer      = require("widgets.spacer")
-thrizen     = require("layouts.thrizen")
-xrandr      = require("utils.xrandr")
-              require("utils.lua")
-              require("utils.awesome")
-              require("utils.config")
-              require("enums")
+gears = require("gears")
+awful = require("awful")
+wibox = require("wibox")
+beautiful = require("beautiful")
+naughty = require("naughty")
+require("awful.autofocus")
+require("awful.remote")
+
+inspect = require("third-party.inspect")
+spacer = require("widgets.spacer")
+thrizen = require("layouts.thrizen")
+xrandr = require("utils.xrandr")
+require("utils.lua")
+require("utils.awesome")
+require("utils.config")
+require("enums")
+
 CONFIG = require("config")
 widget_manager = require("widgets.manager") -- TODO: fix CONFIG
+
 THEME_PATH = gears.filesystem.get_configuration_dir() .. "/theme"
 
 -- Beautiful Theme
@@ -541,45 +540,36 @@ awful.rules.rules = {
             floating = true
         }
     }
-    -- TODO: it seems like the bug that made all this dumb callback stuff necessary has been fixed, clean this up
     ,{
         rule = {
-            class = "Google-chrome-stable",
-            name = "Untitled" -- All Extension Windows
+            class = "Chromium",
         },
         properties = {
             callback = function(c)
                 -- Function to recheck name
                 name_callback[c] = function(c)
-                    if c.name then
-                        -- Check what the new name is
-                        if string.find(c.name, "Tab Organizer") then -- Properties
-                            -- Set Floating
-                            c.floating = true
-                            -- Set Ontop
-                            -- Change Size
-                            local screenDimens = awful.screen.focused().workarea
-                            local screenHeight = screenDimens.height
-                            c:geometry({width = screenDimens.width - (2 * beautiful.border_width), height = screenHeight / 2, y = screenHeight/  4, x=0})
+                    -- Check what the new name is
+                    if string.find(c.name, "Tab Organizer") then -- Properties
+                        c.floating = true
 
-
-                        elseif string.find(c.name, "Select the email service you use") then -- Properties
-                            -- Set Floating
-                            c.floating = true
-                        elseif string.find(c.name, "Hangouts") then -- Properties
-                            -- NOT Floating
-                            c.floating = false
-                            -- On Social Tag
-                            local tags = c.screen.tags
-                            c:move_to_tag(tags[6]) -- TODO: Add constant for Social Tag Index...
-                        else
-                            -- Print Name So I Can Possibly Change Other Names
-                            -- notify_send(tostring(c.name or "nil"), 2)
-                        end
-                        -- Clear Client From Callback Array
-                        c:disconnect_signal("property::name", name_callback[c])
-                        name_callback[c] = nil
+                        -- Change Size
+                        local screenDimens = awful.screen.focused().workarea
+                        local screenHeight = screenDimens.height
+                        c:geometry({width = screenDimens.width - (2 * beautiful.border_width), height = screenHeight / 2, y = screenHeight/  4, x=0})
+                    elseif string.find(c.name, "Select the email service you use") then -- Properties
+                        c.floating = true
+                    elseif string.find(c.name, "Hangouts") then -- Properties
+                        c.floating = false
+                        -- -- On Social Tag
+                        -- local tags = c.screen.tags
+                        -- c:move_to_tag(tags[6]) -- TODO: Add constant for Social Tag Index...
+                    else
+                        -- Print Name So I Can Possibly Change Other Names
+                        notify_send(debug_print(c.name), 2)
                     end
+                    -- Clear Client From Callback Array
+                    c:disconnect_signal("property::name", name_callback[c])
+                    name_callback[c] = nil
                 end
                 -- Connect Function
                 c:connect_signal("property::name", name_callback[c])
