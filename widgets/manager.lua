@@ -1,6 +1,8 @@
 local beautiful = beautiful or require("beautiful")
 local vicious = vicious or require("vicious")
 local quake = quake or require("quake")
+local awful = awful or require("awful")
+local wibox = wibox or require("wibox")
 
 local WidgetManager = {
     -- TODO: should pass this in when I create a new widget manager...
@@ -26,7 +28,7 @@ function WidgetManager:initPopups(s)
             border = 0,
         }
         local options = popup.options or {}
-        local quakeOptions = awful.util.table.join(defaults, options)
+        local quakeOptions = gears.table.join(defaults, options)
 
         -- Create Popup
         self.quake[popup.name][s] = quake(quakeOptions)
@@ -40,7 +42,7 @@ end
 -- Volume
 function WidgetManager:getVolume()
     self.volume = wibox.widget.textbox() -- 🔇 -- Mute icon --
-    self.volume:buttons(awful.util.table.join(
+    self.volume:buttons(gears.table.join(
         awful.button({}, MOUSE_SCROLL_UP, function() WidgetManager:changeVolume("+", CONFIG.volume.change.small) end),
         awful.button({}, MOUSE_SCROLL_DOWN, function() WidgetManager:changeVolume("-", CONFIG.volume.change.small) end),
         awful.button({}, 1, function() run_once("pavucontrol") end)
@@ -87,7 +89,7 @@ function WidgetManager:getMemory(vertical)
         self.memory:set_align("center")
     end
     vicious.register(self.memory, vicious.widgets.mem, "<span fgcolor='#138dff' weight='bold'>$1% $2MB</span>", 13) --DFDFDF
-    self.memory:buttons(awful.util.table.join(
+    self.memory:buttons(gears.table.join(
         awful.button({}, 1, function() self:togglePopup('cpu') end)
     ))
     return self.memory
@@ -95,14 +97,14 @@ end
 
 -- CPU
 function WidgetManager:getCPU(vertical)
-    local cpuwidget = awful.widget.graph()
+    local cpuwidget = wibox.widget.graph()
     if not vertical then
         cpuwidget:set_width(50)
     end
     cpuwidget:set_background_color("#494B4F00") --55
     cpuwidget:set_color({ type = "linear", from = { 25, 0 }, to = { 25,22 }, stops = { {0, "#FF0000" }, {0.5, "#de5705"}, {1, "#00ff00"} }  })
     vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
-    cpuwidget:buttons(awful.util.table.join(
+    cpuwidget:buttons(gears.table.join(
         awful.button({}, 1, function() self:togglePopup('mem') end)
     ))
     return cpuwidget
@@ -135,7 +137,7 @@ function WidgetManager:getIP()
 
     self:updateIP()
 
-    self.ip:buttons(awful.util.table.join(
+    self.ip:buttons(gears.table.join(
      awful.button({}, 1, function() awful.util.spawn(CONFIG.commands.ipInfo) end)
      -- ,awful.button({}, 3, function() self.ip:updateIP() end)
     ))
@@ -162,9 +164,8 @@ end
 
 function WidgetManager:getTaskBox(screen, is_vertical)
     -- TODO: These need to be seperate per screen, therefore I need a list for each, ie. WidgetManager.verticalTaskBoxes, WidgetManager.horizontalTaskBoxes
-    local buttons = awful.util.table.join(
-        awful.button({}, 1, toggleClient),
-        awful.button({}, 3, toggleInfoWiboxes)
+    local buttons = gears.table.join(
+        awful.button({}, 1, toggleClient)
     )
     if is_vertical then
         local layout = wibox.layout.flex.vertical()
@@ -179,19 +180,16 @@ function WidgetManager:getTaskBox(screen, is_vertical)
     else
         -- TODO: Consider minimizedcurrenttags for filter, it's pretty interesting, though, I would want it to hide if the bottom if there we're no items, or maybe move it back to the top bar & get rid of the bottom entirely...
         return awful.widget.tasklist(screen, awful.widget.tasklist.filter.currenttags, buttons) -- Normal
-        -- allscreen,  All on Screen, Normal
     end
 end
 
-function WidgetManager:getAllWindowsWibox(s, widget)
-    -- 'awful.wibox' to have it affect the workarea
+function WidgetManager:getAllWindowsWibox(s)
     local aWibox = wibox({
         position = "left",
         screen = s,
         width = beautiful.global_windows_list_width,
         ontop = true,
         visible = false})
-    aWibox:set_widget(widget)
 
     -- Function to resize the wibox
     local sizeWibox = function(screen)
@@ -209,9 +207,8 @@ function WidgetManager:getAllWindowsWibox(s, widget)
     return aWibox
 end
 
-function WidgetManager:getSysInfoWibox(s, widget)
+function WidgetManager:getSysInfoWibox(s)
     local width = beautiful.system_info_width
-    -- 'awful.wibox' to have it affect the workarea
     local aWibox = wibox({
         position = "right",
         screen = s,
@@ -224,8 +221,6 @@ function WidgetManager:getSysInfoWibox(s, widget)
         ontop = true,
         visible = false
     })
-
-    aWibox:set_widget(widget)
 
     -- Function to resize the wibox
     local sizeWibox = function(screen)
@@ -245,7 +240,7 @@ end
 -- TagsList
 function WidgetManager:getTagsList(screen)
     -- TODO: Consider Moving
-    local buttons = awful.util.table.join(
+    local buttons = gears.table.join(
         awful.button({}, 1, awful.tag.viewonly), -- Switch to This Tag
         awful.button({SUPER}, 1, awful.client.movetotag), -- Move Window to This Tag
         awful.button({}, 3, awful.tag.viewtoggle), -- Toggle This Tag
@@ -263,7 +258,7 @@ end
 function WidgetManager:getLayoutBox(screen)
     -- TODO: CHange so it stores the layoutBoxes for all screens
     self.layoutBox = awful.widget.layoutbox(screen)
-    self.layoutBox:buttons(awful.util.table.join(
+    self.layoutBox:buttons(gears.table.join(
         awful.button({}, 1, function() goToLayout(1) end)
         ,awful.button({}, 3, function() goToLayout(-1) end)
     ))
@@ -291,7 +286,7 @@ function WidgetManager:getNetUsage(vertical)
     })
 
     vicious.register(self.netwidget, vicious.widgets.net, '<span foreground="#97D599" weight="bold">↑${'..networkDevice..' up_mb}</span> <span foreground="#CE5666" weight="bold">↓${'..networkDevice..' down_mb}</span>', 1) --#585656
-    self.netwidget:buttons(awful.util.table.join(
+    self.netwidget:buttons(gears.table.join(
         awful.button({}, 1, function() awful.util.spawn(networkTrafficCmd) end)
     ))
 

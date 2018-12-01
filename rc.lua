@@ -3,7 +3,6 @@
 -- Standard
 gears       = require("gears")
 awful       = require("awful")
-awful.rules = require("awful.rules")
               require("awful.autofocus")
               require("awful.remote")
 wibox       = require("wibox")
@@ -11,7 +10,7 @@ beautiful   = require("beautiful")
 naughty     = require("naughty")
 -- Config
 inspect     = require("third-party.inspect")
-divider     = require("widgets.divider")
+spacer      = require("widgets.spacer")
 thrizen     = require("layouts.thrizen")
 xrandr      = require("utils.xrandr")
               require("utils.lua")
@@ -19,6 +18,7 @@ xrandr      = require("utils.xrandr")
               require("utils.config")
               require("enums")
 CONFIG = require("config")
+widget_manager = require("widgets.manager") -- TODO: fix CONFIG
 THEME_PATH = gears.filesystem.get_configuration_dir() .. "/theme"
 
 -- Beautiful Theme
@@ -26,24 +26,12 @@ beautiful.init(THEME_PATH .. "/theme.lua")
 
 -- Variables --
 ---------------
---Model
-layouts=nil -- Global, Required
-local globalKeys -- Setup
-local clientKeys -- Setup
-local clientButtons -- Setup
---Visual
-tWibox={} -- Persistent
-bWibox={} -- Persistent
-allWindowsWibox={} -- Persistent
-sysInfoWibox={} -- Persistent
-local name_callback = {}  -- Persistent
---Widgets
-widget_manager = require("widgets.manager")
+local name_callback = {}
 
 -- Setup --
 -----------
 --Layouts
-layouts = {
+awful.layout.layouts = {
     thrizen,
     awful.layout.suit.tile,
     awful.layout.suit.fair,
@@ -70,21 +58,7 @@ screen.connect_signal("property::geometry", screenSetWallpaper)
 -- Per-Screen Setup (Wallpapers, Tags, Pop-down Terminal/Htop/Note, Maximized Layouts, Top/BottomBars)
 awful.screen.connect_for_each_screen(function(s)
 
-    local top_layout    = wibox.layout.align.horizontal()
-    local left_layout   = wibox.layout.fixed.horizontal()
-    local middle_layout = wibox.layout.flex.horizontal()
-    local right_layout  = wibox.layout.fixed.horizontal()
-    local bottomLayout  = wibox.layout.align.horizontal()
-    local allWindowsLayout  = wibox.layout.flex.vertical()
-    local sysInfoLayout = wibox.layout.fixed.vertical()
-
-    -- This makes the middle widget centre on on the screen (instead of in the free space)
-    top_layout:set_expand("none")
-
-    local SPACING = require("widgets.spacer"):init(beautiful.spacer_size)
-    -- local DIVIDER_VERTICAL = divider({size=2, total_size=10, orientation="vertical", end_padding=40}) -- 40 is somewhat arbitrary since the widget will just fill the available height
-    local DIVIDER_HORIZONTAL = divider({total_size=0.5, orientation="horizontal", end_padding=40}) -- 40 is somewhat arbitrary since the widget will just fill the available width
-
+    local SPACING = spacer:init(beautiful.spacer_size)
 
     local panel_height = beautiful.panel.height(s)
 
@@ -92,7 +66,7 @@ awful.screen.connect_for_each_screen(function(s)
     screenSetWallpaper(s)
 
     --Tags
-    awful.tag(CONFIG.screens.tags, s, layouts[1])
+    awful.tag(CONFIG.screens.tags, s, awful.layout.layouts[1])
     -- - Columns
     for _,tag in pairs(s.tags) do
         awful.tag.setncol(3, tag)
@@ -103,108 +77,100 @@ awful.screen.connect_for_each_screen(function(s)
     widget_manager:initPopups(s)
 
     --Wiboxes w/ Widgets
-    --Left Widgets
-    -- Tag List
-    left_layout:add(widget_manager:getTagsList(s))
 
-    --Middle Widget
-    -- middle_layout:add(widget_manager:getIP())
-    middle_layout:add(widget_manager:getClock())
+    -- This makes the middle widget centre on on the screen (instead of in the free space)
+    local top_layout = wibox.layout.align.horizontal()
+    top_layout:set_expand("none")
 
-    --Right Widgets
-    -- TODO: hmm
-    if s.index == screen.count() then -- Main Widgets on Far Right
-        local right_widgets = {
-            widget_manager:getNetUsage(),
-            widget_manager:getBatteryWidget(),
-            widget_manager:getTemperature(),
-            widget_manager:getVolume(),
-            widget_manager:getMemory(),
-            widget_manager:getCPU(),
-            widget_manager:getSystemTray(),
-            -- widget_manager:getClock()
-        }
+    -- Top Wibar
+    s.topWibar = awful.wibar({position = "top", screen = s, height = panel_height})
+    s.topWibar:setup {
+        layout = top_layout,
+        {
+            layout = wibox.layout.fixed.horizontal,
+            widget_manager:getTagsList(s),
+        },
+        {
+            layout = wibox.layout.flex.horizontal,
+            widget_manager:getClock(),
+        },
+        {
+            layout = wibox.layout.fixed.horizontal,
+            {
+                layout = awful.widget.only_on_screen,
+                screen = "primary",
+                {
+                    layout = wibox.layout.fixed.horizontal,
+                    widget_manager:getNetUsage(),
+                    SPACING,
+                    widget_manager:getBatteryWidget(),
+                    SPACING,
+                    widget_manager:getTemperature(),
+                    SPACING,
+                    widget_manager:getVolume(),
+                    SPACING,
+                    widget_manager:getMemory(),
+                    SPACING,
+                    widget_manager:getCPU(),
+                    SPACING,
+                    widget_manager:getSystemTray(),
+                    SPACING,
+                },
+            },
+            widget_manager:getLayoutBox(s)
+        },
+    }
 
-        for _,widget in pairs(right_widgets) do
-            right_layout:add(widget)
-            right_layout:add(SPACING)
-        end
-    end
-
-    -- Layout Box
-    right_layout:add(widget_manager:getLayoutBox(s))
-
-    --Add Layouts to Master Layout & Set tWibox Widget to Master Layout
-    top_layout:set_left(left_layout)
-    top_layout:set_middle(middle_layout)
-    top_layout:set_right(right_layout)
-
-    --tWibox
-    tWibox[s] = awful.wibox({position = "top", screen = s, height = panel_height})
-    tWibox[s]:set_widget(top_layout)
-    tWibox[s]:buttons(awful.util.table.join(
-        -- awful.button({}, MOUSE_LEFT, function() client.focus = nil; end)
-        -- ,awful.button({}, MOUSE_RIGHT, function() goToLayout(-1) end)
-    ))
-
-    -- Task List
-    bottomLayout:set_middle(widget_manager:getTaskBox(s))
-    --bWibox
-    bWibox[s] = awful.wibox({position = "bottom", screen = s, height = panel_height})
-    bWibox[s]:set_widget(bottomLayout)
+    -- Bottom Wibar
+    s.bottomWibar = awful.wibar({position = "bottom", screen = s, height = panel_height})
+    s.bottomWibar:setup {
+        widget = widget_manager:getTaskBox(s),
+    }
 
     -- All Windows Wibox
-    allWindowsLayout:add(widget_manager:getTaskBox(s, true))
-    allWindowsWibox[s] = widget_manager:getAllWindowsWibox(s, allWindowsLayout)
+    s.allWindowsWibox = widget_manager:getAllWindowsWibox(s)
+    s.allWindowsWibox:setup {
+        widget = widget_manager:getTaskBox(s, true),
+    }
 
     -- System Info wibox
-    -- http://stackoverflow.com/questions/8049764/how-can-i-draw-text-with-different-stroke-and-fill-colors-on-images-with-python
-    local alignSysInfoLayout = wibox.layout.align.horizontal()
-    local fixedSysInfoLayout = wibox.layout.fixed.horizontal()
-
-    sysInfoLayout:add(SPACING)
 
     function sysInfoLabel(text)
         local label = wibox.widget.textbox(text)
         label:set_align("center")
         return label
     end
-    local sysInfoWidgets = {
-        -- widget_manager:getSystemTray(true),
-        -- sysInfoLabel("Network"), -- SYS-INFO-TITLES
-        -- DIVIDER_HORIZONTAL, -- SYS-INFO-TITLES
 
+    s.sysInfoWibox = widget_manager:getSysInfoWibox(s)
+    s.sysInfoWibox:setup {
+        layout = wibox.layout.fixed.vertical,
+
+        -- SPACING,
+        -- sysInfoLabel("Network"), -- SYS-INFO-TITLES
+
+        SPACING,
         widget_manager:getIP(),
+        -- SPACING,
         -- widget_manager:getNetUsage(true),
 
         -- SPACING, -- SYS-INFO-TITLES
         -- sysInfoLabel("Temperature"), -- SYS-INFO-TITLES
-        -- DIVIDER_HORIZONTAL, -- SYS-INFO-TITLES
+        -- SPACING,
 
         -- widget_manager:getTemperature(),
 
         -- SPACING, -- SYS-INFO-TITLES
         -- sysInfoLabel("System"), -- SYS-INFO-TITLES
-        -- DIVIDER_HORIZONTAL, -- SYS-INFO-TITLES
+        -- SPACING,
 
         -- widget_manager:getMemory(true),
+        -- SPACING,
         -- widget_manager:getCPU(true),
     }
-
-    for _,widget in pairs(sysInfoWidgets) do
-        sysInfoLayout:add(widget)
-        sysInfoLayout:add(SPACING)
-    end
-
-    fixedSysInfoLayout:add(sysInfoLayout)
-    fixedSysInfoLayout:add(SPACING)
-    alignSysInfoLayout:set_right(fixedSysInfoLayout)
-
-    sysInfoWibox[s] = widget_manager:getSysInfoWibox(s, alignSysInfoLayout)
 end)
 
 --Global Key Bindings
-globalKeys = awful.util.table.join(
+local globalKeys = gears.table.join(
     --Switch Between Tags
     awful.key({SUPER}, "Escape", awful.tag.history.restore),
     awful.key({ALT, CONTROL}, "Left", awful.tag.viewprev),
@@ -213,8 +179,8 @@ globalKeys = awful.util.table.join(
     awful.key({ALT, CONTROL}, "Down", switchToLastTag),
 
     --Toggle Bars
-    awful.key({SUPER}, "[", function() toggleWibox(tWibox); toggleWibox(bWibox) end),
-    awful.key({SUPER}, "]", function() toggleWibox(bWibox) end),
+    awful.key({SUPER}, "[", function() toggleWibox("topWibar"); toggleWibox("bottomWibar") end),
+    awful.key({SUPER}, "]", function() toggleWibox("bottomWibar") end),
     awful.key({SUPER}, "c", toggleInfoWiboxes),
 
     --Modify Layout (NOTE: never use)
@@ -247,7 +213,7 @@ globalKeys = awful.util.table.join(
     -- Add Tag
     awful.key({SUPER}, "y", function()
         -- Add Tag
-        newTag = awful.tag.add("Tag "..(#mouse.screen.tags) + 1, {
+        local newTag = awful.tag.add("Tag "..(#mouse.screen.tags) + 1, {
             layout = thrizen,
         })
         -- Switch to it
@@ -362,7 +328,7 @@ globalKeys = awful.util.table.join(
 local numberOfTags = #mouse.screen.tags
 for i = 1, numberOfTags do
     local iKey = "#"..(i + 9)
-    globalKeys = awful.util.table.join(globalKeys,
+    globalKeys = gears.table.join(globalKeys,
         awful.key({ALT, CONTROL},       iKey, function() switchToTag(i) end),
         awful.key({SUPER, ALT},         iKey, function() moveClientToTagAndFollow(i) end),
 
@@ -372,7 +338,7 @@ for i = 1, numberOfTags do
 end
 -- Popup keys
 for _,popup in ipairs(CONFIG.popups) do
-    globalKeys = awful.util.table.join(globalKeys,
+    globalKeys = gears.table.join(globalKeys,
         awful.key({SUPER, SHIFT}, popup.key, function() widget_manager:togglePopup(popup.name) end)
     )
 end
@@ -382,7 +348,7 @@ root.keys(globalKeys) -- root.keys(musicwidget:append_global_keys(globalKeys))
 
 --Client
 --Keys
-clientkeys = awful.util.table.join(
+local clientkeys = gears.table.join(
     -- Move Between Tags
      awful.key({SUPER, ALT}, "Left", moveClientLeftAndFollow)
     ,awful.key({SUPER, ALT}, "Right", moveClientRightAndFollow)
@@ -439,7 +405,7 @@ clientkeys = awful.util.table.join(
     ,awful.key({SUPER}, "g", ternary(DEBUG, debugClient, function()end))
 )
 --Buttons
-clientButtons = awful.util.table.join(
+local clientButtons = gears.table.join(
     awful.button({}, MOUSE_LEFT, function(c) client.focus = c; c:raise() end)-- Click Focuses & Raises
     ,awful.button({SUPER}, MOUSE_LEFT, awful.mouse.client.move)              -- Super + Left Moves
     -- ,awful.button({}, MOUSE_MIDDLE, awful.mouse.client.move)              -- Middle Moves -- TODO: I can't currently use this because it conflicts with 'Insert' paste... (if I can convince Insert to be been as shift+Insert then maybe I can enable this...)
@@ -722,7 +688,7 @@ awful.rules.rules = {
         properties = {
             callback = function(c)
                 local existingDimens = c:geometry()
-                screenDimens = mouse.screen.workarea
+                local screenDimens = mouse.screen.workarea
                 local width = existingDimens.width
                 local height = existingDimens.height
                 c:geometry({
@@ -787,7 +753,7 @@ awful.rules.rules = {
             class = "Plugin-container"
         },
         properties = {
-            callback=function(c) c.fullscreen = true end
+            callback = function(c) c.fullscreen = true end
         }
     }
     ,{
@@ -813,11 +779,11 @@ awful.rules.rules = {
             role = "GtkFileChooserDialog"
         },
         properties = {
-            callback=  function(c)
+            callback = function(c)
                 -- Change Size of Normal Window Only
                 -- if c.type == "floating" then
                     -- existingDimens = c:geometry()
-                    screenDimens = mouse.screen.workarea
+                    local screenDimens = mouse.screen.workarea
                     local height = screenDimens.height * 0.75
                     c:geometry({
                         y = (screenDimens.height - height) / 2,

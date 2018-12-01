@@ -44,12 +44,12 @@ function XRandR:arrangeDisplays(out)
         local new = {}
         for _, p in pairs(previous) do
             for _, o in pairs(out) do
-                if not awful.util.table.hasitem(p, o) then
-                    new[#new + 1] = awful.util.table.join(p, {o})
+                if not gears.table.hasitem(p, o) then
+                    new[#new + 1] = gears.table.join(p, {o})
                 end
             end
         end
-        choices = awful.util.table.join(choices, new)
+        choices = gears.table.join(choices, new)
         previous = new
     end
 
@@ -72,7 +72,7 @@ function XRandR:displaysMenu()
         end
          -- Disabled outputs
         for _, o in pairs(out) do
-            if not awful.util.table.hasitem(choice, o) then
+            if not gears.table.hasitem(choice, o) then
                 cmd = cmd .. " --output " .. o .. " --off"
             end
         end
@@ -105,7 +105,7 @@ function XRandR:cycle()
 
     -- Build the list of choices
     if not self.iterator then
-        self.iterator = awful.util.table.iterate(self:displaysMenu(), function() return true end)
+        self.iterator = gears.table.iterate(self:displaysMenu(), function() return true end)
     end
 
     -- Select one and display the appropriate notification
@@ -171,12 +171,12 @@ return bindFunc(XRandR.cycle, XRandR)
 --       local new = {}
 --       for _, p in pairs(previous) do
 --   for _, o in pairs(out) do
---      if not awful.util.table.hasitem(p, o) then
---         new[#new + 1] = awful.util.table.join(p, {o})
+--      if not gears.table.hasitem(p, o) then
+--         new[#new + 1] = gears.table.join(p, {o})
 --      end
 --   end
 --       end
---       choices = awful.util.table.join(choices, new)
+--       choices = gears.table.join(choices, new)
 --       previous = new
 --    end
 
@@ -200,7 +200,7 @@ return bindFunc(XRandR.cycle, XRandR)
 --       end
 --       -- Disabled outputs
 --       for _, o in pairs(out) do
---   if not awful.util.table.hasitem(choice, o) then
+--   if not gears.table.hasitem(choice, o) then
 --      cmd = cmd .. " --output " .. o .. " --off"
 --   end
 --       end
@@ -236,7 +236,7 @@ return bindFunc(XRandR.cycle, XRandR)
 
 --    -- Build the list of choices
 --    if not state.iterator then
---       state.iterator = awful.util.table.iterate(menu(),
+--       state.iterator = gears.table.iterate(menu(),
 --                  function() return true end)
 --    end
 

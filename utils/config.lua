@@ -34,16 +34,16 @@ function goToLayout(direction) -- -1 for back, 1 for forward
         -- Determine Index
         local index
         if direction == -1 then
-            index = #layouts    -- Last
+            index = #awful.layout.layouts    -- Last
         else
             index = direction   -- First
         end
         --  Set Layout
-        awful.layout.set(layouts[index])
+        awful.layout.set(awful.layout.layouts[index])
         -- Clear Maximized Layout
         preMaximizeLayouts[mouse.screen.index][awful.tag.selected()] = nil
     else
-        awful.layout.inc(layouts, direction)
+        awful.layout.inc(direction)
     end
 end
 
@@ -190,7 +190,7 @@ end
 function perScreen(callback)
     local returnValues = {}
     for s = 1, screen.count() do
-        awful.util.table.join(returnValues, callback(s))
+        gears.table.join(returnValues, callback(s))
     end
     debug_leaf(inspect(screen.count()))
     return returnValues
@@ -359,8 +359,8 @@ end
 
 -- TODO: Move
 function toggleInfoWiboxes()
-    toggleWibox(allWindowsWibox)
-    toggleWibox(sysInfoWibox)
+    toggleWibox("allWindowsWibox")
+    toggleWibox("sysInfoWibox")
 end
 
 -- Hooking --

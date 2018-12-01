@@ -7,7 +7,11 @@
 ------------
 -- Startup (Only if this is the fallback config)
 if awesome.startup_errors then
-    naughty.notify({preset = naughty.config.presets.critical, title = "Errors Occured During Startup!", text = awesome.startup_errors})
+    naughty.notify({
+        preset = naughty.config.presets.critical,
+        title = "Errors Occured During Startup!",
+        text = awesome.startup_errors
+    })
 end
 -- Runtime
 do
@@ -15,7 +19,11 @@ do
     awesome.connect_signal("debug::error", function(err)
         if in_error then return end -- Prevent Endless Error Loop
         in_error = true
-        naughty.notify({ preset = naughty.config.presets.critical, title = "Errors Occurred", text = err })
+        naughty.notify({
+            preset = naughty.config.presets.critical,
+            title = "Errors Occurred",
+            text = tostring(err)
+        })
         in_error = false
     end)
 end
@@ -244,17 +252,17 @@ end
 -- Wibox
 function toggleWibox(wibox, s)
     local s = s or mouse.screen
-    local lwibox = wibox[s]
+    local lwibox = s[wibox]
     lwibox.visible = not lwibox.visible
 
     -- TODO: Consider whether I want this...
     -- Adjust the sysInfoWibox's height when the top/bottom wiboxes are resized
     -- TODO: Move this to the signal handler for "property::visible"
     -- OR more reasonably "property::workarea" of the screen
-    local position = awful.wibox.get_position(lwibox)
+    local position = awful.wibar.get_position(lwibox)
     if position == "top" or position == "bottom" then
 
-        sysInfoWibox[s].y = s.workarea.y
-        sysInfoWibox[s].height = s.workarea.height
+        s.sysInfoWibox.y = s.workarea.y
+        s.sysInfoWibox.height = s.workarea.height
     end
 end
