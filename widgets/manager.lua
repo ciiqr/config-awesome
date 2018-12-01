@@ -138,7 +138,7 @@ function WidgetManager:getIP()
     self:updateIP()
 
     self.ip:buttons(gears.table.join(
-     awful.button({}, 1, function() awful.util.spawn(CONFIG.commands.ipInfo) end)
+     awful.button({}, 1, function() awful.spawn(CONFIG.commands.ipInfo) end)
      -- ,awful.button({}, 3, function() self.ip:updateIP() end)
     ))
     return self.ip
@@ -291,7 +291,7 @@ function WidgetManager:getNetUsage(vertical)
 
     vicious.register(self.netwidget, vicious.widgets.net, '<span foreground="#97D599" weight="bold">↑${'..networkDevice..' up_mb}</span> <span foreground="#CE5666" weight="bold">↓${'..networkDevice..' down_mb}</span>', 1) --#585656
     self.netwidget:buttons(gears.table.join(
-        awful.button({}, 1, function() awful.util.spawn(networkTrafficCmd) end)
+        awful.button({}, 1, function() awful.spawn(networkTrafficCmd) end)
     ))
 
     -- TODO

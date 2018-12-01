@@ -133,7 +133,7 @@ function XRandR:cycle()
         self.timer = nil
         self.iterator = nil
         if action then
-            awful.util.spawn(action, false)
+            awful.spawn(action, false)
         end
     end)
     self.timer:start()
@@ -264,7 +264,7 @@ return bindFunc(XRandR.cycle, XRandR)
 --               state.timer = nil
 --               state.iterator = nil
 --               if action then
---              awful.util.spawn(action, false)
+--              awful.spawn(action, false)
 --               end
 --            end)
 --    state.timer:start()

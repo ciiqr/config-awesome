@@ -309,7 +309,7 @@ function screenSetWallpaper(s)
         screen = (s.index - 1),
         directory = wallpapersPath,
     })
-    awful.util.spawn_with_shell(cmd)
+    awful.spawn.with_shell(cmd)
 end
 
 
@@ -318,7 +318,7 @@ function debug_string(object, recursion)
     return inspect(object, recursion or 2)
 end
 function debug_editor(object, recursion, editor)
-    return awful.util.spawn_with_shell("echo \""..debug_string(object, recursion).."\" | "..editor)
+    return awful.spawn.with_shell("echo \""..debug_string(object, recursion).."\" | "..editor)
 end
 function debug_leaf(object, recursion)
     return debug_editor(object, recursion, "leafpad")
@@ -355,7 +355,7 @@ end, true)
 -- Screen --
 -- Brightness
 function changeBrightness(incORDec, amount)
-    awful.util.spawn_with_shell("~/.scripts/brightness.sh change " .. incORDec .. ' ' .. amount)
+    awful.spawn.with_shell("~/.scripts/brightness.sh change " .. incORDec .. ' ' .. amount)
 end
 -- IP
 function retrieveIPAddress(device)
@@ -363,7 +363,7 @@ function retrieveIPAddress(device)
 end
 -- Clipboard
 function pasteClipboardIntoPrimary()
-    awful.util.spawn("/home/william/.local/bin/paste-clipboard-to-primary")
+    awful.spawn("/home/william/.local/bin/paste-clipboard-to-primary")
 end
 
 -- TODO: Move
@@ -371,10 +371,3 @@ function toggleInfoWiboxes()
     toggleWibox("allWindowsWibox")
     toggleWibox("sysInfoWibox")
 end
-
--- Hooking --
--------------
-
--- disable startup-notification globally
-local oldspawn = awful.util.spawn
-awful.util.spawn = function(s) oldspawn(s, false) end

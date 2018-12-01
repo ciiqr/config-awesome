@@ -207,8 +207,8 @@ local globalKeys = gears.table.join(
     awful.key({SUPER}, "Down", revertFromMaximizedLayout),
 
     --Sleep
-    awful.key({}, "XF86Sleep", function() awful.util.spawn_with_shell(CONFIG.commands.sleep) end),
-    awful.key({SUPER, CONTROL}, "q", function() awful.util.spawn_with_shell(CONFIG.commands.sleep) end),
+    awful.key({}, "XF86Sleep", function() awful.spawn.with_shell(CONFIG.commands.sleep) end),
+    awful.key({SUPER, CONTROL}, "q", function() awful.spawn.with_shell(CONFIG.commands.sleep) end),
 
     -- Add Tag
     awful.key({SUPER}, "y", function()
@@ -254,17 +254,17 @@ local globalKeys = gears.table.join(
 
     --Popups
     -- Launcher Style
-    awful.key({SUPER}, "w", function() awful.util.spawn_with_shell(insertScreenWorkingAreaYIntoFormat(CONFIG.commands.fileOpener)) end),
-    awful.key({SUPER}, "s", function() awful.util.spawn_with_shell(insertScreenWorkingAreaYIntoFormat(CONFIG.commands.windowSwitcher)) end),
+    awful.key({SUPER}, "w", function() awful.spawn.with_shell(insertScreenWorkingAreaYIntoFormat(CONFIG.commands.fileOpener)) end),
+    awful.key({SUPER}, "s", function() awful.spawn.with_shell(insertScreenWorkingAreaYIntoFormat(CONFIG.commands.windowSwitcher)) end),
 
     --Programs
-    awful.key({SUPER}, "t", function() awful.util.spawn(CONFIG.commands.terminal) end),
+    awful.key({SUPER}, "t", function() awful.spawn(CONFIG.commands.terminal) end),
 
-    awful.key({SUPER}, "Return", function() awful.util.spawn(CONFIG.commands.fileManager) end),
-    awful.key({SUPER, SHIFT}, "Return", function() awful.util.spawn(CONFIG.commands.graphicalSudo.." "..CONFIG.commands.fileManager) end),
+    awful.key({SUPER}, "Return", function() awful.spawn(CONFIG.commands.fileManager) end),
+    awful.key({SUPER, SHIFT}, "Return", function() awful.spawn(CONFIG.commands.graphicalSudo.." "..CONFIG.commands.fileManager) end),
 
-    awful.key({SUPER}, "o", function() awful.util.spawn_with_shell(CONFIG.commands.editor) end),
-    awful.key({SUPER, SHIFT}, "o", function() awful.util.spawn_with_shell(CONFIG.commands.graphicalSudo.." "..CONFIG.commands.editor) end),
+    awful.key({SUPER}, "o", function() awful.spawn.with_shell(CONFIG.commands.editor) end),
+    awful.key({SUPER, SHIFT}, "o", function() awful.spawn.with_shell(CONFIG.commands.graphicalSudo.." "..CONFIG.commands.editor) end),
 
     --Awesome
     awful.key({SUPER, CONTROL}, "r", awesome.restart),
@@ -285,7 +285,7 @@ local globalKeys = gears.table.join(
     awful.key({SHIFT}, "XF86MonBrightnessDown", function() changeBrightness("-", CONFIG.brightness.change.small) end),
 
     -- Invert Screen
-    awful.key({SUPER}, "i", function() awful.util.spawn_with_shell(CONFIG.commands.screenInvert) end),
+    awful.key({SUPER}, "i", function() awful.spawn.with_shell(CONFIG.commands.screenInvert) end),
 
     -- Print Screen
     awful.key({}, "Print", captureScreenshot),
@@ -297,7 +297,7 @@ local globalKeys = gears.table.join(
     awful.key({SUPER}, "F11", xrandr),
 
     -- Pasteboard paste
-    awful.key({}, "Insert", function() awful.util.spawn("xdotool click 2") end), -- put 'keycode 118 = ' back in .Xmodmap if I no longer use this
+    awful.key({}, "Insert", function() awful.spawn("xdotool click 2") end), -- put 'keycode 118 = ' back in .Xmodmap if I no longer use this
     awful.key({SUPER}, "Insert", pasteClipboardIntoPrimary) -- TODO: Figure out why it doesn't work
 
     -- -- Run or raise applications with dmenu
@@ -320,7 +320,7 @@ local globalKeys = gears.table.join(
     --          end
     --      end
     --  end
-    --  awful.util.spawn(command)
+    --  awful.spawn(command)
     -- end)
 )
 --Tag Keys
@@ -724,21 +724,21 @@ awful.rules.rules = {
             callback = function(c) c:kill() end
         }
     }
-    ,{
-        rule_any = {
-            class = {"Skype", "yakyak"},
-        },
-        properties = {
-            tag = awful.screen.focused().tags[6]
-            -- callback = function(c)
-            --  -- Floating Windows have a north west gravity, others have static
-            --  -- False Assumption
-            --  -- if c.size_hints.win_gravity == "north_west" then
-            --  --  awful.client.floating.set(c, true)
-            --  -- end
-            -- end
-        }
-    }
+    -- ,{
+    --     rule_any = {
+    --         class = {"Skype", "yakyak"},
+    --     },
+    --     properties = {
+    --         tag = awful.screen.focused().tags[6]
+    --         -- callback = function(c)
+    --         --  -- Floating Windows have a north west gravity, others have static
+    --         --  -- False Assumption
+    --         --  -- if c.size_hints.win_gravity == "north_west" then
+    --         --  --  awful.client.floating.set(c, true)
+    --         --  -- end
+    --         -- end
+    --     }
+    -- }
     ,{
         rule = {
             class = "Nautilus",
@@ -756,15 +756,15 @@ awful.rules.rules = {
             callback = function(c) c.fullscreen = true end
         }
     }
-    ,{
-        rule_any = {
-            class = {"Vmware"},
-            instance = {"TeamViewer.exe"}
-        },
-        properties = {
-            tag = awful.screen.focused().tags[5]
-        }
-    }
+    -- ,{
+    --     rule_any = {
+    --         class = {"Vmware"},
+    --         instance = {"TeamViewer.exe"}
+    --     },
+    --     properties = {
+    --         tag = awful.screen.focused().tags[5]
+    --     }
+    -- }
     ,{
         rule = {
             instance = "TeamViewer.exe",
