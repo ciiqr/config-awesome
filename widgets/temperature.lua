@@ -1,4 +1,5 @@
 local wibox = require("wibox")
+local gears = require("gears")
 
 temperature = wibox.widget.textbox()
 temperature:set_align("center")

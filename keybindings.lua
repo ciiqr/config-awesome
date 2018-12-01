@@ -1,3 +1,5 @@
+local awful = require("awful")
+local gears = require("gears")
 local xrandr = require("utils.xrandr")
 
 --Global Key Bindings
@@ -45,7 +47,7 @@ local globalKeys = gears.table.join(
     awful.key({SUPER}, "y", function()
         -- Add Tag
         local newTag = awful.tag.add("Tag "..(#awful.screen.focused().tags) + 1, {
-            layout = thrizen,
+            layout = awful.layout.layouts[1],
         })
         -- Switch to it
         newTag:view_only()
@@ -134,6 +136,7 @@ local globalKeys = gears.table.join(
     -- -- Run or raise applications with dmenu
     -- TODO: Client itteration code may be useful, but otherwise I could probably implement this with QuickLaunch
     -- ,awful.key({SUPER, CONTROL}, "p", function()
+    --  local beautiful = require("beautiful")
     --  local f_reader = io.popen( "dmenu_run | dmenu -b -nb '".. beautiful.bg_normal .."' -nf '".. beautiful.fg_normal .."' -sb '#955'")
     --  local command = assert(f_reader:read('*a'))
     --  f_reader:close()

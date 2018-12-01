@@ -1,5 +1,6 @@
-local beautiful = beautiful or require("beautiful")
-local gears = gears or require("gears")
+local beautiful = require("beautiful")
+local gears = require("gears")
+local awful = require("awful")
 local calendar_popup = require('awful.widget.calendar_popup')
 
 local defaultStyle = {

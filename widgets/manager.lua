@@ -1,7 +1,9 @@
-local beautiful = beautiful or require("beautiful")
-local vicious = vicious or require("vicious")
+local beautiful = require("beautiful")
+local vicious = require("vicious")
 local awful = require("awful")
 local wibox = require("wibox")
+local naughty = require("naughty")
+local gears = require("gears")
 local quake = require("quake")
 local spacer = require("widgets.spacer")
 
@@ -266,8 +268,8 @@ function WidgetManager:getTaskBox(screen, is_vertical)
         layout:fit({}, 100, 100)
         widget:fit({}, 100, 100)
         -- widget = awful.widget.layoutbox(screen)
-        -- notify_send(inspect(layout, 2))
-        -- notify_send(inspect(widget, 2))
+        -- debug_print(layout, 2)
+        -- debug_print(widget, 2)
         return widget
     else
         -- TODO: Consider minimizedcurrenttags for filter, it's pretty interesting, though, I would want it to hide if the bottom if there we're no items, or maybe move it back to the top bar & get rid of the bottom entirely...
@@ -390,7 +392,7 @@ function WidgetManager:getNetUsage(vertical)
     -- dbus.connect_signal("org.freedesktop.Notifications", function(signal, value)
 
         -- notify_send("org.freedesktop.Notifications")
-     --    notify_send(inspect({signal, value}, 2))
+     --    debug_print({signal, value}, 2)
     -- end)
 
     --dbus.connect_signal("org.freedesktop.Notifications",

@@ -18,6 +18,7 @@
 
 -- TODO: Is there a way we can set theme settings like this per-screen and update them as appropriate (when windows change screen for example, blah...)
 -- TODO: Also have a function for this, and also use it in rc.lua
+local gears = require("gears")
 local dpi = require("beautiful.xresources").apply_dpi
 local scale_factor = dpi(1)
 local scale_factor_path = scale_factor ~= 1 and "@"..scale_factor.."x" or ""

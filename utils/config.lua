@@ -1,4 +1,8 @@
 local awful = require("awful")
+local gears = require("gears")
+local naughty = require("naughty")
+local beautiful = require("beautiful")
+local inspect = require("third-party.inspect") -- TODO: luarocks instead?
 -- Type: Tag, Client, Screen, Layout, Wibox
 -- Actions: Toggle, Switch, Move, Follow, restore, minimize
 -- Descriptors: Left, Right, First, Last
@@ -195,6 +199,23 @@ function perScreen(callback)
 end
 
 --Signals
+function setupSignals()
+    -- Screen Signals
+    screen.connect_signal("property::geometry", screenSetWallpaper)
+    awful.screen.connect_for_each_screen(screenInit)
+
+    -- Client Signals
+    client.connect_signal("manage", manageClient)
+    client.connect_signal("focus", clientDidFocus)
+    client.connect_signal("unfocus", clientDidLoseFocus)
+    client.connect_signal("property::floating", clientDidChangeFloating)
+    client.connect_signal("mouse::enter", clientDidMouseEnter)
+    setupClientRequestActivate()
+
+    -- Network Signals
+    setup_network_connectivity_change_listener()
+end
+
 local function transientShouldBeSticky(c)
     return (c.name and c.name:find("LEAFPAD_QUICK_NOTE")) -- or
 end

@@ -1,3 +1,7 @@
+local awful = require("awful")
+local gears = require("gears")
+local beautiful = require("beautiful")
+
 local name_callback = {}
 
 -- TODO: improve

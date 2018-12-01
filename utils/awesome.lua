@@ -1,4 +1,5 @@
 local awful = require("awful")
+local naughty = require("naughty")
 -- Description:
 --      Functions & Functionality that should be provided automatically by awesome (IMO)
 

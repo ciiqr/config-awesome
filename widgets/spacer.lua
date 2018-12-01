@@ -1,20 +1,6 @@
---
--- Name:            spacer
---
--- Author:          William A. Villeneuve
--- Date Created:    May 24, 2015
--- Date Modified:   May 24, 2015
---
--- Description:     A widget which will be added to a wibox within the Awesome Window Manager,
---                  it is intended to put visual space between other widgets.
---
--- Usage Notes:     Force a redraw with: spacer:emit_signal("widget::updated")
-
------------------------------------------------------------------------------------------------
-
-
--- Retrieve from globals if they exist or require if they don't
 local wibox = require('wibox')
+-- A widget which will be added to a wibox within the Awesome Window Manager,
+-- it is intended to put visual space between other widgets.
 
 -- Utilities
 -- Widget Instance
