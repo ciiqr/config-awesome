@@ -314,7 +314,7 @@ local globalKeys = gears.table.join(
     --      local class=string.lower(c.class)
     --      if string.match(class, lower_command) then
     --          for i, v in ipairs(c:tags()) do
-    --              awful.tag.viewonly(v)
+    --              v:view_only()
     --              c.minimized = false
     --              return
     --          end
@@ -571,7 +571,7 @@ awful.rules.rules = {
                             awful.client.floating.set(c, false)
                             -- On Social Tag
                             local tags = c.screen.tags
-                            awful.client.movetotag(tags[6], c); -- TODO: Add constant for Social Tag Index...
+                            c:move_to_tag(tags[6]) -- TODO: Add constant for Social Tag Index...
                         else
                             -- Print Name So I Can Possibly Change Other Names
                             -- notify_send(tostring(c.name or "nil"), 2)
@@ -636,7 +636,7 @@ awful.rules.rules = {
                     local tags = c.screen.tags
                     -- Move to Tag
                         if find_window(name) then
-                            awful.client.movetotag(tags[tag], c); -- TODO: If I wanted to support having clients on multiple tags, would need to change this and other stuff here...
+                            c:move_to_tag(tags[tag]) -- TODO: If I wanted to support having clients on multiple tags, would need to change this and other stuff here...
                             break
                         end
                     end

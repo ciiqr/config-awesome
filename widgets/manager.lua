@@ -241,10 +241,14 @@ end
 function WidgetManager:getTagsList(screen)
     -- TODO: Consider Moving
     local buttons = gears.table.join(
-        awful.button({}, 1, awful.tag.viewonly), -- Switch to This Tag
-        awful.button({SUPER}, 1, awful.client.movetotag), -- Move Window to This Tag
+        awful.button({}, 1, function(t) t:view_only() end), -- Switch to This Tag
+        awful.button({SUPER}, 1, function(t) client.focus:move_to_tag(t) end), -- Move Window to This Tag
         awful.button({}, 3, awful.tag.viewtoggle), -- Toggle This Tag
-        awful.button({SUPER}, 3, awful.client.toggletag)--, -- Toggle This Tag For The current Window
+        awful.button({SUPER}, 3, function(t)
+            if client.focus then
+                client.focus:toggle_tag(t)
+            end
+        end)--, -- Toggle This Tag For The current Window
     )
 
     --TagList

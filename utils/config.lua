@@ -201,17 +201,26 @@ local function transientShouldBeSticky(c)
     return (c.name and c.name:find("LEAFPAD_QUICK_NOTE")) -- or
 end
 
-function manageClient(c, startup)
+function manageClient(c)
     -- When first created
-    -- TODO: There is no longer a startup parameter
-    if not startup then
-        -- determines order of new clients
+
+    -- TODO: need to confirm this is fine...
+    -- if not startup then
+    --     -- determines order of new clients
+    --     awful.client.setslave(c)
+    --     -- Position
+    --     if not c.size_hints.user_position and not c.size_hints.program_position then
+    --         awful.placement.no_overlap(c)
+    --         awful.placement.no_offscreen(c)
+    --     end
+    -- end
+    if not awesome.startup then
         awful.client.setslave(c)
-        -- Position
-        if not c.size_hints.user_position and not c.size_hints.program_position then
-            awful.placement.no_overlap(c)
-            awful.placement.no_offscreen(c)
-        end
+    end
+
+    if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
+        -- Prevent clients from being unreachable after screen count changes.
+        awful.placement.no_offscreen(c)
     end
 
     -- Subwindows Sticky

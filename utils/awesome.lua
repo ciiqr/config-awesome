@@ -77,7 +77,7 @@ function toggleClient(c)
   else
     c.minimized = false
     if not c:isvisible() then
-        awful.tag.viewonly(c:tags()[1])
+        c:tags()[1]:view_only()
     end
     client.focus = c
   end
@@ -98,9 +98,9 @@ function moveClientToTagAndFollow(tagNum, c)
         local tag = tags[index]
         if tag then
             -- Move Window
-            awful.client.movetotag(tag)
+            client.focus:move_to_tag(tag)
             -- Show Tag
-            awful.tag.viewonly(tag)
+            tag:view_only()
         end
     end
 end
@@ -120,9 +120,9 @@ function moveClientLeftAndFollow(c)
     else
         tag = tags[curidx - 1]
     end
-    awful.client.movetotag(tag)
+    client.focus:move_to_tag(tag)
     --Follow
-    awful.tag.viewonly(tag)
+    tag:view_only()
 end
 function moveClientRightAndFollow(c)
     local tags = client.focus.screen.tags
@@ -134,9 +134,9 @@ function moveClientRightAndFollow(c)
         tag = tags[curidx + 1]
     end
     --Move
-    awful.client.movetotag(tag)
+    client.focus:move_to_tag(tag)
     --Follow
-    awful.tag.viewonly(tag)
+    tag:view_only()
 end
 function toggleClientFullscreen(c)
     c.fullscreen = not c.fullscreen
@@ -144,7 +144,7 @@ end
 function toggleClientTag(tagNum)
     local tag = client.focus.screen.tags[tagNum]
     if client.focus and tag then
-        awful.client.toggletag(tag)
+        client.focus:toggle_tag(tag)
     end
 end
 switchClient = awful.client.focus.byidx
@@ -159,14 +159,14 @@ end
 function switchToTag(tagNum)
     local tag = awful.screen.focused().tags[tagNum]
     if tag then
-        awful.tag.viewonly(tag)
+        tag:view_only()
     end
 end
 function switchToLastTag()
     local tags = awful.screen.focused().tags
     local tag = tags[#tags]
     if tag then
-        awful.tag.viewonly(tag)
+        tag:view_only()
     end
     return tag
 end
@@ -174,7 +174,7 @@ function switchToFirstTag()
     local tags = awful.screen.focused().tags
     local tag = tags[1]
     if tag then
-        awful.tag.viewonly(tag)
+        tag:view_only()
     end
     return tag
 end
