@@ -77,14 +77,11 @@ awful.screen.connect_for_each_screen(function(s)
 
     --Wiboxes w/ Widgets
 
-    -- This makes the middle widget centre on on the screen (instead of in the free space)
-    local top_layout = wibox.layout.align.horizontal()
-    top_layout:set_expand("none")
-
     -- Top Wibar
     s.topWibar = awful.wibar({position = "top", screen = s, height = panel_height})
     s.topWibar:setup {
-        layout = top_layout,
+        layout = wibox.layout.align.horizontal,
+        expand = "none",
         {
             layout = wibox.layout.fixed.horizontal,
             widget_manager:getTagsList(s),
