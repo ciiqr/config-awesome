@@ -1,45 +1,46 @@
 local awful = require("awful")
 local gears = require("gears")
 local xrandr = require("utils.xrandr")
+local binding = require("utils.binding")
 
---Global Key Bindings
-local globalKeys = gears.table.join(
-    --Switch Between Tags
+-- TODO: instead of expecting globals, maybe we just inject environment when we ask for keybindings
+local keys = binding.createKeys(CONFIG.keybindings, _G)
+local globalKeys = gears.table.join(unpack(keys))
+
+
+-- Global Key Bindings
+globalKeys = gears.table.join(globalKeys,
+    -- Switch Between Tags
     awful.key({SUPER}, "Escape", awful.tag.history.restore),
     awful.key({ALT, CONTROL}, "Left", awful.tag.viewprev),
     awful.key({ALT, CONTROL}, "Right", awful.tag.viewnext),
     awful.key({ALT, CONTROL}, "Up", switchToFirstTag),
     awful.key({ALT, CONTROL}, "Down", switchToLastTag),
 
-    --Toggle Bars
+    -- Toggle Bars
     awful.key({SUPER}, "[", function() toggleWibox("topWibar"); toggleWibox("bottomWibar") end),
     awful.key({SUPER}, "]", function() toggleWibox("bottomWibar") end),
     awful.key({SUPER}, "c", toggleInfoWiboxes),
 
-    --Modify Layout (NOTE: never use)
-    -- awful.key({SUPER, SHIFT}, "h", function() awful.tag.incnmaster(FORWARDS) end),
-    -- awful.key({SUPER, SHIFT}, "l", function() awful.tag.incnmaster(BACKWARDS) end),
-
-    --Switch Layout
+    -- Switch Layout
     awful.key({SUPER}, "space", function() goToLayout(FORWARDS) end),
     awful.key({SUPER, SHIFT}, "space", function() goToLayout(BACKWARDS) end),
 
-    --Swtich Window
+    -- Switch Window
     awful.key({SUPER}, "Tab", function() switchClient(FORWARDS) end),
     awful.key({SUPER, SHIFT}, "Tab", function() switchClient(BACKWARDS) end),
-    -- Alternatively With Page Up/Down
     awful.key({SUPER}, "Next", function() switchClient(FORWARDS) end),
     awful.key({SUPER}, "Prior", function() switchClient(BACKWARDS) end),
 
-    --ClientRestore
+    -- ClientRestore
     awful.key({SUPER, CONTROL}, "Up", restoreClient),
 
-    --Maximize
+    -- Maximize
     awful.key({SUPER}, "Up", switchToMaximizedLayout),
-    --Revert Maximize
+    -- Revert Maximize
     awful.key({SUPER}, "Down", revertFromMaximizedLayout),
 
-    --Sleep
+    -- Sleep
     awful.key({}, "XF86Sleep", function() awful.spawn.with_shell(CONFIG.commands.sleep) end),
     awful.key({SUPER, CONTROL}, "q", function() awful.spawn.with_shell(CONFIG.commands.sleep) end),
 
@@ -61,17 +62,17 @@ local globalKeys = gears.table.join(
         end
     end),
 
-    --Change Position
+    -- Change Position
     awful.key({SUPER}, "Left", function() awful.client.swap.byidx(BACKWARDS) end),
     awful.key({SUPER}, "Right", function() awful.client.swap.byidx(FORWARDS) end),
 
-    --Move Middle
+    -- Move Middle
     awful.key({SUPER, SHIFT}, "Left", function() increaseMwfact(-0.05) end),
     awful.key({SUPER, SHIFT}, "Right", function() increaseMwfact(0.05) end),
     -- awful.key({SUPER, SHIFT}, "Up", function() increaseClientWfact(-0.05, client.focus) end), -- TODO: To shift window up/down in size
     -- awful.key({SUPER, SHIFT}, "Down", function() increaseClientWfact(0.05, client.focus) end), -- TODO: To shift window up/down in size
 
-    --Change Number of Columns(Only on splitup side)
+    -- Change Number of Columns(Only on splitup side)
     awful.key({SUPER, CONTROL}, "h", function() awful.tag.incncol(FORWARDS) end),
     awful.key({SUPER, CONTROL}, "l", function() awful.tag.incncol(BACKWARDS) end),
 
@@ -85,12 +86,12 @@ local globalKeys = gears.table.join(
     awful.key({SUPER}, "F2", function() awful.screen.focus(2) end),
     awful.key({SUPER}, "F3", function() awful.screen.focus(3) end),
 
-    --Popups
+    -- Popups
     -- Launcher Style
     awful.key({SUPER}, "w", function() awful.spawn.with_shell(insertScreenWorkingAreaYIntoFormat(CONFIG.commands.fileOpener)) end),
     awful.key({SUPER}, "s", function() awful.spawn.with_shell(insertScreenWorkingAreaYIntoFormat(CONFIG.commands.windowSwitcher)) end),
 
-    --Programs
+    -- Programs
     awful.key({SUPER}, "t", function() awful.spawn(CONFIG.commands.terminal) end),
 
     awful.key({SUPER}, "Return", function() awful.spawn(CONFIG.commands.fileManager) end),
@@ -99,10 +100,10 @@ local globalKeys = gears.table.join(
     awful.key({SUPER}, "o", function() awful.spawn.with_shell(CONFIG.commands.editor) end),
     awful.key({SUPER, SHIFT}, "o", function() awful.spawn.with_shell(CONFIG.commands.graphicalSudo.." "..CONFIG.commands.editor) end),
 
-    --Awesome
-    awful.key({SUPER, CONTROL}, "r", awesome.restart),
+    -- Awesome
+    -- awful.key({SUPER, CONTROL}, "r", awesome.restart),
 
-    --System
+    -- System
     -- Volume
     awful.key({}, "XF86AudioMute", function() WIDGET_MANAGER:toggleMute() end),
     awful.key({}, "XF86AudioLowerVolume", function() WIDGET_MANAGER:changeVolume("-", CONFIG.volume.change.normal) end),
@@ -158,7 +159,7 @@ local globalKeys = gears.table.join(
     -- end)
 )
 
---Tag Keys
+-- Tag Keys
 -- Uses keycodes to make it works on any keyboard layout
 local numberOfTags = #awful.screen.focused().tags
 for i = 1, numberOfTags do

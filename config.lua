@@ -99,4 +99,7 @@ return {
             options = {app = "keepassx2", name = "keepassx2", height = 0.75, width = 0.5},
         },
     },
+    keybindings = {
+        ["Super + Ctrl + r"] = "awesome.restart",
+    },
 }

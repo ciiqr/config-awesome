@@ -223,7 +223,7 @@ return {
                         -- c:move_to_tag(tags[6]) -- TODO: Add constant for Social Tag Index...
                     else
                         -- Print Name So I Can Possibly Change Other Names
-                        notify_send(debug_print(c.name), 2)
+                        -- notify_send(debug_print(c.name), 2)
                     end
                     -- Clear Client From Callback Array
                     c:disconnect_signal("property::name", name_callback[c])
