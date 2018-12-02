@@ -35,7 +35,7 @@ function WidgetManager:initPopups(s)
         s.quake[popup.name] = quake(quakeOptions)
     end
 end
-function WidgetManager:togglePopup(name, screen)
+function WidgetManager.togglePopup(name, screen)
     local screen = screen or awful.screen.focused()
     screen.quake[name]:toggle()
 end

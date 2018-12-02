@@ -7,7 +7,6 @@ local binding = require("utils.binding")
 local keys = binding.createKeys(CONFIG.keybindings, _G)
 local globalKeys = gears.table.join(unpack(keys))
 
-
 -- Global Key Bindings
 globalKeys = gears.table.join(globalKeys,
     -- Switch Between Tags
@@ -171,13 +170,6 @@ for i = 1, numberOfTags do
         -- NOTE: Never Used
         awful.key({SUPER, SHIFT},       iKey, function() toggleTag(i) end),
         awful.key({SUPER, CONTROL, ALT},iKey, function() toggleClientTag(i) end)) -- TODO: Change to Control, Alt Shift to be more like mod shift for toggling a tag visibility
-end
-
--- Popup keys
-for _,popup in ipairs(CONFIG.popups) do
-    globalKeys = gears.table.join(globalKeys,
-        awful.key({SUPER, SHIFT}, popup.key, function() WIDGET_MANAGER:togglePopup(popup.name) end)
-    )
 end
 
 return globalKeys
