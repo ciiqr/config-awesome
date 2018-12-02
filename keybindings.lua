@@ -3,8 +3,13 @@ local gears = require("gears")
 local xrandr = require("utils.xrandr")
 local binding = require("utils.binding")
 
+local environment = {
+    awesome = awesome,
+    widget_manager = WIDGET_MANAGER,
+}
+
 -- TODO: instead of expecting globals, maybe we just inject environment when we ask for keybindings
-local keys = binding.createKeys(CONFIG.keybindings, _G)
+local keys = binding.createKeys(CONFIG.keybindings, environment)
 local globalKeys = gears.table.join(unpack(keys))
 
 -- Global Key Bindings

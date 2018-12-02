@@ -135,6 +135,8 @@ end
 
 -- Volume
 function WidgetManager:getVolume()
+    -- TODO: we want a single instance, and the wiboxes are attached to the screen, so maybe screen.primary
+
     self.volume = wibox.widget.textbox() -- 🔇 -- Mute icon --
     self.volume:buttons(gears.table.join(
         awful.button({}, MOUSE_SCROLL_UP, function() WidgetManager:changeVolume("+", CONFIG.volume.change.small) end),

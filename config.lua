@@ -98,23 +98,23 @@ return {
         ["Super + Ctrl + r"] = "awesome.restart",
         -- popups
         ["Super + Shift + t"] = {
-            action = "WIDGET_MANAGER.togglePopup",
+            action = "widget_manager.togglePopup",
             args = {"terminal"}
         },
         ["Super + Shift + n"] = {
-            action = "WIDGET_MANAGER.togglePopup",
+            action = "widget_manager.togglePopup",
             args = {"note"}
         },
         ["Super + Shift + c"] = {
-            action = "WIDGET_MANAGER.togglePopup",
+            action = "widget_manager.togglePopup",
             args = {"cpu"}
         },
         ["Super + Shift + m"] = {
-            action = "WIDGET_MANAGER.togglePopup",
+            action = "widget_manager.togglePopup",
             args = {"mem"}
         },
         ["Super + Shift + k"] = {
-            action = "WIDGET_MANAGER.togglePopup",
+            action = "widget_manager.togglePopup",
             args = {"keepass"}
         },
     },
