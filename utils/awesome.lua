@@ -5,6 +5,7 @@ local naughty = require("naughty")
 
 -- Imports
 
+-- TODO: probs move errors out of here...
 -- Errors --
 ------------
 -- Startup (Only if this is the fallback config)

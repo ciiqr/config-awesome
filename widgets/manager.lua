@@ -5,7 +5,6 @@ local wibox = require("wibox")
 local naughty = require("naughty")
 local gears = require("gears")
 local quake = require("quake")
-local spacer = require("widgets.spacer")
 
 -- TODO: it's been great but I think it's time for us to split
 
@@ -42,7 +41,6 @@ end
 
 -- Wibars/Wiboxes
 function WidgetManager:initWiboxes(s)
-    local SPACING = spacer:init(beautiful.spacer_size)
     local panel_height = beautiful.panel.height(s)
 
     -- Top Wibar
@@ -65,20 +63,14 @@ function WidgetManager:initWiboxes(s)
                 screen = "primary",
                 {
                     layout = wibox.layout.fixed.horizontal,
+                    spacing = beautiful.spacer_size,
                     self:getNetUsage(),
-                    SPACING,
                     self:getBatteryWidget(),
-                    SPACING,
-                    self:getTemperature(),
-                    SPACING,
+                    require("widgets.temperature"):init(),
                     self:getVolume(),
-                    SPACING,
                     self:getMemory(),
-                    SPACING,
                     self:getCPU(),
-                    SPACING,
-                    self:getSystemTray(),
-                    SPACING,
+                    wibox.widget.systray(),
                 },
             },
             self:getLayoutBox(s)
@@ -109,26 +101,17 @@ function WidgetManager:initWiboxes(s)
     s.sysInfoWibox:setup {
         layout = wibox.layout.fixed.vertical,
 
-        -- SPACING,
-        -- sysInfoLabel("Network"), -- SYS-INFO-TITLES
+        wibox.widget.textbox(' '),
 
-        SPACING,
+        -- sysInfoLabel("Network"),
         self:getIP(),
-        -- SPACING,
         -- self:getNetUsage(true),
 
-        -- SPACING, -- SYS-INFO-TITLES
-        -- sysInfoLabel("Temperature"), -- SYS-INFO-TITLES
-        -- SPACING,
+        -- sysInfoLabel("Temperature"),
+        -- require("widgets.temperature"):init(),
 
-        -- self:getTemperature(),
-
-        -- SPACING, -- SYS-INFO-TITLES
-        -- sysInfoLabel("System"), -- SYS-INFO-TITLES
-        -- SPACING,
-
+        -- sysInfoLabel("System"),
         -- self:getMemory(true),
-        -- SPACING,
         -- self:getCPU(true),
     }
 end
@@ -180,15 +163,15 @@ end
 
 -- Memory
 function WidgetManager:getMemory(vertical)
-    self.memory = wibox.widget.textbox()
+    local memory = wibox.widget.textbox()
     if vertical then
-        self.memory:set_align("center")
+        memory:set_align("center")
     end
-    vicious.register(self.memory, vicious.widgets.mem, "<span fgcolor='#138dff' weight='bold'>$1% $2MB</span>", 13) --DFDFDF
-    self.memory:buttons(gears.table.join(
+    vicious.register(memory, vicious.widgets.mem, "<span fgcolor='#138dff' weight='bold'>$1% $2MB</span>", 13) --DFDFDF
+    memory:buttons(gears.table.join(
         awful.button({}, 1, function() self:togglePopup('cpu') end)
     ))
-    return self.memory
+    return memory
 end
 
 -- CPU
@@ -204,26 +187,6 @@ function WidgetManager:getCPU(vertical)
         awful.button({}, 1, function() self:togglePopup('mem') end)
     ))
     return cpuwidget
-end
-
--- System Tray
-function WidgetManager:getSystemTray(vertical)
-    self.sysTray = wibox.widget.systray()
-    self.sysTray.set_horizontal(not vertical)
-    self.sysTray.isSysTray = true
-    self.sysTray.orig_fit = self.sysTray.fit
-    self.sysTray.fit = function(self, ctx, width, height)
-        -- Original
-        local width, height = self:orig_fit(ctx, width, height)
-
-        -- Hidden
-        if self.hidden then
-            return 0, 0
-        else-- Visible
-            return width, height
-        end
-    end
-    return self.sysTray
 end
 
 -- IP
@@ -250,12 +213,12 @@ end
 
 -- Text Clock
 function WidgetManager:getClock()
-    self.clock = wibox.widget.textclock(CONFIG.widgets.clock.text, 10)
+    local clock = wibox.widget.textclock(CONFIG.widgets.clock.text, 10)
 
     -- add popup calendar
-    require("widgets.cal").register(self.clock)
+    require("widgets.cal").register(clock)
 
-    return self.clock
+    return clock
 end
 
 function WidgetManager:getTaskBox(screen, is_vertical)
@@ -265,14 +228,15 @@ function WidgetManager:getTaskBox(screen, is_vertical)
     )
     if is_vertical then
         local layout = wibox.layout.flex.vertical()
-        local widget = awful.widget.tasklist(screen, awful.widget.tasklist.filter.allscreen, buttons, nil, nil, layout) -- Vertical
-        -- layout:fit_widget(widget, 100, 100)
-        layout:fit({}, 100, 100)
-        widget:fit({}, 100, 100)
-        -- widget = awful.widget.layoutbox(screen)
-        -- debug_print(layout, 2)
-        -- debug_print(widget, 2)
-        return widget
+
+        local common = require("awful.widget.common")
+        local function list_update(w, buttons, label, data, objects)
+            common.list_update(w, buttons, label, data, objects)
+            w:set_max_widget_size(200)
+        end
+        -- local list_update = nil
+
+        return awful.widget.tasklist(screen, awful.widget.tasklist.filter.allscreen, buttons, nil, list_update, layout) -- Vertical
     else
         -- TODO: Consider minimizedcurrenttags for filter, it's pretty interesting, though, I would want it to hide if the bottom if there we're no items, or maybe move it back to the top bar & get rid of the bottom entirely...
         return awful.widget.tasklist(screen, awful.widget.tasklist.filter.currenttags, buttons) -- Normal
@@ -348,36 +312,27 @@ function WidgetManager:getTagsList(screen)
     )
 
     --TagList
-    -- TODO: CHange so it stores the tagsList for all screens
-    -- self.tagsList = awful.widget.taglist(screen, awful.widget.taglist.filter.noempty, buttons)
-    self.tagsList = awful.widget.taglist(screen, awful.widget.taglist.filter.all, buttons)
-    return self.tagsList
+    -- return awful.widget.taglist(screen, awful.widget.taglist.filter.noempty, buttons)
+    return awful.widget.taglist(screen, awful.widget.taglist.filter.all, buttons)
 end
 
 -- LayoutBox
 function WidgetManager:getLayoutBox(screen)
-    -- TODO: CHange so it stores the layoutBoxes for all screens
-    self.layoutBox = awful.widget.layoutbox(screen)
-    self.layoutBox:buttons(gears.table.join(
+    local layoutBox = awful.widget.layoutbox(screen)
+    layoutBox:buttons(gears.table.join(
         awful.button({}, 1, function() goToLayout(1) end)
         ,awful.button({}, 3, function() goToLayout(-1) end)
     ))
 
-    return self.layoutBox
-end
-
--- Temperature
-function WidgetManager:getTemperature()
-    self.temperature = require("widgets.temperature"):init()
-    return self.temperature
+    return layoutBox
 end
 
 -- Net Usage
 function WidgetManager:getNetUsage(vertical)
     -- TODO: Make some changes
-    self.netwidget = wibox.widget.textbox()
+    local netwidget = wibox.widget.textbox()
     if vertical then
-        self.netwidget:set_align("center")
+        netwidget:set_align("center")
     end
 
     local networkDevice = ternary(self.ethDevice == "", self.wifiDevice, self.ethDevice)
@@ -385,8 +340,8 @@ function WidgetManager:getNetUsage(vertical)
         device = networkDevice,
     })
 
-    vicious.register(self.netwidget, vicious.widgets.net, '<span foreground="#97D599" weight="bold">↑${'..networkDevice..' up_mb}</span> <span foreground="#CE5666" weight="bold">↓${'..networkDevice..' down_mb}</span>', 1) --#585656
-    self.netwidget:buttons(gears.table.join(
+    vicious.register(netwidget, vicious.widgets.net, '<span foreground="#97D599" weight="bold">↑${'..networkDevice..' up_mb}</span> <span foreground="#CE5666" weight="bold">↓${'..networkDevice..' down_mb}</span>', 1) --#585656
+    netwidget:buttons(gears.table.join(
         awful.button({}, 1, function() awful.spawn(networkTrafficCmd) end)
     ))
 
@@ -399,7 +354,7 @@ function WidgetManager:getNetUsage(vertical)
 
     --dbus.connect_signal("org.freedesktop.Notifications",
 
-    return self.netwidget
+    return netwidget
 end
 
 -- Battery
