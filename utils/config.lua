@@ -397,12 +397,6 @@ function pasteClipboardIntoPrimary()
     awful.spawn("/home/william/.local/bin/paste-clipboard-to-primary")
 end
 
--- TODO: Move
-function toggleInfoWiboxes()
-    toggleWibox("allWindowsWibox")
-    toggleWibox("sysInfoWibox")
-end
-
 function startupPrograms()
     -- TODO: run_once takes a while, probably due to system calls, try making a script that takes a list of files and runs them with the same commands as before)
     for _,program in pairs(CONFIG.startup.programs) do

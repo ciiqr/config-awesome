@@ -237,19 +237,11 @@ end
 -- end
 
 -- Wibox
-function toggleWibox(wibox, s)
-    local s = s or awful.screen.focused()
-    local lwibox = s[wibox]
-    lwibox.visible = not lwibox.visible
-
-    -- TODO: Consider whether I want this...
-    -- Adjust the sysInfoWibox's height when the top/bottom wiboxes are resized
-    -- TODO: Move this to the signal handler for "property::visible"
-    -- OR more reasonably "property::workarea" of the screen
-    local position = awful.wibar.get_position(lwibox) -- TODO: deprecated: awful.wibar.get_position
-    if position == "top" or position == "bottom" then
-
-        s.sysInfoWibox.y = s.workarea.y
-        s.sysInfoWibox.height = s.workarea.height
-    end
+function toggleWibox(name)
+    local screen = awful.screen.focused()
+    local wibox = screen[name .. "Wibox"]
+    wibox.visible = not wibox.visible
+end
+function toggleWiboxes(name)
+    toggleWibox(name)
 end

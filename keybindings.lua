@@ -3,13 +3,15 @@ local gears = require("gears")
 local xrandr = require("utils.xrandr")
 local binding = require("utils.binding")
 local tagUtils = require("utils.tag")
+local wibarUtils = require("utils.wibar")
+local wiboxUtils = require("utils.wibox")
 
 local environment = {
     awesome = awesome,
     awful = awful,
-    utils = {
-        tag = tagUtils,
-    },
+    tag = tagUtils,
+    wibar = wibarUtils,
+    wibox = wiboxUtils,
     widget_manager = WIDGET_MANAGER,
 }
 
@@ -19,11 +21,6 @@ local globalKeys = gears.table.join(unpack(keys))
 
 -- Global Key Bindings
 globalKeys = gears.table.join(globalKeys,
-    -- Toggle Bars
-    awful.key({SUPER}, "[", function() toggleWibox("topWibar"); toggleWibox("bottomWibar") end),
-    awful.key({SUPER}, "]", function() toggleWibox("bottomWibar") end),
-    awful.key({SUPER}, "c", toggleInfoWiboxes),
-
     -- Switch Layout
     awful.key({SUPER}, "space", function() goToLayout(FORWARDS) end),
     awful.key({SUPER, SHIFT}, "space", function() goToLayout(BACKWARDS) end),
@@ -45,24 +42,6 @@ globalKeys = gears.table.join(globalKeys,
     -- Sleep
     awful.key({}, "XF86Sleep", function() awful.spawn.with_shell(CONFIG.commands.sleep) end),
     awful.key({SUPER, CONTROL}, "q", function() awful.spawn.with_shell(CONFIG.commands.sleep) end),
-
-    -- Add Tag
-    awful.key({SUPER}, "y", function()
-        -- Add Tag
-        local newTag = awful.tag.add("Tag "..(#awful.screen.focused().tags) + 1, {
-            layout = awful.layout.layouts[1],
-        })
-        -- Switch to it
-        newTag:view_only()
-    end),
-
-    -- Remove Tags
-    awful.key({SUPER, SHIFT}, "y", function()
-        local selectedTags = awful.screen.focused().selected_tags
-        for i, tag in pairs(selectedTags) do
-            tag:delete()
-        end
-    end),
 
     -- Change Position
     awful.key({SUPER}, "Left", function() awful.client.swap.byidx(BACKWARDS) end),
@@ -135,30 +114,6 @@ globalKeys = gears.table.join(globalKeys,
     -- Pasteboard paste
     awful.key({}, "Insert", function() awful.spawn("xdotool click 2") end), -- put 'keycode 118 = ' back in .Xmodmap if I no longer use this
     awful.key({SUPER}, "Insert", pasteClipboardIntoPrimary) -- TODO: Figure out why it doesn't work
-
-    -- -- Run or raise applications with dmenu
-    -- TODO: Client itteration code may be useful, but otherwise I could probably implement this with QuickLaunch
-    -- ,awful.key({SUPER, CONTROL}, "p", function()
-    --  local beautiful = require("beautiful")
-    --  local f_reader = io.popen( "dmenu_run | dmenu -b -nb '".. beautiful.bg_normal .."' -nf '".. beautiful.fg_normal .."' -sb '#955'")
-    --  local command = assert(f_reader:read('*a'))
-    --  f_reader:close()
-    --  if command == "" then return end
-
-    --  -- Check throught the clients if the class match the command
-    --  local lower_command=string.lower(command)
-    --  for k, c in pairs(client.get()) do
-    --      local class=string.lower(c.class)
-    --      if string.match(class, lower_command) then
-    --          for i, v in ipairs(c:tags()) do
-    --              v:view_only()
-    --              c.minimized = false
-    --              return
-    --          end
-    --      end
-    --  end
-    --  awful.spawn(command)
-    -- end)
 )
 
 -- Tag Keys

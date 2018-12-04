@@ -98,8 +98,13 @@ return {
         ["Super + Escape"] = "awful.tag.history.restore",
         ["Ctrl + Alt + Left"] = "awful.tag.viewprev",
         ["Ctrl + Alt + Right"] = "awful.tag.viewnext",
-        ["Ctrl + Alt + Up"] = "utils.tag.viewFirst",
-        ["Ctrl + Alt + Down"] = "utils.tag.viewLast",
+        ["Ctrl + Alt + Up"] = "tag.viewFirst",
+        ["Ctrl + Alt + Down"] = "tag.viewLast",
+        -- Toggle Bars
+        ["Super + ["] = {action = "wibar.toggle", args = {"top", "bottom"}},
+        ["Super + ]"] = {action = "wibar.toggle", args = {"bottom"}},
+        -- Toggle Boxes
+        ["Super + c"] = {action = "wibox.toggle", args = {"allWindows", "sysInfo"}},
         -- awesome
         ["Super + Ctrl + r"] = "awesome.restart",
         -- popups
