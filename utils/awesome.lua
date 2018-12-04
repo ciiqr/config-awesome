@@ -150,7 +150,6 @@ function toggleClientTag(tagNum)
         client.focus:toggle_tag(tag)
     end
 end
-switchClient = awful.client.focus.byidx
 
 -- Tags
 function toggleTag(tagNum)

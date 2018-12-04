@@ -316,10 +316,12 @@ end
 
 -- LayoutBox
 function WidgetManager:getLayoutBox(screen)
+    local layoutUtils = require("utils.layout")
+
     local layoutBox = awful.widget.layoutbox(screen)
     layoutBox:buttons(gears.table.join(
-        awful.button({}, 1, function() goToLayout(1) end)
-        ,awful.button({}, 3, function() goToLayout(-1) end)
+        awful.button({}, 1, layoutUtils.viewNext)
+        ,awful.button({}, 3, layoutUtils.viewPrev)
     ))
 
     return layoutBox

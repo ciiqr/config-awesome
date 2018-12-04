@@ -28,26 +28,6 @@ function revertFromMaximizedLayout()
         tag.preMaximizeLayout = nil
     end
 end
-function goToLayout(direction) -- -1 for back, 1 for forward
-    -- if maximized to go first/last layout
-    local screen = awful.screen.focused()
-    local tag = screen.selected_tag
-    if tag.layout == awful.layout.suit.max then
-        -- Determine Index
-        local index
-        if direction == -1 then
-            index = #awful.layout.layouts    -- Last
-        else
-            index = direction   -- First
-        end
-        --  Set Layout
-        tag.layout = awful.layout.layouts[index]
-        -- Clear Maximized Layout
-        tag.preMaximizeLayout = nil
-    else
-        awful.layout.inc(direction)
-    end
-end
 
 -- Client
 -- TODO: Determine if I can make the window adjust when the screen's working area changes, add listener when fullscreen, remove when not

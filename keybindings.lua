@@ -5,6 +5,8 @@ local binding = require("utils.binding")
 local tagUtils = require("utils.tag")
 local wibarUtils = require("utils.wibar")
 local wiboxUtils = require("utils.wibox")
+local layoutUtils = require("utils.layout")
+local clientUtils = require("utils.client")
 
 local environment = {
     awesome = awesome,
@@ -12,6 +14,8 @@ local environment = {
     tag = tagUtils,
     wibar = wibarUtils,
     wibox = wiboxUtils,
+    layout = layoutUtils,
+    client = clientUtils,
     widget_manager = WIDGET_MANAGER,
 }
 
@@ -21,16 +25,6 @@ local globalKeys = gears.table.join(unpack(keys))
 
 -- Global Key Bindings
 globalKeys = gears.table.join(globalKeys,
-    -- Switch Layout
-    awful.key({SUPER}, "space", function() goToLayout(FORWARDS) end),
-    awful.key({SUPER, SHIFT}, "space", function() goToLayout(BACKWARDS) end),
-
-    -- Switch Window
-    awful.key({SUPER}, "Tab", function() switchClient(FORWARDS) end),
-    awful.key({SUPER, SHIFT}, "Tab", function() switchClient(BACKWARDS) end),
-    awful.key({SUPER}, "Next", function() switchClient(FORWARDS) end),
-    awful.key({SUPER}, "Prior", function() switchClient(BACKWARDS) end),
-
     -- ClientRestore
     awful.key({SUPER, CONTROL}, "Up", restoreClient),
 

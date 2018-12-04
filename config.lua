@@ -105,6 +105,15 @@ return {
         ["Super + ]"] = {action = "wibar.toggle", args = {"bottom"}},
         -- Toggle Boxes
         ["Super + c"] = {action = "wibox.toggle", args = {"allWindows", "sysInfo"}},
+        -- Switch Layout
+        ["Super + space"] = "layout.viewNext",
+        ["Super + Shift + space"] = "layout.viewPrev",
+        -- Switch Window
+        ["Super + Tab"] = "client.viewNext",
+        ["Super + Shift + Tab"] = "client.viewPrev",
+        ["Super + Next"] = "client.viewNext",
+        ["Super + Prior"] = "client.viewPrev",
+
         -- awesome
         ["Super + Ctrl + r"] = "awesome.restart",
         -- popups
