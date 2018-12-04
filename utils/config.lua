@@ -335,7 +335,7 @@ function insertScreenWorkingAreaYIntoFormat(format)
 end
 
 function evalTemplate(template, data)
-    return template:gsub("{(%w+)}", data)
+    return template:gsub("{([%w_]+)}", data)
 end
 
 function screenSetWallpaper(s)
@@ -343,7 +343,7 @@ function screenSetWallpaper(s)
     local normalPathTpl = CONFIG.theme.wallpapers.normalPath
 
     local resolutionPath = expandUser(evalTemplate(resolutionPathTpl, s.geometry))
-    local normalPath = expandUser(evalTemplate(resolutionPathTpl, {
+    local normalPath = expandUser(evalTemplate(normalPathTpl, {
         theme_path = THEME_PATH,
     }))
 

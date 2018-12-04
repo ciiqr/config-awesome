@@ -222,7 +222,6 @@ function WidgetManager:getClock()
 end
 
 function WidgetManager:getTaskBox(screen, is_vertical)
-    -- TODO: These need to be seperate per screen, therefore I need a list for each, ie. WidgetManager.verticalTaskBoxes, WidgetManager.horizontalTaskBoxes
     local buttons = gears.table.join(
         awful.button({}, 1, toggleClient)
     )
@@ -234,7 +233,6 @@ function WidgetManager:getTaskBox(screen, is_vertical)
             common.list_update(w, buttons, label, data, objects)
             w:set_max_widget_size(200)
         end
-        -- local list_update = nil
 
         return awful.widget.tasklist(screen, awful.widget.tasklist.filter.allscreen, buttons, nil, list_update, layout) -- Vertical
     else
@@ -360,7 +358,7 @@ end
 -- Battery
 function WidgetManager:getBatteryWidget()
     -- TODO: Make so we can update from acpi, ie. DBus acpi notifications
-    self.battery = wibox.widget.textbox()
+    local battery = wibox.widget.textbox()
     function customWrapper(format, warg)
 
         local retval = vicious.widgets.bat(format, warg) -- state, percent, time, wear
@@ -387,10 +385,10 @@ function WidgetManager:getBatteryWidget()
         return retval
     end
     if self.batteryDevice ~= "" then
-        vicious.register(self.battery, customWrapper, '<span foreground="#ffcc00" weight="bold">$1$2%$3</span>', 120, self.batteryDevice) --585656
+        vicious.register(battery, customWrapper, '<span foreground="#ffcc00" weight="bold">$1$2%$3</span>', 120, self.batteryDevice) --585656
     end
 
-    return self.battery
+    return battery
 end
 
 return WidgetManager
