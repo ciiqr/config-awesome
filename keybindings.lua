@@ -2,9 +2,14 @@ local awful = require("awful")
 local gears = require("gears")
 local xrandr = require("utils.xrandr")
 local binding = require("utils.binding")
+local tagUtils = require("utils.tag")
 
 local environment = {
     awesome = awesome,
+    awful = awful,
+    utils = {
+        tag = tagUtils,
+    },
     widget_manager = WIDGET_MANAGER,
 }
 
@@ -14,13 +19,6 @@ local globalKeys = gears.table.join(unpack(keys))
 
 -- Global Key Bindings
 globalKeys = gears.table.join(globalKeys,
-    -- Switch Between Tags
-    awful.key({SUPER}, "Escape", awful.tag.history.restore),
-    awful.key({ALT, CONTROL}, "Left", awful.tag.viewprev),
-    awful.key({ALT, CONTROL}, "Right", awful.tag.viewnext),
-    awful.key({ALT, CONTROL}, "Up", switchToFirstTag),
-    awful.key({ALT, CONTROL}, "Down", switchToLastTag),
-
     -- Toggle Bars
     awful.key({SUPER}, "[", function() toggleWibox("topWibar"); toggleWibox("bottomWibar") end),
     awful.key({SUPER}, "]", function() toggleWibox("bottomWibar") end),
@@ -92,8 +90,8 @@ globalKeys = gears.table.join(globalKeys,
 
     -- Popups
     -- Launcher Style
-    awful.key({SUPER}, "w", function() awful.spawn.with_shell(insertScreenWorkingAreaYIntoFormat(CONFIG.commands.fileOpener)) end),
-    awful.key({SUPER}, "s", function() awful.spawn.with_shell(insertScreenWorkingAreaYIntoFormat(CONFIG.commands.windowSwitcher)) end),
+    awful.key({SUPER}, "w", function() awful.spawn.with_shell(CONFIG.commands.fileOpener) end),
+    awful.key({SUPER}, "s", function() awful.spawn.with_shell(CONFIG.commands.windowSwitcher) end),
 
     -- Programs
     awful.key({SUPER}, "t", function() awful.spawn(CONFIG.commands.terminal) end),

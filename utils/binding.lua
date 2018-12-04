@@ -1,6 +1,6 @@
 local akey = require("awful.key")
 
-local Binding = {}
+local binding = {}
 
 local function extractParts(spec)
     -- extract parts from key spec
@@ -78,7 +78,7 @@ local function createBinding(spec, action, environment)
     return akey(parts, key, mapAction(action, environment))
 end
 
-function Binding.createKeys(keybindings, environment)
+function binding.createKeys(keybindings, environment)
     local keys = {}
     for spec, action in pairs(keybindings) do
         table.insert(keys, createBinding(spec, action, environment))
@@ -86,4 +86,4 @@ function Binding.createKeys(keybindings, environment)
     return keys
 end
 
-return Binding
+return binding

@@ -165,22 +165,6 @@ function switchToTag(tagNum)
         tag:view_only()
     end
 end
-function switchToLastTag()
-    local tags = awful.screen.focused().tags
-    local tag = tags[#tags]
-    if tag then
-        tag:view_only()
-    end
-    return tag
-end
-function switchToFirstTag()
-    local tags = awful.screen.focused().tags
-    local tag = tags[1]
-    if tag then
-        tag:view_only()
-    end
-    return tag
-end
 function increaseMwfact(add)
     local new_mwfact = awful.screen.focused().selected_tag.master_width_factor + add
     -- Only change the mwfact if it's not going to make things invisible

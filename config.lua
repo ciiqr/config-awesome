@@ -94,6 +94,12 @@ return {
         },
     },
     keybindings = {
+        -- Switch Between Tags
+        ["Super + Escape"] = "awful.tag.history.restore",
+        ["Ctrl + Alt + Left"] = "awful.tag.viewprev",
+        ["Ctrl + Alt + Right"] = "awful.tag.viewnext",
+        ["Ctrl + Alt + Up"] = "utils.tag.viewFirst",
+        ["Ctrl + Alt + Down"] = "utils.tag.viewLast",
         -- awesome
         ["Super + Ctrl + r"] = "awesome.restart",
         -- popups

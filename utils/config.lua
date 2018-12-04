@@ -329,11 +329,6 @@ function captureScreenSnip()
     end)
 end
 
-function insertScreenWorkingAreaYIntoFormat(format)
-    -- TODO: use new template
-    return string.format(format, math.floor(awful.screen.focused().workarea.y))
-end
-
 function evalTemplate(template, data)
     return template:gsub("{([%w_]+)}", data)
 end
