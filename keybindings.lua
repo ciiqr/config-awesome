@@ -163,8 +163,7 @@ globalKeys = gears.table.join(globalKeys,
 
 -- Tag Keys
 -- Uses keycodes to make it works on any keyboard layout
-local numberOfTags = #awful.screen.focused().tags
-for i = 1, numberOfTags do
+for i = 1, #CONFIG.screens.tags do
     local iKey = "#"..(i + 9)
     globalKeys = gears.table.join(globalKeys,
         awful.key({ALT, CONTROL},       iKey, function() switchToTag(i) end),
