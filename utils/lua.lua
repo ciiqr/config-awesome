@@ -35,38 +35,11 @@ function ternary(condition, tVal, fVal)
   if condition then return tVal else return fVal end
 end
 
--- If the condition is true, returns the value of calling tValFunc, else it returns the value of calling fValFunc
--- NOTE: Any additional arguments to this function are passed to the applicable function when it is called
--- TODO: Test
-function ternaryLazy(condition, tValFunc, fValFunc, ...)
-    if condition then return tValFunc(...) else return fValFunc(...) end
-end
-
 -- Saves the content to the specified file name OR a default name (Over-Writes existing files)
 function saveFile(content, fileName)
     local file = io.open(fileName or "saveFile.txt", "w")
     file:write(content)
     file:close()
-end
-
--- Split String
-function split(str, pat)
-   local t = {}  -- NOTE: use {n = 0} in Lua-5.0
-   local fpat = "(.-)" .. pat
-   local last_end = 1
-   local s, e, cap = str:find(fpat, 1)
-   while s do
-      if s ~= 1 or cap ~= "" then
-     table.insert(t,cap)
-      end
-      last_end = e+1
-      s, e, cap = str:find(fpat, last_end)
-   end
-   if last_end <= #str then
-      cap = str:sub(last_end)
-      table.insert(t, cap)
-   end
-   return t
 end
 
 -- trim string
@@ -85,16 +58,14 @@ function execForOutput(command)
     return readAll(io.popen(command))
 end
 
-function readAll(stream, dontClose)
+function readAll(stream)
     if not stream then
         return nil
     end
 
     local output = stream:read("*all")
 
-    if not dontClose then
-        stream:close()
-    end
+    stream:close()
 
     return output
 end

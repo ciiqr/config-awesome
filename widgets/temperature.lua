@@ -1,16 +1,12 @@
 local wibox = require("wibox")
 local gears = require("gears")
+local systemTemperature = require("system.temperature")
 
 temperature = wibox.widget.textbox()
 temperature:set_align("center")
 
 temperature.reload = function(self)
-    -- Run 'sensors'
-    local output = execForOutput("sensors")
-
-    -- Parse Temperature
-    local temperature = string.match(split(output, ":%s*%+")[3] or "", "%d*")
-    -- Display Formatte Temperature
+    local temperature = systemTemperature.get()
     self:set_markup('<span weight="bold">' .. temperature .. "°" .. '</span>')
 end
 
