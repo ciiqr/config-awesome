@@ -1,31 +1,21 @@
 local awful = require("awful")
 local gears = require("gears")
-local xrandr = require("utils.xrandr")
 local binding = require("utils.binding")
-local tagUtils = require("utils.tag")
-local wibarUtils = require("utils.wibar")
-local wiboxUtils = require("utils.wibox")
-local layoutUtils = require("utils.layout")
-local clientUtils = require("utils.client")
-local commandUtils = require("utils.command")
-local screenshotUtils = require("utils.screenshot")
-local volume = require("system.volume")
-local brightness = require("system.brightness")
 
 local environment = {
     awesome = awesome,
     awful = awful,
-    tag = tagUtils,
-    wibar = wibarUtils,
-    wibox = wiboxUtils,
-    layout = layoutUtils,
-    client = clientUtils,
-    command = commandUtils,
-    screenshot = screenshotUtils,
-    xrandr = xrandr,
-    volume = volume,
-    brightness = brightness,
-    widget_manager = WIDGET_MANAGER,
+    tag = require("utils.tag"),
+    wibar = require("utils.wibar"),
+    wibox = require("utils.wibox"),
+    layout = require("utils.layout"),
+    client = require("utils.client"),
+    command = require("utils.command"),
+    screenshot = require("utils.screenshot"),
+    popup = require("utils.popup"),
+    xrandr = require("utils.xrandr"),
+    volume = require("system.volume"),
+    brightness = require("system.brightness"),
 }
 
 -- Global Key Bindings

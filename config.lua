@@ -162,13 +162,11 @@ return {
         ["Insert"] = {action = "command.run", args = {"pastePrimary"}}, -- If I stop using, put 'keycode 118 = ' back in .Xmodmap
         -- Cycle Displays
         ["Super + F11"] = "xrandr", -- TODO: refactor xrandr module so this command can be: xrandr.cycle
-
-
-        -- popups
-        ["Super + Shift + t"] = {action = "widget_manager.togglePopup", args = {"terminal"}},
-        ["Super + Shift + n"] = {action = "widget_manager.togglePopup", args = {"note"}},
-        ["Super + Shift + c"] = {action = "widget_manager.togglePopup", args = {"cpu"}},
-        ["Super + Shift + m"] = {action = "widget_manager.togglePopup", args = {"mem"}},
-        ["Super + Shift + k"] = {action = "widget_manager.togglePopup", args = {"keepass"}},
+        -- Popups
+        ["Super + Shift + t"] = {action = "popup.toggle", args = {"terminal"}},
+        ["Super + Shift + n"] = {action = "popup.toggle", args = {"note"}},
+        ["Super + Shift + c"] = {action = "popup.toggle", args = {"cpu"}},
+        ["Super + Shift + m"] = {action = "popup.toggle", args = {"mem"}},
+        ["Super + Shift + k"] = {action = "popup.toggle", args = {"keepass"}},
     },
 }

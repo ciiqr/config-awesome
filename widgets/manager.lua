@@ -4,8 +4,8 @@ local awful = require("awful")
 local wibox = require("wibox")
 local naughty = require("naughty")
 local gears = require("gears")
-local quake = require("quake")
 local volume = require("system.volume")
+local popup = require("utils.popup")
 
 -- TODO: it's been great but I think it's time for us to split
 
@@ -14,31 +14,6 @@ local WidgetManager = {}
 WidgetManager.wifiDevice = trim(execForOutput("ls /sys/class/net/wl* >/dev/null 2>&1 && basename /sys/class/net/wl*"))
 WidgetManager.ethDevice = trim(execForOutput("ls /sys/class/net/e* >/dev/null 2>&1 && basename /sys/class/net/e*"))
 WidgetManager.batteryDevice = trim(execForOutput("ls /sys/class/power_supply/BAT* >/dev/null 2>&1 && basename /sys/class/power_supply/BAT*"))
-
--- Popup Terminal
-function WidgetManager:initPopups(s)
-    for _,popup in ipairs(CONFIG.popups) do
-        -- Ensure we have a table
-        if not s.quake then
-            s.quake = {}
-        end
-
-        -- get options
-        local defaults = {
-            screen = s,
-            border = 0,
-        }
-        local options = popup.options or {}
-        local quakeOptions = gears.table.join(defaults, options)
-
-        -- Create Popup
-        s.quake[popup.name] = quake(quakeOptions)
-    end
-end
-function WidgetManager.togglePopup(name, screen)
-    local screen = screen or awful.screen.focused()
-    screen.quake[name]:toggle()
-end
 
 -- Wibars/Wiboxes
 function WidgetManager:initWiboxes(s)
@@ -151,7 +126,7 @@ function WidgetManager:getMemory(vertical)
     end
     vicious.register(memory, vicious.widgets.mem, "<span fgcolor='#138dff' weight='bold'>$1% $2MB</span>", 13) --DFDFDF
     memory:buttons(gears.table.join(
-        awful.button({}, 1, function() self:togglePopup('cpu') end)
+        awful.button({}, 1, function() popup.toggle('cpu') end)
     ))
     return memory
 end
@@ -166,7 +141,7 @@ function WidgetManager:getCPU(vertical)
     cpuwidget:set_color({ type = "linear", from = { 25, 0 }, to = { 25,22 }, stops = { {0, "#FF0000" }, {0.5, "#de5705"}, {1, "#00ff00"} }  })
     vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
     cpuwidget:buttons(gears.table.join(
-        awful.button({}, 1, function() self:togglePopup('mem') end)
+        awful.button({}, 1, function() popup.toggle('mem') end)
     ))
     return cpuwidget
 end

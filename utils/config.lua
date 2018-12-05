@@ -3,6 +3,7 @@ local gears = require("gears")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
 local inspect = require("third-party.inspect") -- TODO: luarocks instead?
+local popup = require("utils.popup")
 
 -- Client
 -- TODO: Determine if I can make the window adjust when the screen's working area changes, add listener when fullscreen, remove when not
@@ -266,7 +267,7 @@ function screenInit(s)
     awful.tag(CONFIG.screens.tags, s, awful.layout.layouts[1])
 
     -- Popup Terminal/Process Info/Notes/etc
-    WIDGET_MANAGER:initPopups(s)
+    popup.init(s)
 
     --Wiboxes w/ Widgets
     WIDGET_MANAGER:initWiboxes(s)
