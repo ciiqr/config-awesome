@@ -14,6 +14,7 @@ function network.getIp()
 end
 
 function network.getDeviceIp(device)
+    -- TODO: extract to script
     return execForOutput("ip addr show dev " .. device .. " | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | tr -d '\n'")
 end
 
@@ -26,6 +27,7 @@ end
 
 function network.getWifiDevice()
     if not network._data.wifiDevice then
+        -- TODO: extract to script
         network._data.wifiDevice = trim(execForOutput("ls /sys/class/net/wl* >/dev/null 2>&1 && basename /sys/class/net/wl*"))
     end
 
@@ -34,6 +36,7 @@ end
 
 function network.getEthernetDevice()
     if not network._data.ethDevice then
+        -- TODO: extract to script
         network._data.ethDevice = trim(execForOutput("ls /sys/class/net/e* >/dev/null 2>&1 && basename /sys/class/net/e*"))
     end
 

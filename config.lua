@@ -64,7 +64,6 @@ return {
         screenshotSelect = "gm import ~/Dropbox/Screenshots/$(date '+%Y-%m-%d-%T')-$(lsb_release -sc).png",
         fileOpener = "xdg-open \"$(locate \"\" | dmenu -i -p Open -l 20 -fn \"Nimbus Sans L-10\")\"",
         windowSwitcher = "rofi -modi window -show",
-        isRunning = "is-running",
         setWallpaper = "feh --xinerama-index {screen} --randomize --bg-fill {directory}/*",
         ipInfo = "urxvt -e bash -c 'ip addr show; cat'",
         networkTraffic = "urxvt -e bash -c 'sudo nethogs {device}'",
@@ -93,6 +92,10 @@ return {
             name = "keepass",
             options = {app = "keepassx2", name = "keepassx2", height = 0.75, width = 0.5},
         },
+        -- {
+        --     name = "audio",
+        --     options = {app = "pavucontrol", name = "Volume Control", argname = "", height = 0.75, width = 0.5},
+        -- },
     },
     keybindings = {
         -- Switch Between Tags
@@ -168,5 +171,6 @@ return {
         ["Super + Shift + c"] = {action = "popup.toggle", args = {"cpu"}},
         ["Super + Shift + m"] = {action = "popup.toggle", args = {"mem"}},
         ["Super + Shift + k"] = {action = "popup.toggle", args = {"keepass"}},
+        -- ["Super + Shift + a"] = {action = "popup.toggle", args = {"audio"}},
     },
 }

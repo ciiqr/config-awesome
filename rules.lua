@@ -62,7 +62,7 @@ local clientkeys = gears.table.join(
     end)
 
     --Debug Info
-    ,awful.key({SUPER}, "g", ternary(DEBUG, debugClient, function()end))
+    ,awful.key({SUPER}, "g", debugClient)
 )
 --Buttons
 local clientButtons = gears.table.join(

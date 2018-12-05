@@ -239,6 +239,9 @@ end
 function evalTemplate(template, data)
     return template:gsub("{([%w_]+)}", data)
 end
+function expandUser(path)
+    return path:gsub('~', os.getenv('HOME'))
+end
 
 function screenSetWallpaper(s)
     local resolutionPathTpl = CONFIG.theme.wallpapers.resolutionPath
@@ -249,7 +252,7 @@ function screenSetWallpaper(s)
         theme_path = THEME_PATH,
     }))
 
-    local wallpapersPath = ternary(gears.filesystem.dir_readable(resolutionPath), resolutionPath, normalPath)
+    local wallpapersPath = (gears.filesystem.dir_readable(resolutionPath) and resolutionPath or normalPath)
 
     -- Random Background
     local cmd = evalTemplate(CONFIG.commands.setWallpaper, {
@@ -257,27 +260,6 @@ function screenSetWallpaper(s)
         directory = wallpapersPath,
     })
     awful.spawn.with_shell(cmd)
-end
-
-
---Debugging
-function debug_string(object, recursion)
-    return inspect(object, recursion or 2)
-end
-function debug_editor(object, recursion, editor)
-    return awful.spawn.with_shell("echo \""..debug_string(object, recursion).."\" | "..editor)
-end
-function debug_leaf(object, recursion)
-    return debug_editor(object, recursion, "leafpad")
-end
-function debug_subl(object, recursion)
-    return debug_editor(object, recursion, "subl3 -n")
-end
-function debug_file(object, recursion, file)
-    saveFile(inspect(object, recursion or 1), file or "debug.txt")
-end
-function debug_print(object, recursion)
-    notify_send(debug_string(object, recursion))
 end
 
 --Naughty
@@ -290,8 +272,7 @@ end
 
 -- Programs
 function startupPrograms()
-    -- TODO: run_once takes a while, probably due to system calls, try making a script that takes a list of files and runs them with the same commands as before)
-    for _,program in pairs(CONFIG.startup.programs) do
+    for _,program in ipairs(CONFIG.startup.programs) do
         run_once(program)
     end
 end

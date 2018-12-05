@@ -7,8 +7,6 @@ local naughty = require("naughty")
 --      local xrandr = require("utils.xrandr")
 --      awful.key({modkey}, "F11", xrandr)
 
-require("utils.lua")
-
 local XRandR =
 {
     iterator = nil,
@@ -142,7 +140,9 @@ function XRandR:cycle()
     self.timer:start()
 end
 
-return bindFunc(XRandR.cycle, XRandR)
+return function()
+    XRandR:cycle()
+end
 
 -- -- Get active outputs
 -- local function outputs()

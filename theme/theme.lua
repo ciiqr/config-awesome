@@ -99,8 +99,8 @@ local theme = {
     fg_focus   = lightColour, --"#F0DFAF"
     fg_urgent  = lightRed,
 
-    bg_normal  = black..ternary(BAR_TRANSPARENCY, "00", "7e"),
-    bg_focus   = "#222222"..ternary(BAR_TRANSPARENCY, "00", "FF"), --222222ee -- bg_focus   = bg_normal --"#66666677"
+    bg_normal  = black..(BAR_TRANSPARENCY and "00" or "7e"),
+    bg_focus   = "#222222"..(BAR_TRANSPARENCY and "00" or "FF"), --222222ee -- bg_focus   = bg_normal --"#66666677"
     bg_urgent  = darkGrey,
 
     -- Borders
@@ -120,7 +120,7 @@ local theme = {
     -- TODO: If I ever switch to a 1..2 px high bar, use this to show a colour on the selected tag even if there arn't any windows: taglist_bg_focus = "#888888",
 
     -- System Tray
-    bg_systray = ternary(BAR_TRANSPARENCY, "#2b2726", black), -- bg_normal
+    bg_systray = (BAR_TRANSPARENCY and "#2b2726" or black), -- bg_normal
 
 
     -- Icons --

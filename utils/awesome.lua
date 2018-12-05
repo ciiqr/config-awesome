@@ -36,26 +36,7 @@ end
 
 -- Programs
 function run_once(prg)
-    local programName
-    local isRoot = false -- if its root then we must check the root user instead, only problem is if i'm also running root
-    -- Itterate matches
-        -- if its not sudo then you've found the program name
-        -- break from the loop
-    for match in string.gmatch(prg, "([^ ]+)") do
-        if match == "sudo" then
-            isRoot = true
-        else
-            programName = basename(match)
-            break
-        end
-    end
-    -- VERY useful for Debugging
-    -- notify_send(prg .. "\n" .. programName)
-
-    -- checks if program is running
-        -- if program is root then checks root, otherwise checks current user
-    -- if it's not running then run it
-    awful.spawn.with_shell(CONFIG.commands.isRunning.." "..programName.." "..ternary(isRoot, "root", "$USER").." || ("..prg..")")
+    awful.spawn.with_shell('~/.scripts/run-once.sh ' .. prg)
 end
 
 -- Clients
@@ -157,33 +138,3 @@ function switchToTag(tagNum)
         tag:view_only()
     end
 end
-
--- function idk(add, c)
---  local c = c or client.focus
---  if not c then return end
-
---  local lay = awful.layout.get(c.screen)
---  local wa = c.screen.workarea
---  local mwfact = awful.screen.focused().selected_tag.master_width_factor
---  local g = c:geometry()
---  -- local x,y
-
---  local fact_x = 0.05 -- (_mouse.x - wa.x) / wa.width
---  local fact_y = 0.05 -- (_mouse.y - wa.y) / wa.height
---  local mwfact
-
---  -- we have to make sure we're not on the last visible client where we have to use different settings.
-
---  awful.client.setwfact(math.min(math.max(add,0.01), 0.99), c)
--- end
-
--- function increaseClientHeight(add, c)
---  local clientHeight = c:geometry().height
---  local tagHeight = 1080 -- TODO: MUST CHANGE THIS, just lazy while testing/hacking
-
---  local newHeight = clientHeight + (tagHeight * add)
---  -- Only change the height if it's not going to make things invisible
---  if newHeight > 0 then
---      c:geometry({height=newHeight})
---  end
--- end

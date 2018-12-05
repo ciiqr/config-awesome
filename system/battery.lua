@@ -11,6 +11,7 @@ end
 
 function battery.getDevice()
     if not battery._data.device then
+        -- TODO: extract to script
         battery._data.device = trim(execForOutput("ls /sys/class/power_supply/BAT* >/dev/null 2>&1 && basename /sys/class/power_supply/BAT*"))
     end
 
