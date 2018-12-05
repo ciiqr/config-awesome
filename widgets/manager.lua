@@ -5,18 +5,16 @@ local wibox = require("wibox")
 local naughty = require("naughty")
 local gears = require("gears")
 local volume = require("system.volume")
+local network = require("system.network")
+local battery = require("system.battery")
 local popup = require("utils.popup")
 
 -- TODO: it's been great but I think it's time for us to split
 
 local WidgetManager = {}
 
-WidgetManager.wifiDevice = trim(execForOutput("ls /sys/class/net/wl* >/dev/null 2>&1 && basename /sys/class/net/wl*"))
-WidgetManager.ethDevice = trim(execForOutput("ls /sys/class/net/e* >/dev/null 2>&1 && basename /sys/class/net/e*"))
-WidgetManager.batteryDevice = trim(execForOutput("ls /sys/class/power_supply/BAT* >/dev/null 2>&1 && basename /sys/class/power_supply/BAT*"))
-
 -- Wibars/Wiboxes
-function WidgetManager:initWiboxes(s)
+function WidgetManager.initWiboxes(s)
     local panel_height = beautiful.panel.height(s)
 
     -- Top Wibar
@@ -26,11 +24,11 @@ function WidgetManager:initWiboxes(s)
         expand = "none",
         {
             layout = wibox.layout.fixed.horizontal,
-            self:getTagsList(s),
+            WidgetManager.getTagsList(s),
         },
         {
             layout = wibox.layout.flex.horizontal,
-            self:getClock(),
+            WidgetManager.getClock(),
         },
         {
             layout = wibox.layout.fixed.horizontal,
@@ -40,29 +38,29 @@ function WidgetManager:initWiboxes(s)
                 {
                     layout = wibox.layout.fixed.horizontal,
                     spacing = beautiful.spacer_size,
-                    self:getNetUsage(),
-                    self:getBatteryWidget(),
+                    WidgetManager.getNetUsage(),
+                    WidgetManager.getBatteryWidget(),
                     require("widgets.temperature"):init(),
-                    self:getVolume(),
-                    self:getMemory(),
-                    self:getCPU(),
+                    WidgetManager.getVolume(),
+                    WidgetManager.getMemory(),
+                    WidgetManager.getCPU(),
                     wibox.widget.systray(),
                 },
             },
-            self:getLayoutBox(s)
+            WidgetManager.getLayoutBox(s)
         },
     }
 
     -- Bottom Wibar
     s.bottomWibar = awful.wibar({position = "bottom", screen = s, height = panel_height})
     s.bottomWibar:setup {
-        widget = self:getTaskBox(s),
+        widget = WidgetManager.getTaskBox(s),
     }
 
     -- All Windows Wibox
-    s.allWindowsWibox = self:getAllWindowsWibox(s)
+    s.allWindowsWibox = WidgetManager.getAllWindowsWibox(s)
     s.allWindowsWibox:setup {
-        widget = self:getTaskBox(s, true),
+        widget = WidgetManager.getTaskBox(s, true),
     }
 
     -- System Info wibox
@@ -73,27 +71,27 @@ function WidgetManager:initWiboxes(s)
         return label
     end
 
-    s.sysInfoWibox = self:getSysInfoWibox(s)
+    s.sysInfoWibox = WidgetManager.getSysInfoWibox(s)
     s.sysInfoWibox:setup {
         layout = wibox.layout.fixed.vertical,
 
         wibox.widget.textbox(' '),
 
         -- sysInfoLabel("Network"),
-        self:getIP(),
-        -- self:getNetUsage(true),
+        WidgetManager.getIP(),
+        -- WidgetManager.getNetUsage(true),
 
         -- sysInfoLabel("Temperature"),
         -- require("widgets.temperature"):init(),
 
         -- sysInfoLabel("System"),
-        -- self:getMemory(true),
-        -- self:getCPU(true),
+        -- WidgetManager.getMemory(true),
+        -- WidgetManager.getCPU(true),
     }
 end
 
 -- Volume
-function WidgetManager:getVolume()
+function WidgetManager.getVolume()
     local widget = wibox.widget.textbox()
 
     -- buttons
@@ -102,6 +100,8 @@ function WidgetManager:getVolume()
         awful.button({}, MOUSE_SCROLL_DOWN, function() volume.change("-", CONFIG.volume.change.small) end),
         awful.button({}, 1, function() run_once("pavucontrol") end)
     ))
+
+    -- TODO: see if we can listen for pulse audio dbus updates
 
     -- update func
     local function update()
@@ -119,7 +119,7 @@ function WidgetManager:getVolume()
 end
 
 -- Memory
-function WidgetManager:getMemory(vertical)
+function WidgetManager.getMemory(vertical)
     local memory = wibox.widget.textbox()
     if vertical then
         memory:set_align("center")
@@ -132,7 +132,7 @@ function WidgetManager:getMemory(vertical)
 end
 
 -- CPU
-function WidgetManager:getCPU(vertical)
+function WidgetManager.getCPU(vertical)
     local cpuwidget = wibox.widget.graph()
     if not vertical then
         cpuwidget:set_width(50)
@@ -147,29 +147,33 @@ function WidgetManager:getCPU(vertical)
 end
 
 -- IP
-function WidgetManager:getIP()
-    self.ip = wibox.widget.textbox()
-    self.ip:set_align("center")
+function WidgetManager.getIP()
+    local widget = wibox.widget.textbox()
+    widget:set_align("center")
 
-    self:updateIP()
-
-    self.ip:buttons(gears.table.join(
+    widget:buttons(gears.table.join(
      awful.button({}, 1, function() awful.spawn(CONFIG.commands.ipInfo) end)
-     -- ,awful.button({}, 3, function() self.ip:updateIP() end)
     ))
-    return self.ip
-end
 
-function WidgetManager:updateIP()
-    local ip = retrieveIPAddress(self.ethDevice)
-    if ip == "" then
-        ip = retrieveIPAddress(self.wifiDevice)
+    -- update func
+    local function update()
+        local ip = network.getIp()
+        widget:set_text(ip)
     end
-    self.ip:set_text(ip)
+
+    -- signal
+    dbus.request_name("system", "org.freedesktop.NetworkManager")
+    dbus.add_match("system", "interface='org.freedesktop.NetworkManager',member='PropertiesChanged'")
+    dbus.connect_signal("org.freedesktop.NetworkManager", function(first, second, ...) -- Doesn't seem to be a third
+        update()
+    end)
+
+    update()
+    return widget
 end
 
 -- Text Clock
-function WidgetManager:getClock()
+function WidgetManager.getClock()
     local clock = wibox.widget.textclock(CONFIG.widgets.clock.text, 10)
 
     -- add popup calendar
@@ -178,7 +182,7 @@ function WidgetManager:getClock()
     return clock
 end
 
-function WidgetManager:getTaskBox(screen, is_vertical)
+function WidgetManager.getTaskBox(screen, is_vertical)
     local buttons = gears.table.join(
         awful.button({}, 1, toggleClient)
     )
@@ -198,7 +202,7 @@ function WidgetManager:getTaskBox(screen, is_vertical)
     end
 end
 
-function WidgetManager:getAllWindowsWibox(s)
+function WidgetManager.getAllWindowsWibox(s)
     local aWibox = wibox({
         position = "left",
         screen = s,
@@ -222,7 +226,7 @@ function WidgetManager:getAllWindowsWibox(s)
     return aWibox
 end
 
-function WidgetManager:getSysInfoWibox(s)
+function WidgetManager.getSysInfoWibox(s)
     local width = beautiful.system_info_width
     local aWibox = wibox({
         position = "right",
@@ -253,7 +257,7 @@ function WidgetManager:getSysInfoWibox(s)
 end
 
 -- TagsList
-function WidgetManager:getTagsList(screen)
+function WidgetManager.getTagsList(screen)
     -- TODO: Consider Moving
     local buttons = gears.table.join(
         awful.button({}, 1, function(t) t:view_only() end), -- Switch to This Tag
@@ -272,7 +276,7 @@ function WidgetManager:getTagsList(screen)
 end
 
 -- LayoutBox
-function WidgetManager:getLayoutBox(screen)
+function WidgetManager.getLayoutBox(screen)
     local layoutUtils = require("utils.layout")
 
     local layoutBox = awful.widget.layoutbox(screen)
@@ -285,14 +289,14 @@ function WidgetManager:getLayoutBox(screen)
 end
 
 -- Net Usage
-function WidgetManager:getNetUsage(vertical)
+function WidgetManager.getNetUsage(vertical)
     -- TODO: Make some changes
     local netwidget = wibox.widget.textbox()
     if vertical then
         netwidget:set_align("center")
     end
 
-    local networkDevice = ternary(self.ethDevice == "", self.wifiDevice, self.ethDevice)
+    local networkDevice = network.getPrimaryDevice()
     local networkTrafficCmd = evalTemplate(CONFIG.commands.networkTraffic, {
         device = networkDevice,
     })
@@ -315,9 +319,9 @@ function WidgetManager:getNetUsage(vertical)
 end
 
 -- Battery
-function WidgetManager:getBatteryWidget()
+function WidgetManager.getBatteryWidget()
     -- TODO: Make so we can update from acpi, ie. DBus acpi notifications
-    local battery = wibox.widget.textbox()
+    local widget = wibox.widget.textbox()
     function customWrapper(format, warg)
 
         local retval = vicious.widgets.bat(format, warg) -- state, percent, time, wear
@@ -343,11 +347,11 @@ function WidgetManager:getBatteryWidget()
         end
         return retval
     end
-    if self.batteryDevice ~= "" then
-        vicious.register(battery, customWrapper, '<span foreground="#ffcc00" weight="bold">$1$2%$3</span>', 120, self.batteryDevice) --585656
+    if battery.hasBattery() then
+        vicious.register(widget, customWrapper, '<span foreground="#ffcc00" weight="bold">$1$2%$3</span>', 120, battery.getDevice()) --585656
     end
 
-    return battery
+    return widget
 end
 
 return WidgetManager

@@ -108,42 +108,6 @@ function debugClient(c)
 
 end
 
-function setup_network_connectivity_change_listener()
-    dbus.request_name("system", "org.freedesktop.NetworkManager")
-    dbus.add_match("system", "interface='org.freedesktop.NetworkManager',member='PropertiesChanged'")
-    dbus.connect_signal("org.freedesktop.NetworkManager", function(first, second, ...) -- Doesn't seem to be a third
-        -- Change ip widget
-        WIDGET_MANAGER:updateIP()
-    end)
-end
-
--- TODO: Implement a similar function for pulse audio
--- function setup_network_connectivity_change_listener()
---  -- TODO: Clean up
---  dbus.request_name("system", "org.freedesktop.NetworkManager")
---  dbus.add_match("system", "interface='org.freedesktop.NetworkManager',member='PropertiesChanged'")
---  dbus.connect_signal("org.freedesktop.NetworkManager", function(first, second, ...) -- Doesn't seem to be a third
---      -- local is_connected;
-
---      -- if second.Connectivity and second.Connectivity == 4 then
---      --  is_connected = true
---      -- elseif second.Connectivity and second.Connectivity == 1 then
---      --  is_connected = false
---      -- else
---      --  return
---      -- end
-
---      -- Change ip widget
---      WIDGET_MANAGER:updateIP()
-
---      -- TODO: Have a table to contain all of the callbacks & itterate through & run them
-
---      -- TODO: find a way to grab the ssid info
---          -- Probably with 'nmcli d', maybe 'nmcli d | grep wifi', though that does limit it to wifi (though that is the only realistic use case, aside from determining when we're sharing our internet through ethernet)
---          -- 'nmcli d | grep -E "wifi|ethernet"' would also work but then we need to identify the applicable networks
---  end)
--- end
-
 -- TODO: Get this working with
 function perScreen(callback)
     local returnValues = {}
@@ -167,9 +131,6 @@ function setupSignals()
     client.connect_signal("property::floating", clientDidChangeFloating)
     client.connect_signal("mouse::enter", clientDidMouseEnter)
     setupClientRequestActivate()
-
-    -- Network Signals
-    setup_network_connectivity_change_listener()
 end
 
 local function transientShouldBeSticky(c)
@@ -270,7 +231,7 @@ function screenInit(s)
     popup.init(s)
 
     --Wiboxes w/ Widgets
-    WIDGET_MANAGER:initWiboxes(s)
+    WIDGET_MANAGER.initWiboxes(s)
 end
 
 --Utility
@@ -326,13 +287,7 @@ function notify_send(text, timeout, preset)
                    timeout=timeout or 0})
 end
 
--- System --
-------------
--- IP
-function retrieveIPAddress(device)
-    return execForOutput("ip addr show dev "..device.." | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | tr -d '\n'")
-end
-
+-- Programs
 function startupPrograms()
     -- TODO: run_once takes a while, probably due to system calls, try making a script that takes a list of files and runs them with the same commands as before)
     for _,program in pairs(CONFIG.startup.programs) do
