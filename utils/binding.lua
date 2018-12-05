@@ -1,4 +1,4 @@
-local akey = require("awful.key")
+local awful = require("awful")
 
 local binding = {}
 
@@ -68,9 +68,15 @@ local function mapAction(action, environment)
         context = assert(context[key], "ACTION_NOT_FOUND: " .. actionName)
     end
 
-    return function()
+    return function(...)
+        -- append user supplied args to runtime args
+        local runtimeArgs = {...}
+        for i, arg in ipairs(args) do
+            table.insert(runtimeArgs, arg);
+        end
+
         -- call action
-        context(unpack(args))
+        context(unpack(runtimeArgs))
     end
 end
 
@@ -78,7 +84,7 @@ local function createBinding(spec, action, environment)
     local parts = mapKeys(extractParts(spec))
     local key = table.remove(parts)
 
-    return akey(parts, key, mapAction(action, environment))
+    return awful.key(parts, key, mapAction(action, environment))
 end
 
 function binding.createKeys(keybindings, environment)
