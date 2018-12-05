@@ -144,8 +144,17 @@ return {
         ["Super + Shift + o"] = {action = "command.run", args = {"rootEditor"}},
         -- awesome
         ["Super + Ctrl + r"] = "awesome.restart",
-        -- TODO: Volume
-        -- TODO: Brightness
+        -- Volume
+        ["XF86AudioMute"] = "volume.toggleMute",
+        ["XF86AudioLowerVolume"] = {action = "volume.change", args = {"-", 10}},
+        ["XF86AudioRaiseVolume"] = {action = "volume.change", args = {"+", 10}}, -- TODO: consider if want to use or get rid of: CONFIG.volume.change.normal
+        ["Shift + XF86AudioLowerVolume"] = {action = "volume.change", args = {"-", 1}}, -- TODO: consider if want to use or get rid of: CONFIG.volume.change.small
+        ["Shift + XF86AudioRaiseVolume"] = {action = "volume.change", args = {"+", 1}},
+        -- Brightness
+        ["XF86MonBrightnessUp"] = {action = "brightness.change", args = {"+", 10}},
+        ["XF86MonBrightnessDown"] = {action = "brightness.change", args = {"-", 10}}, -- TODO: change to use CONFIG.brightness.change.normal
+        ["Shift + XF86MonBrightnessUp"] = {action = "brightness.change", args = {"+", 1}}, -- TODO: change to use CONFIG.brightness.change.small
+        ["Shift + XF86MonBrightnessDown"] = {action = "brightness.change", args = {"-", 1}},
         -- Screenshot
         ["Print"] = "screenshot.capture",
         ["Super + Print"] = "screenshot.snip",

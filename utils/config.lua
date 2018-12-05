@@ -327,11 +327,6 @@ end
 
 -- System --
 ------------
--- Screen --
--- Brightness
-function changeBrightness(incORDec, amount)
-    awful.spawn.with_shell("~/.scripts/brightness.sh change " .. incORDec .. ' ' .. amount)
-end
 -- IP
 function retrieveIPAddress(device)
     return execForOutput("ip addr show dev "..device.." | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | tr -d '\n'")

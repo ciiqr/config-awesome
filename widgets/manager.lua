@@ -5,6 +5,7 @@ local wibox = require("wibox")
 local naughty = require("naughty")
 local gears = require("gears")
 local quake = require("quake")
+local volume = require("system.volume")
 
 -- TODO: it's been great but I think it's time for us to split
 
@@ -118,47 +119,28 @@ end
 
 -- Volume
 function WidgetManager:getVolume()
-    -- TODO: we want a single instance, and the wiboxes are attached to the screen, so maybe screen.primary
+    local widget = wibox.widget.textbox()
 
-    self.volume = wibox.widget.textbox() -- 🔇 -- Mute icon --
-    self.volume:buttons(gears.table.join(
-        awful.button({}, MOUSE_SCROLL_UP, function() WidgetManager:changeVolume("+", CONFIG.volume.change.small) end),
-        awful.button({}, MOUSE_SCROLL_DOWN, function() WidgetManager:changeVolume("-", CONFIG.volume.change.small) end),
+    -- buttons
+    widget:buttons(gears.table.join(
+        awful.button({}, MOUSE_SCROLL_UP, function() volume.change("+", CONFIG.volume.change.small) end),
+        awful.button({}, MOUSE_SCROLL_DOWN, function() volume.change("-", CONFIG.volume.change.small) end),
         awful.button({}, 1, function() run_once("pavucontrol") end)
     ))
 
-    self:displayVolume()
-    return self.volume
-end
-function WidgetManager:changeVolume(incORDec, change)
-    -- Change
-    awful.spawn.easy_async_with_shell('~/.scripts/volume.sh change '..incORDec..' '..change..'%', function()
-        self:displayVolume()
-    end)
-end
-function WidgetManager:toggleMute()
-    awful.spawn.easy_async_with_shell('~/.scripts/volume.sh toggle-mute', function()
-        self:displayVolume()
-    end)
-end
-function WidgetManager:displayVolume()
-    local displayValue = self:getVolumeForDisplay()
+    -- update func
+    local function update()
+        local displayValue = volume.isMuted() and 'Off' or volume.getVolume()
 
-    self.volume:set_markup('<span foreground="#ffaf5f" weight="bold">🔈 '..displayValue..'</span>')
-end
-function WidgetManager:isMuted()
-    local muted = trim(execForOutput("~/.scripts/volume.sh is-muted"))
-    return muted == 'yes'
-end
-function WidgetManager:getVolumePercent()
-    return execForOutput("~/.scripts/volume.sh get")
-end
-function WidgetManager:getVolumeForDisplay()
-    if self:isMuted() then
-        return 'Off'
+        -- 🔇 -- Mute icon --
+        widget:set_markup('<span foreground="#ffaf5f" weight="bold">🔈 '..displayValue..'</span>')
     end
 
-    return self:getVolumePercent()
+    -- signal
+    volume:connect_signal(volume.CHANGED, update)
+
+    update()
+    return widget
 end
 
 -- Memory
