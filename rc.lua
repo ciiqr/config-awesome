@@ -11,7 +11,6 @@ local beautiful = require("beautiful")
 
 -- TODO: globals, clean up
 CONFIG = require("config")
-WIDGET_MANAGER = require("widgets.manager")
 THEME_PATH = gears.filesystem.get_configuration_dir() .. "theme"
 
 -- Theme

@@ -4,6 +4,7 @@ local naughty = require("naughty")
 local beautiful = require("beautiful")
 local inspect = require("third-party.inspect") -- TODO: luarocks instead?
 local popup = require("utils.popup")
+local widgetManager = require("widgets.manager")
 
 -- Client
 -- TODO: Determine if I can make the window adjust when the screen's working area changes, add listener when fullscreen, remove when not
@@ -231,7 +232,7 @@ function screenInit(s)
     popup.init(s)
 
     --Wiboxes w/ Widgets
-    WIDGET_MANAGER.initWiboxes(s)
+    widgetManager.initWiboxes(s)
 end
 
 --Utility
