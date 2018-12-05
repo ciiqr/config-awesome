@@ -67,13 +67,6 @@ function minimizeClient(c)
         c.minimized = true
     end
 end
-function restoreClient()
-    local c = awful.client.restore()
-    -- Ensure unminimized client is the new focused client
-    if c then
-        client.focus = c
-    end
-end
 function toggleClient(c)
   if c == client.focus then
     c.minimized = true
@@ -164,46 +157,6 @@ function switchToTag(tagNum)
         tag:view_only()
     end
 end
-function increaseMwfact(add)
-    local new_mwfact = awful.screen.focused().selected_tag.master_width_factor + add
-    -- Only change the mwfact if it's not going to make things invisible
-    if new_mwfact < 1 and new_mwfact > 0 then
-        awful.tag.incmwfact(add, t)
-    end
-end
--- function getClientWfact(c)
---     local c = c or client.focus
---     if not c then return end
-
---     local t = c.screen.selected_tag
---     local w = awful.client.idx(c)
---     local nmaster = t.master_count
---     local data = t.windowfact or {}
---     local colfact = data[w.col]
---     return colfact[w.idx] or 1
--- end
--- function increaseClientWfact(add, c)
---  local new_wfact = getClientWfact(c) + add
---  -- Only change the wfact if it's not going to make things invisible
---     if new_wfact < 1 and new_wfact > 0 then
---      awful.client.incwfact(add * (1080 / c:geometry().height), c)
---     end
-
---      -- awful.client.incwfact(add, c)
--- end
--- function increaseClientWfact(add, c)
---  local c = c or client.focus
---  if not c then return end
-
---  local clientHeight = c:geometry().height
---  local tagHeight = 1080 -- TODO: MUST CHANGE THIS, just lazy while testing/hacking
-
---  -- local newHeight = clientHeight + (tagHeight * add)
---  -- Only change the wfact if it's not going to make things invisible
---  -- if newHeight > 0 then
---      idk(clientHeight + tagHeight * add, c)
---  -- end
--- end
 
 -- function idk(add, c)
 --  local c = c or client.focus
@@ -234,13 +187,3 @@ end
 --      c:geometry({height=newHeight})
 --  end
 -- end
-
--- Wibox
-function toggleWibox(name)
-    local screen = awful.screen.focused()
-    local wibox = screen[name .. "Wibox"]
-    wibox.visible = not wibox.visible
-end
-function toggleWiboxes(name)
-    toggleWibox(name)
-end

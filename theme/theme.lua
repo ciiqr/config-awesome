@@ -139,7 +139,7 @@ local theme = {
     layout_thrizen    = gears.filesystem.get_configuration_dir() .. "/layouts/thrizen/themes/default/thrizen.png",
 
     -- layout details
-    column_count = 3,
+    column_count = 2,
     master_width_factor = 1/3,
 
     --

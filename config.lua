@@ -56,18 +56,19 @@ return {
     commands = {
         terminal = "urxvt",
         fileManager = "spacefm",
+        rootFileManager = "gksudo spacefm",
         editor = "sublime",
-        graphicalSudo = "gksudo",
+        rootEditor = "gksudo sublime",
         sleep = "~/.scripts/power.sh suspend",
         screenshot = "scrot ~/Dropbox/Screenshots/$(date '+%Y-%m-%d-%T')-$(lsb_release -sc).png",
         screenshotSelect = "gm import ~/Dropbox/Screenshots/$(date '+%Y-%m-%d-%T')-$(lsb_release -sc).png",
-        screenInvert = "xcalib -i -a",
         fileOpener = "xdg-open \"$(locate \"\" | dmenu -i -p Open -l 20 -fn \"Nimbus Sans L-10\")\"",
         windowSwitcher = "rofi -modi window -show",
         isRunning = "is-running",
         setWallpaper = "feh --xinerama-index {screen} --randomize --bg-fill {directory}/*",
         ipInfo = "urxvt -e bash -c 'ip addr show; cat'",
         networkTraffic = "urxvt -e bash -c 'sudo nethogs {device}'",
+        pastePrimary = "xdotool click 2",
     },
     popups = {
         -- TODO: consider making the command configurable via config key
@@ -113,29 +114,52 @@ return {
         ["Super + Shift + Tab"] = "client.viewPrev",
         ["Super + Next"] = "client.viewNext",
         ["Super + Prior"] = "client.viewPrev",
-
+        -- ClientRestore
+        ["Super + Control + Up"] = "client.restore",
+        -- Maximize
+        ["Super + Up"] = "layout.viewMaximized",
+        -- Revert Maximize
+        ["Super + Down"] = "layout.revertMaximized",
+        -- Sleep
+        ["XF86Sleep"] = {action = "command.run", args = {"sleep"}},
+        ["Super + Control + q"] = {action = "command.run", args = {"sleep"}},
+        -- Change Position
+        ["Super + Left"] = "client.swapPrev",
+        ["Super + Right"] = "client.swapNext",
+        -- Move Middle
+        ["Super + Shift + Left"] = {action = "tag.increaseMwfact", args = {-0.05}},
+        ["Super + Shift + Right"] = {action = "tag.increaseMwfact", args = {0.05}},
+        -- Switch between screens
+        ["Super + F1"] = {action = "awful.screen.focus", args = {1}},
+        ["Super + F2"] = {action = "awful.screen.focus", args = {2}},
+        ["Super + F3"] = {action = "awful.screen.focus", args = {3}},
+        -- Launcher Style Popups
+        ["Super + w"] = {action = "command.run", args = {"fileOpener"}},
+        ["Super + s"] = {action = "command.run", args = {"windowSwitcher"}},
+        -- Programs
+        ["Super + t"] = {action = "command.run", args = {"terminal"}},
+        ["Super + Enter"] = {action = "command.run", args = {"fileManager"}},
+        ["Super + Shift + Enter"] = {action = "command.run", args = {"rootFileManager"}},
+        ["Super + o"] = {action = "command.run", args = {"editor"}},
+        ["Super + Shift + o"] = {action = "command.run", args = {"rootEditor"}},
         -- awesome
         ["Super + Ctrl + r"] = "awesome.restart",
+        -- TODO: Volume
+        -- TODO: Brightness
+        -- Screenshot
+        ["Print"] = "screenshot.capture",
+        ["Super + Print"] = "screenshot.snip",
+        -- Copypasta
+        ["Insert"] = {action = "command.run", args = {"pastePrimary"}}, -- If I stop using, put 'keycode 118 = ' back in .Xmodmap
+        -- Cycle Displays
+        ["Super + F11"] = "xrandr", -- TODO: refactor xrandr module so this command can be: xrandr.cycle
+
+
         -- popups
-        ["Super + Shift + t"] = {
-            action = "widget_manager.togglePopup",
-            args = {"terminal"}
-        },
-        ["Super + Shift + n"] = {
-            action = "widget_manager.togglePopup",
-            args = {"note"}
-        },
-        ["Super + Shift + c"] = {
-            action = "widget_manager.togglePopup",
-            args = {"cpu"}
-        },
-        ["Super + Shift + m"] = {
-            action = "widget_manager.togglePopup",
-            args = {"mem"}
-        },
-        ["Super + Shift + k"] = {
-            action = "widget_manager.togglePopup",
-            args = {"keepass"}
-        },
+        ["Super + Shift + t"] = {action = "widget_manager.togglePopup", args = {"terminal"}},
+        ["Super + Shift + n"] = {action = "widget_manager.togglePopup", args = {"note"}},
+        ["Super + Shift + c"] = {action = "widget_manager.togglePopup", args = {"cpu"}},
+        ["Super + Shift + m"] = {action = "widget_manager.togglePopup", args = {"mem"}},
+        ["Super + Shift + k"] = {action = "widget_manager.togglePopup", args = {"keepass"}},
     },
 }

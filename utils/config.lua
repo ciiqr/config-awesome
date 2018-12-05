@@ -3,31 +3,6 @@ local gears = require("gears")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
 local inspect = require("third-party.inspect") -- TODO: luarocks instead?
--- Type: Tag, Client, Screen, Layout, Wibox
--- Actions: Toggle, Switch, Move, Follow, restore, minimize
--- Descriptors: Left, Right, First, Last
-
--- Layout
-function switchToMaximizedLayout()
-    -- If No Layout Stored Then
-    local screen = awful.screen.focused()
-    local tag = screen.selected_tag
-    if (not tag.preMaximizeLayout) then
-        -- Store Current Layout
-        tag.preMaximizeLayout = tag.layout
-        -- Change to Maximized
-        tag.layout = awful.layout.suit.max
-    end
-end
-function revertFromMaximizedLayout()
-    -- Revert Maximize
-    local screen = awful.screen.focused()
-    local tag = screen.selected_tag
-    if (tag.layout == awful.layout.suit.max) then
-        tag.layout = tag.preMaximizeLayout
-        tag.preMaximizeLayout = nil
-    end
-end
 
 -- Client
 -- TODO: Determine if I can make the window adjust when the screen's working area changes, add listener when fullscreen, remove when not
@@ -298,17 +273,6 @@ function screenInit(s)
 end
 
 --Utility
-function captureScreenshot()
-    awful.spawn.easy_async_with_shell(CONFIG.commands.screenshot, function()
-        notify_send("Screenshot Taken", 1)
-    end)
-end
-function captureScreenSnip()
-    awful.spawn.easy_async_with_shell(CONFIG.commands.screenshotSelect, function()
-        notify_send("Screenshot Taken", 1)
-    end)
-end
-
 function evalTemplate(template, data)
     return template:gsub("{([%w_]+)}", data)
 end
@@ -371,10 +335,6 @@ end
 -- IP
 function retrieveIPAddress(device)
     return execForOutput("ip addr show dev "..device.." | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | tr -d '\n'")
-end
--- Clipboard
-function pasteClipboardIntoPrimary()
-    awful.spawn("/home/william/.local/bin/paste-clipboard-to-primary")
 end
 
 function startupPrograms()

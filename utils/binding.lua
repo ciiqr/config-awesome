@@ -47,6 +47,9 @@ local function extractAction(action)
 end
 
 local function mapAction(action, environment)
+    -- TODO: consider allowing an array style table instead of just a dictionary style table ie.
+        -- {action = "command.run", args = {"sleep"}}
+        -- {"command.run", "sleep"}
     -- get action details
     local actionName
     local args
