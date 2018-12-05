@@ -40,14 +40,6 @@ function run_once(prg)
 end
 
 -- Clients
-function minimizeClient(c)
-    -- Prevents Windows Being Minimized if they aren't on the task bar
-    -- TODO: I should consider allowing minimizing of these clients and simply causing them to show up on the taskbar (but save their skip_taskbar status and when restoring, also restore skip_taskbar to true)
-    if not c.skip_taskbar then
-        -- Minimize
-        c.minimized = true
-    end
-end
 function toggleClient(c)
   if c == client.focus then
     c.minimized = true
@@ -81,43 +73,7 @@ function moveClientToTagAndFollow(tagNum, c)
         end
     end
 end
-function moveClientToFirstTagAndFollow(c)
-    moveClientToTagAndFollow(1, c)
-end
-function moveClientToLastTagAndFollow(c)
-    moveClientToTagAndFollow(-1, c)
-end
 -- TODO: Maybe think of a clean way to modularize below 2, would be nice to use moveClientToTagAndFollow
-function moveClientLeftAndFollow(c)
-    local tags = client.focus.screen.tags
-    local curidx = awful.screen.focused().selected_tag.index
-    local tag
-    if curidx == 1 then
-        tag = tags[#tags]
-    else
-        tag = tags[curidx - 1]
-    end
-    client.focus:move_to_tag(tag)
-    --Follow
-    tag:view_only()
-end
-function moveClientRightAndFollow(c)
-    local tags = client.focus.screen.tags
-    local curidx = awful.screen.focused().selected_tag.index
-    local tag
-    if curidx == #tags then
-        tag = tags[1]
-    else
-        tag = tags[curidx + 1]
-    end
-    --Move
-    client.focus:move_to_tag(tag)
-    --Follow
-    tag:view_only()
-end
-function toggleClientFullscreen(c)
-    c.fullscreen = not c.fullscreen
-end
 function toggleClientTag(tagNum)
     local tag = client.focus.screen.tags[tagNum]
     if client.focus and tag then
