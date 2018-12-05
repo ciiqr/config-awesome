@@ -173,4 +173,29 @@ return {
         ["Super + Shift + k"] = {action = "popup.toggle", args = {"keepass"}},
         -- ["Super + Shift + a"] = {action = "popup.toggle", args = {"audio"}},
     },
+    client = {
+        keybindings = {
+            -- Move Between Tags
+            ["Super + Alt + Left"] = "client.moveLeftAndFollow",
+            ["Super + Alt + Right"] = "client.moveRightAndFollow",
+            ["Super + Alt + Up"] = "client.moveToFirstTagAndFollow",
+            ["Super + Alt + Down"] = "client.moveToLastTagAndFollow",
+            -- Kill
+            ["Super + q"] = "client.kill",
+            -- Fullscreen
+            ["Super + f"] = "client.toggleFullscreen",
+            -- Multi Fullscreen
+            ["Super + Shift + f"] = "client.toggleMultiFullscreen",
+            -- Minimize
+            ["Super + Ctrl + Down"] = "client.minimize",
+            -- Floating
+            ["Super + Alt + space"] = "client.toggleFloating",
+            -- Sticky
+            ["Super + Alt + s"] = "client.toggleSticky",
+            -- PIP
+            ["Super + Alt + p"] = "client.togglePip",
+            -- Debug Info
+            ["Super + g"] = "client.debug",
+        },
+    },
 }

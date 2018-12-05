@@ -1,6 +1,7 @@
 local awful = require("awful")
 local gears = require("gears")
 local beautiful = require("beautiful")
+local binding = require("utils.binding")
 
 local name_callback = {}
 
@@ -8,62 +9,13 @@ local name_callback = {}
 -- TODO: extract client keys/buttons
 
 --Keys
-local clientkeys = gears.table.join(
-    -- Move Between Tags
-     awful.key({SUPER, ALT}, "Left", moveClientLeftAndFollow)
-    ,awful.key({SUPER, ALT}, "Right", moveClientRightAndFollow)
-    ,awful.key({SUPER, ALT}, "Up", moveClientToFirstTagAndFollow)
-    ,awful.key({SUPER, ALT}, "Down", moveClientToLastTagAndFollow)
-    --Kill
-    ,awful.key({SUPER}, "q", function(c) c:kill() end)
+local environment = {
+    client = require("actions.client"),
+}
+-- Client Key Bindings
+local keys = binding.createKeys(CONFIG.client.keybindings, environment)
+local clientkeys = gears.table.join(unpack(keys))
 
-    --Fullscreen
-    ,awful.key({SUPER}, "f", toggleClientFullscreen)
-
-    -- Multi Fullscreen
-    ,awful.key({SUPER, SHIFT}, "f", toggleClientMultiFullscreen)
-
-    --Minimize
-    ,awful.key({SUPER, CONTROL}, "Down", minimizeClient)
-
-    --Floating
-    ,awful.key({SUPER, ALT}, "space", function(c) c.floating = not c.floating end)
-
-    -- Sticky
-    ,awful.key({SUPER, ALT}, "s", function(c) c.sticky = not c.sticky end)
-
-    -- PIP
-    -- TODO: Move this
-    ,awful.key({SUPER, ALT}, "p", function(c)
-        -- TODO: Uses sticky to determine if it's in in pip mode or not...
-        if c.sticky then
-            -- Disable...
-            c.sticky = false
-            c.skip_taskbar = false
-            c.floating = false
-        else -- Enable
-            c.sticky = true
-            c.skip_taskbar = true
-            c.floating = true
-
-            -- Get screen dimensions
-            local screenRect = awful.screen.focused().geometry
-            -- Set window dimensions and position based on screen size...
-            local PIP_SIZE_RATIO = 3
-            local newWidth = screenRect.width / PIP_SIZE_RATIO
-            local newHeight = screenRect.height / PIP_SIZE_RATIO
-            c:geometry({
-                x = screenRect.x + (screenRect.width - newWidth),
-                y = screenRect.y + (screenRect.height - newHeight),
-                width = newWidth,
-                height = newHeight
-            })
-        end
-    end)
-
-    --Debug Info
-    ,awful.key({SUPER}, "g", debugClient)
-)
 --Buttons
 local clientButtons = gears.table.join(
     awful.button({}, MOUSE_LEFT, function(c) client.focus = c; c:raise() end)-- Click Focuses & Raises

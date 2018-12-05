@@ -1,3 +1,5 @@
+local inspect = require("third-party.inspect") -- TODO: luarocks instead?
+
 -- Saves the content to the specified file name OR a default name (Over-Writes existing files)
 local function saveFile(content, fileName)
     local file = io.open(fileName or "saveFile.txt", "w")

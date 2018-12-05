@@ -4,6 +4,7 @@ local quake = require("quake")
 
 local popup = {}
 
+-- TODO: consider moving this out, since it's not an action...
 function popup.init(screen)
     for _,popup in ipairs(CONFIG.popups) do
         -- Ensure we have a table
