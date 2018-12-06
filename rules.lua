@@ -1,20 +1,11 @@
 local awful = require("awful")
 local gears = require("gears")
 local beautiful = require("beautiful")
-local binding = require("utils.binding")
 
 local name_callback = {}
 
 -- TODO: improve
 -- TODO: extract client buttons
-
---Keys
-local environment = {
-    client = require("actions.client"),
-}
--- Client Key Bindings
-local keys = binding.createKeys(CONFIG.client.keybindings, environment)
-local clientkeys = gears.table.join(unpack(keys))
 
 --Buttons
 local clientButtons = gears.table.join(
@@ -36,7 +27,7 @@ return {
             -- Focus
             focus = awful.client.focus.filter, -- TODO: This is probably the reason that a tingle window isn't focused when we reload, FIX ME
             -- Interaction
-            keys = clientkeys,
+            keys = require("keybindings.client"),
             buttons = clientButtons,
             -- Prevent Clients Maximized on Start
             maximized_vertical   = false,

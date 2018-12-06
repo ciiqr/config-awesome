@@ -1,10 +1,9 @@
 require("awful.autofocus")
 require("awful.remote")
 require("utils.debug")
-require("utils.lua")
-require("utils.awesome")
-require("utils.config")
+require("utils.functions")
 require("enums")
+require("errors")
 
 local awful = require("awful")
 local gears = require("gears")
@@ -21,7 +20,7 @@ beautiful.init(THEME_PATH .. "/theme.lua")
 awful.layout.layouts = require("layouts")
 
 -- Global Keys
-root.keys(require("keybindings"))
+root.keys(require("keybindings.global"))
 
 -- Rules
 awful.rules.rules = require("rules")

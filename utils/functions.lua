@@ -157,8 +157,51 @@ function notify_send(text, timeout, preset)
 end
 
 -- Programs
+function run_once(prg)
+    awful.spawn.with_shell('~/.scripts/run-once.sh ' .. prg)
+end
+
 function startupPrograms()
     for _,program in ipairs(CONFIG.startup.programs) do
         run_once(program)
     end
+end
+
+-- Clients
+function toggleClient(c)
+  if c == client.focus then
+    c.minimized = true
+  else
+    c.minimized = false
+    if not c:isvisible() and c.first_tag then
+        c.first_tag:view_only()
+    end
+    client.focus = c
+  end
+end
+
+if not table.indexOf then
+    function table.indexOf(haystack, needle)
+        for index, value in ipairs(haystack) do
+            if value == needle then
+                return index
+            end
+        end
+
+        return nil
+    end
+end
+
+-- trim string
+-- SOURCE: http://lua-users.org/wiki/StringTrim#trim6
+function trim(s)
+    return s:match'^()%s*$' and '' or s:match'^%s*(.*%S)'
+end
+
+function execForOutput(command)
+    local file = assert(io.popen(command))
+    local output = file:read("*all")
+
+    file:close()
+    return output
 end
