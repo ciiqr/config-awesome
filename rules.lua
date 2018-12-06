@@ -6,7 +6,7 @@ local binding = require("utils.binding")
 local name_callback = {}
 
 -- TODO: improve
--- TODO: extract client keys/buttons
+-- TODO: extract client buttons
 
 --Keys
 local environment = {

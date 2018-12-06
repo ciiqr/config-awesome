@@ -37,3 +37,5 @@ for i = 1, #CONFIG.screens.tags do
 end
 
 return globalKeys
+
+-- TODO: move, ie. keybindings.global,

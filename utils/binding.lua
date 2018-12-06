@@ -1,4 +1,5 @@
 local awful = require("awful")
+local gears = require("gears")
 
 local binding = {}
 
@@ -46,7 +47,7 @@ local function extractAction(action)
     return parts
 end
 
-local function mapAction(action, environment)
+local function mapAction(action, environment, keyArgs)
     -- TODO: consider allowing an array style table instead of just a dictionary style table ie.
         -- {action = "command.run", args = {"sleep"}}
         -- {"command.run", "sleep"}
@@ -69,8 +70,12 @@ local function mapAction(action, environment)
     end
 
     return function(...)
-        -- append user supplied args to runtime args
         local runtimeArgs = {...}
+        -- append key args
+        for i, arg in ipairs(keyArgs) do
+            table.insert(runtimeArgs, arg);
+        end
+        -- append user supplied args
         for i, arg in ipairs(args) do
             table.insert(runtimeArgs, arg);
         end
@@ -80,11 +85,49 @@ local function mapAction(action, environment)
     end
 end
 
+local function evalKeyPattern(key)
+    local result = {}
+
+    -- if key matches {%d-%d} ie. {0-9}
+    local match = key:match("{(%d+-%d+)}")
+    if match then
+        -- split match on -
+        local parts = {}
+        for part in string.gmatch(match, "[^-]+") do
+            table.insert(parts, part)
+        end
+        assert(#parts == 2, "KEY_PATTERN_IMPOSSIBLE: ")
+
+        -- create keys for range
+        for i = parts[1], parts[2] do
+            local keyCode = i + 9
+            table.insert(result, {
+                key = "#"..keyCode,
+                args = {i},
+            })
+        end
+    else
+        -- create normal key
+        table.insert(result, {
+            key = key,
+            args = {},
+        })
+    end
+
+    return result
+end
+
 local function createBinding(spec, action, environment)
     local parts = mapKeys(extractParts(spec))
-    local key = table.remove(parts)
+    local keyPattern = table.remove(parts)
+    local keys = evalKeyPattern(keyPattern)
 
-    return awful.key(parts, key, mapAction(action, environment))
+    local awfulKeys = {}
+    for i,key in ipairs(keys) do
+        local iKeys = awful.key(parts, key.key, mapAction(action, environment, key.args))
+        awfulKeys = gears.table.join(awfulKeys, iKeys)
+    end
+    return awfulKeys
 end
 
 function binding.createKeys(keybindings, environment)
