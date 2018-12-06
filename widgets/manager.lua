@@ -7,7 +7,7 @@ local gears = require("gears")
 local volume = require("system.volume")
 local network = require("system.network")
 local battery = require("system.battery")
-local popup = require("utils.popup")
+local popup = require("actions.popup")
 
 -- TODO: it's been great but I think it's time for us to split
 
@@ -277,12 +277,12 @@ end
 
 -- LayoutBox
 function WidgetManager.getLayoutBox(screen)
-    local layoutUtils = require("utils.layout")
+    local layoutActions = require("actions.layout")
 
     local layoutBox = awful.widget.layoutbox(screen)
     layoutBox:buttons(gears.table.join(
-        awful.button({}, 1, layoutUtils.viewNext)
-        ,awful.button({}, 3, layoutUtils.viewPrev)
+        awful.button({}, 1, layoutActions.viewNext)
+        ,awful.button({}, 3, layoutActions.viewPrev)
     ))
 
     return layoutBox

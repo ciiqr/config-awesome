@@ -2,7 +2,7 @@ local awful = require("awful")
 local gears = require("gears")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
-local popup = require("utils.popup")
+local popup = require("actions.popup")
 local widgetManager = require("widgets.manager")
 
 --Signals
