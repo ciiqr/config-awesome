@@ -100,6 +100,7 @@ local function evalKeyPattern(key)
 
         -- create keys for range
         for i = parts[1], parts[2] do
+            -- NOTE: Uses keycodes to make sure it works on any keyboard layout
             local keyCode = i + 9
             table.insert(result, {
                 key = "#"..keyCode,

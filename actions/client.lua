@@ -30,7 +30,30 @@ function action.restore()
 end
 
 -- client
--- TODO: Maybe think of a clean way to modularize below 2, would be nice to use moveClientToTagAndFollow
+function action.moveToTagAndFollow(c, tagNum)
+    local c = c or client.focus
+    if c then
+        -- All tags on the screen
+        local tags = c.screen.tags
+        -- Index of tag
+        local index
+        if tagNum == -1 then
+            index = #tags
+        else
+            index = tagNum
+        end
+        -- Get Tag
+        local tag = tags[index]
+        if tag then
+            -- Move Window
+            client.focus:move_to_tag(tag)
+            -- Show Tag
+            tag:view_only()
+        end
+    end
+end
+
+-- TODO: Maybe think of a clean way to modularize below 2, would be nice to use action.moveToTagAndFollow
 function action.moveLeftAndFollow(c)
     local tags = client.focus.screen.tags
     local curidx = awful.screen.focused().selected_tag.index
@@ -61,11 +84,18 @@ function action.moveRightAndFollow(c)
 end
 
 function action.moveToFirstTagAndFollow(c)
-    moveClientToTagAndFollow(1, c)
+    action.moveToTagAndFollow(c, 1)
 end
 
 function action.moveToLastTagAndFollow(c)
-    moveClientToTagAndFollow(-1, c)
+    action.moveToTagAndFollow(c, -1)
+end
+
+function action.toggleTag(c, index)
+    local tag = c.screen.tags[index]
+    if tag then
+        c:toggle_tag(tag)
+    end
 end
 
 function action.kill(c)

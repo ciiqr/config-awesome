@@ -172,6 +172,9 @@ return {
         ["Super + Shift + m"] = {action = "popup.toggle", args = {"mem"}},
         ["Super + Shift + k"] = {action = "popup.toggle", args = {"keepass"}},
         -- ["Super + Shift + a"] = {action = "popup.toggle", args = {"audio"}},
+        -- Tag keys
+        ["Ctrl + Alt + {1-9}"] = "tag.viewIndex",
+        ["Super + Shift + {1-9}"] = "tag.toggleIndex",
     },
     client = {
         keybindings = {
@@ -180,6 +183,9 @@ return {
             ["Super + Alt + Right"] = "client.moveRightAndFollow",
             ["Super + Alt + Up"] = "client.moveToFirstTagAndFollow",
             ["Super + Alt + Down"] = "client.moveToLastTagAndFollow",
+            ["Super + Alt + {1-9}"] = "client.moveToTagAndFollow",
+            -- Toggle Tags
+            ["Super + Ctrl + Alt + {1-9}"] = "client.toggleTag", -- TODO: Change to Control, Alt Shift to be more like mod shift for toggling a tag visibility
             -- Kill
             ["Super + q"] = "client.kill",
             -- Fullscreen

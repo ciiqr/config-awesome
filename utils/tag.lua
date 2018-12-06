@@ -18,6 +18,21 @@ function tag.viewLast()
     end
 end
 
+function tag.viewIndex(index)
+    local tag = awful.screen.focused().tags[index]
+    if tag then
+        tag:view_only()
+    end
+end
+
+function tag.toggleIndex(tagNum)
+    local tag = awful.screen.focused().tags[tagNum]
+    if tag then
+        awful.tag.viewtoggle(tag)
+    end
+end
+
+
 function tag.increaseMwfact(add)
     local new_mwfact = awful.screen.focused().selected_tag.master_width_factor + add
     -- Only change the mwfact if it's not going to make things invisible
