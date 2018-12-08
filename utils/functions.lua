@@ -156,17 +156,6 @@ function notify_send(text, timeout, preset)
     })
 end
 
--- Programs
-function run_once(prg)
-    awful.spawn.with_shell('~/.scripts/run-once.sh ' .. prg)
-end
-
-function startupPrograms()
-    for _,program in ipairs(CONFIG.startup.programs) do
-        run_once(program)
-    end
-end
-
 -- Clients
 function toggleClient(c)
   if c == capi.client.focus then
