@@ -1,4 +1,7 @@
--- local awful = require("awful")
+local capi =
+{
+    screen = screen,
+}
 
 local screens = {}
 
