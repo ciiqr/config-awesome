@@ -19,6 +19,7 @@
 -- TODO: Is there a way we can set theme settings like this per-screen and update them as appropriate (when windows change screen for example, blah...)
 -- TODO: Also have a function for this, and also use it in rc.lua
 local gears = require("gears")
+local beautiful = require("beautiful")
 local dpi = require("beautiful.xresources").apply_dpi
 local scale_factor = dpi(1)
 local scale_factor_path = scale_factor ~= 1 and "@"..scale_factor.."x" or ""
@@ -86,9 +87,13 @@ local slightlyLighterGrey = "#424242" -- Matches GTK Theme
 -- Variables --
 --===========--
 -- BAR_TRANSPARENCY = true
-local themePathLayouts = THEME_PATH .. "/layouts/"
+local themePath = beautiful.theme_path
+local themePathLayouts = themePath .. "/layouts/"
 
 local theme = {
+    -- paths
+    theme_path = themePath,
+
     -- Fonts
     font = "DejaVu Sans Book 9", -- Roboto 9
     -- font_bold = "sans bold 10",
@@ -126,8 +131,8 @@ local theme = {
     -- Icons --
     --=======--
     -- Taglist
-    taglist_squares_sel   = THEME_PATH .. "/taglist/squarefz-double-height"..scale_factor_path..".png",
-    taglist_squares_unsel = THEME_PATH .. "/taglist/squarez"..scale_factor_path..".png",
+    taglist_squares_sel   = themePath .. "/taglist/squarefz-double-height"..scale_factor_path..".png",
+    taglist_squares_unsel = themePath .. "/taglist/squarez"..scale_factor_path..".png",
     taglist_squares_resize = "true",
 
     -- Layout

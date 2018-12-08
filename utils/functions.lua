@@ -147,7 +147,7 @@ function screenSetWallpaper(s)
 
     local resolutionPath = expandUser(evalTemplate(resolutionPathTpl, s.geometry))
     local normalPath = expandUser(evalTemplate(normalPathTpl, {
-        theme_path = THEME_PATH,
+        theme_path = beautiful.theme_path,
     }))
 
     local wallpapersPath = (gears.filesystem.dir_readable(resolutionPath) and resolutionPath or normalPath)

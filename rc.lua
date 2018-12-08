@@ -6,15 +6,13 @@ require("enums")
 require("errors")
 
 local awful = require("awful")
-local gears = require("gears")
-local beautiful = require("beautiful")
+local theme = require("theme")
 
 -- TODO: globals, clean up
 CONFIG = require("config")
-THEME_PATH = gears.filesystem.get_configuration_dir() .. "theme"
 
 -- Theme
-beautiful.init(THEME_PATH .. "/theme.lua")
+theme.init()
 
 -- Layouts
 awful.layout.layouts = require("layouts")
