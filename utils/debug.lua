@@ -1,3 +1,4 @@
+local awful = require("awful")
 local inspect = require("third-party.inspect") -- TODO: luarocks instead?
 
 -- Saves the content to the specified file name OR a default name (Over-Writes existing files)

@@ -18,30 +18,16 @@ function setupScreens()
 end
 
 --Signals
-function setupSignals()
-    -- Screen Signals
-    capi.screen.connect_signal("property::geometry", screenPropertyGeometry)
-    capi.screen.connect_signal("added", screenInit)
-
-    -- Client Signals
-    client.connect_signal("manage", manageClient)
-    client.connect_signal("focus", clientDidFocus)
-    client.connect_signal("unfocus", clientDidLoseFocus)
-    client.connect_signal("property::floating", clientDidChangeFloating)
-    client.connect_signal("mouse::enter", clientDidMouseEnter)
-    setupClientRequestActivate()
-end
-
 function setupClientRequestActivate()
     -- from: http://new.awesomewm.org/apidoc/documentation/90-FAQ.md.html
-    client.disconnect_signal("request::activate", awful.ewmh.activate)
+    capi.client.disconnect_signal("request::activate", awful.ewmh.activate)
     function awful.ewmh.activate(c)
         if c:isvisible() then
-            client.focus = c
+            capi.client.focus = c
             c:raise()
         end
     end
-    client.connect_signal("request::activate", awful.ewmh.activate)
+    capi.client.connect_signal("request::activate", awful.ewmh.activate)
 end
 
 local function transientShouldBeSticky(c)
@@ -80,7 +66,7 @@ function manageClient(c)
     -- If a client is automatically floating, make it ontop
     clientDidChangeFloating(c)
 
-    if client.focus == c then
+    if capi.client.focus == c then
         clientDidFocus(c)
     end
 end
@@ -114,8 +100,8 @@ function clientShouldAttemptFocus(c)
     -- NOTE: ALSO: Experimental support for not changing focus to fullscreen windows automatically, intended to help with the fact that fullscreen windows are displayed over top of wiboxes
     -- NOTE: Also with the fullscreen note above, the or current client floating means that I can quickly switch between a fullscreen window & say my calculator
     -- DEFAULT: and awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-    if (not client.focus) or awful.client.focus.filter(c) and ((not client.focus) or client.focus.transient_for ~= c) and (not c.fullscreen or client.focus.floating) then
-        client.focus = c
+    if (not capi.client.focus) or awful.client.focus.filter(c) and ((not capi.client.focus) or capi.client.focus.transient_for ~= c) and (not c.fullscreen or capi.client.focus.floating) then
+        capi.client.focus = c
     end
 end
 
@@ -183,14 +169,14 @@ end
 
 -- Clients
 function toggleClient(c)
-  if c == client.focus then
+  if c == capi.client.focus then
     c.minimized = true
   else
     c.minimized = false
     if not c:isvisible() and c.first_tag then
         c.first_tag:view_only()
     end
-    client.focus = c
+    capi.client.focus = c
   end
 end
 

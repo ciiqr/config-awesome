@@ -7,6 +7,9 @@ require("errors")
 
 local awful = require("awful")
 local theme = require("theme")
+local layouts = require("layouts")
+local keybindings = require("keybindings")
+local events = require("events")
 
 -- TODO: globals, clean up
 CONFIG = require("config")
@@ -15,16 +18,16 @@ CONFIG = require("config")
 theme.init()
 
 -- Layouts
-awful.layout.layouts = require("layouts")
+layouts.init()
 
--- Global Keys
-root.keys(require("keybindings.global"))
+-- Keybindings
+keybindings.init()
 
 -- Rules
 awful.rules.rules = require("rules")
 
--- Signals
-setupSignals()
+-- Events
+events.init()
 
 -- Screens
 setupScreens()
