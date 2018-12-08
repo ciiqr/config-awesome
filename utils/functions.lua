@@ -5,11 +5,23 @@ local beautiful = require("beautiful")
 local popup = require("actions.popup")
 local widgetManager = require("widgets.manager")
 
+local capi =
+{
+    screen = screen,
+    client = client,
+}
+
+function setupScreens()
+    for screen in capi.screen do
+        screenInit(screen)
+    end
+end
+
 --Signals
 function setupSignals()
     -- Screen Signals
-    screen.connect_signal("property::geometry", screenSetWallpaper)
-    awful.screen.connect_for_each_screen(screenInit)
+    capi.screen.connect_signal("property::geometry", screenSetWallpaper)
+    capi.screen.connect_signal("added", screenInit)
 
     -- Client Signals
     client.connect_signal("manage", manageClient)
@@ -18,6 +30,18 @@ function setupSignals()
     client.connect_signal("property::floating", clientDidChangeFloating)
     client.connect_signal("mouse::enter", clientDidMouseEnter)
     setupClientRequestActivate()
+end
+
+function setupClientRequestActivate()
+    -- from: http://new.awesomewm.org/apidoc/documentation/90-FAQ.md.html
+    client.disconnect_signal("request::activate", awful.ewmh.activate)
+    function awful.ewmh.activate(c)
+        if c:isvisible() then
+            client.focus = c
+            c:raise()
+        end
+    end
+    client.connect_signal("request::activate", awful.ewmh.activate)
 end
 
 local function transientShouldBeSticky(c)
@@ -80,18 +104,6 @@ function clientDidMouseEnter(c)
     end
 end
 
-function setupClientRequestActivate()
-    -- from: http://new.awesomewm.org/apidoc/documentation/90-FAQ.md.html
-    client.disconnect_signal("request::activate", awful.ewmh.activate)
-    function awful.ewmh.activate(c)
-        if c:isvisible() then
-            client.focus = c
-            c:raise()
-        end
-    end
-    client.connect_signal("request::activate", awful.ewmh.activate)
-end
-
 function screenPropertyGeometry(s)
     screenSetWallpaper(s)
 end
@@ -150,10 +162,12 @@ end
 
 --Naughty
 function notify_send(text, timeout, preset)
-    naughty.notify({preset=preset or naughty.config.presets.normal,
-                      text=text,
-                    screen=screen.count(),
-                   timeout=timeout or 0})
+    naughty.notify({
+        preset = preset or naughty.config.presets.normal,
+        text = text,
+        screen = capi.screen.count(),
+        timeout = timeout or 0
+    })
 end
 
 -- Programs

@@ -28,5 +28,8 @@ awful.rules.rules = require("rules")
 -- Signals
 setupSignals()
 
+-- Screens
+setupScreens()
+
 -- Startup Programs
 startupPrograms()
