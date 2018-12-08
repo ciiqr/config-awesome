@@ -5,32 +5,22 @@ require("utils.functions")
 require("enums")
 require("errors")
 
-local awful = require("awful")
 local theme = require("theme")
 local layouts = require("layouts")
 local keybindings = require("keybindings")
+local rules = require("rules")
 local events = require("events")
+local screens = require("screens")
+local programs = require("programs")
 
 -- TODO: globals, clean up
 CONFIG = require("config")
 
--- Theme
+-- pretty good, innit
 theme.init()
-
--- Layouts
 layouts.init()
-
--- Keybindings
 keybindings.init()
-
--- Rules
-awful.rules.rules = require("rules")
-
--- Events
+rules.init()
 events.init()
-
--- Screens
-setupScreens()
-
--- Startup Programs
-startupPrograms()
+screens.init()
+programs.init()
