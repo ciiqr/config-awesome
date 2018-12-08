@@ -1,37 +1,41 @@
 local awful = require("awful")
 local beautiful = require("beautiful")
--- TODO: screen/client globals...
+local capi =
+{
+    screen = screen,
+    client = client,
+}
 
-local action = {}
+local client = {}
 
 -- global
-function action.viewNext()
+function client.viewNext()
     awful.client.focus.byidx(FORWARDS)
 end
 
-function action.viewPrev()
+function client.viewPrev()
     awful.client.focus.byidx(BACKWARDS)
 end
 
-function action.swapNext()
+function client.swapNext()
     awful.client.swap.byidx(FORWARDS)
 end
 
-function action.swapPrev()
+function client.swapPrev()
     awful.client.swap.byidx(BACKWARDS)
 end
 
-function action.restore()
+function client.restore()
     local c = awful.client.restore()
     -- Ensure unminimized client is the new focused client
     if c then
-        client.focus = c
+        capi.client.focus = c
     end
 end
 
 -- client
-function action.moveToTagAndFollow(c, tagNum)
-    local c = c or client.focus
+function client.moveToTagAndFollow(c, tagNum)
+    local c = c or capi.client.focus
     if c then
         -- All tags on the screen
         local tags = c.screen.tags
@@ -46,16 +50,16 @@ function action.moveToTagAndFollow(c, tagNum)
         local tag = tags[index]
         if tag then
             -- Move Window
-            client.focus:move_to_tag(tag)
+            capi.client.focus:move_to_tag(tag)
             -- Show Tag
             tag:view_only()
         end
     end
 end
 
--- TODO: Maybe think of a clean way to modularize below 2, would be nice to use action.moveToTagAndFollow
-function action.moveLeftAndFollow(c)
-    local tags = client.focus.screen.tags
+-- TODO: Maybe think of a clean way to modularize below 2, would be nice to use client.moveToTagAndFollow
+function client.moveLeftAndFollow(c)
+    local tags = capi.client.focus.screen.tags
     local curidx = awful.screen.focused().selected_tag.index
     local tag
     if curidx == 1 then
@@ -63,13 +67,13 @@ function action.moveLeftAndFollow(c)
     else
         tag = tags[curidx - 1]
     end
-    client.focus:move_to_tag(tag)
+    capi.client.focus:move_to_tag(tag)
     --Follow
     tag:view_only()
 end
 
-function action.moveRightAndFollow(c)
-    local tags = client.focus.screen.tags
+function client.moveRightAndFollow(c)
+    local tags = capi.client.focus.screen.tags
     local curidx = awful.screen.focused().selected_tag.index
     local tag
     if curidx == #tags then
@@ -78,44 +82,44 @@ function action.moveRightAndFollow(c)
         tag = tags[curidx + 1]
     end
     --Move
-    client.focus:move_to_tag(tag)
+    capi.client.focus:move_to_tag(tag)
     --Follow
     tag:view_only()
 end
 
-function action.moveToFirstTagAndFollow(c)
-    action.moveToTagAndFollow(c, 1)
+function client.moveToFirstTagAndFollow(c)
+    client.moveToTagAndFollow(c, 1)
 end
 
-function action.moveToLastTagAndFollow(c)
-    action.moveToTagAndFollow(c, -1)
+function client.moveToLastTagAndFollow(c)
+    client.moveToTagAndFollow(c, -1)
 end
 
-function action.toggleTag(c, index)
+function client.toggleTag(c, index)
     local tag = c.screen.tags[index]
     if tag then
         c:toggle_tag(tag)
     end
 end
 
-function action.kill(c)
+function client.kill(c)
     c:kill()
 end
 
-function action.toggleFullscreen(c)
+function client.toggleFullscreen(c)
     c.fullscreen = not c.fullscreen
 end
 
 -- TODO: Determine if I can make the window adjust when the screen's working area changes, add listener when fullscreen, remove when not
-function action.toggleMultiFullscreen(c)
+function client.toggleMultiFullscreen(c)
      c.floating = not c.floating
      if c.floating then
-         local clientX = screen[1].workarea.x
-         local clientY = screen[1].workarea.y
+         local clientX = capi.screen[1].workarea.x
+         local clientY = capi.screen[1].workarea.y
          local clientWidth = 0
          -- look at http://www.rpm.org/api/4.4.2.2/llimits_8h-source.html
          local clientHeight = 2147483640
-         for s in screen do
+         for s in capi.screen do
              clientHeight = math.min(clientHeight, s.workarea.height)
              clientWidth = clientWidth + s.workarea.width
          end
@@ -123,14 +127,15 @@ function action.toggleMultiFullscreen(c)
          local t = c:geometry({x = clientX, y = clientY, width = clientWidth, height = clientHeight})
      else
         c.border_width = beautiful.border_width
+        -- c.border_color = beautiful.border_focus
         --apply the rules to this client so he can return to the right tag if there is a rule for that.
         awful.rules.apply(c)
      end
      -- focus our client
-     client.focus = c
+     capi.client.focus = c
 end
 
-function action.minimize(c)
+function client.minimize(c)
     -- Prevents Windows Being Minimized if they aren't on the task bar
     -- TODO: I should consider allowing minimizing of these clients and simply causing them to show up on the taskbar (but save their skip_taskbar status and when restoring, also restore skip_taskbar to true)
     if not c.skip_taskbar then
@@ -139,15 +144,15 @@ function action.minimize(c)
     end
 end
 
-function action.toggleFloating(c)
+function client.toggleFloating(c)
     c.floating = not c.floating
 end
 
-function action.toggleSticky(c)
+function client.toggleSticky(c)
     c.sticky = not c.sticky
 end
 
-function action.togglePip(c)
+function client.togglePip(c)
     -- TODO: Uses sticky to determine if it's in in pip mode or not...
     if c.sticky then
         -- Disable...
@@ -174,7 +179,7 @@ function action.togglePip(c)
     end
 end
 
-function action.debug(c)
+function client.debug(c)
     -- Window Info
     -- notify_send("size_hints: "..inspect(c.size_hints))
 
@@ -251,4 +256,4 @@ function action.debug(c)
     -- end)
 end
 
-return action
+return client
