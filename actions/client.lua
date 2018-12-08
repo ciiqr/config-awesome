@@ -137,8 +137,7 @@ function client.toggleSticky(c)
 end
 
 function client.togglePip(c)
-    -- TODO: Uses sticky to determine if it's in in pip mode or not...
-    if c.sticky then
+    if c.sticky and c.floating and c.skip_taskbar then
         -- Disable...
         c.sticky = false
         c.skip_taskbar = false
@@ -151,11 +150,11 @@ function client.togglePip(c)
         -- Get screen dimensions
         local screenRect = awful.screen.focused().geometry
         -- Set window dimensions and position based on screen size...
-        -- local width =
         local widthRatio = CONFIG.client.pip.width
         local heightRatio = CONFIG.client.pip.height
-        local width = math.floor(screenRect.width * widthRatio) - 2 * c.border_width
-        local height = math.floor(screenRect.height * heightRatio) - 2 * c.border_width
+        local border = 2 * c.border_width
+        local width = math.floor(screenRect.width * widthRatio) - border
+        local height = math.floor(screenRect.height * heightRatio) - border
         c:geometry({
             x = screenRect.x + (screenRect.width - width),
             y = screenRect.y + (screenRect.height - height),
