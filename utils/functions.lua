@@ -20,7 +20,7 @@ end
 --Signals
 function setupSignals()
     -- Screen Signals
-    capi.screen.connect_signal("property::geometry", screenSetWallpaper)
+    capi.screen.connect_signal("property::geometry", screenPropertyGeometry)
     capi.screen.connect_signal("added", screenInit)
 
     -- Client Signals
