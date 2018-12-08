@@ -35,56 +35,40 @@ end
 
 -- client
 function client.moveToTagAndFollow(c, tagNum)
-    local c = c or capi.client.focus
-    if c then
-        -- All tags on the screen
-        local tags = c.screen.tags
-        -- Index of tag
-        local index
-        if tagNum == -1 then
-            index = #tags
-        else
-            index = tagNum
-        end
-        -- Get Tag
-        local tag = tags[index]
-        if tag then
-            -- Move Window
-            capi.client.focus:move_to_tag(tag)
-            -- Show Tag
-            tag:view_only()
-        end
+    -- All tags on the screen
+    local tags = c.screen.tags
+    -- Index of tag
+    local index
+    if tagNum == -1 then
+        index = #tags
+    else
+        index = tagNum
+    end
+    -- Get Tag
+    local tag = tags[index]
+    if tag then
+        -- Move Window
+        c:move_to_tag(tag)
+        -- Show Tag
+        tag:view_only()
     end
 end
 
--- TODO: Maybe think of a clean way to modularize below 2, would be nice to use client.moveToTagAndFollow
 function client.moveLeftAndFollow(c)
-    local tags = capi.client.focus.screen.tags
-    local curidx = awful.screen.focused().selected_tag.index
-    local tag
-    if curidx == 1 then
-        tag = tags[#tags]
-    else
-        tag = tags[curidx - 1]
-    end
-    capi.client.focus:move_to_tag(tag)
-    --Follow
-    tag:view_only()
+    local screen = c.screen
+    local current = screen.selected_tag.index
+    local tagNum = current == 1 and -1 or current - 1
+
+    client.moveToTagAndFollow(c, tagNum)
 end
 
 function client.moveRightAndFollow(c)
-    local tags = capi.client.focus.screen.tags
-    local curidx = awful.screen.focused().selected_tag.index
-    local tag
-    if curidx == #tags then
-        tag = tags[1]
-    else
-        tag = tags[curidx + 1]
-    end
-    --Move
-    capi.client.focus:move_to_tag(tag)
-    --Follow
-    tag:view_only()
+    local screen = c.screen
+    local current = screen.selected_tag.index
+    local tags = screen.tags
+    local tagNum = current == #tags and 1 or current + 1
+
+    client.moveToTagAndFollow(c, tagNum)
 end
 
 function client.moveToFirstTagAndFollow(c)
