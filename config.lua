@@ -203,5 +203,9 @@ return {
             -- Debug Info
             ["Super + g"] = "client.debug",
         },
+        pip = {
+            width = 0.3333,
+            height = 0.3333,
+        },
     },
 }

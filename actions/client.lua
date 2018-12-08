@@ -151,14 +151,16 @@ function client.togglePip(c)
         -- Get screen dimensions
         local screenRect = awful.screen.focused().geometry
         -- Set window dimensions and position based on screen size...
-        local PIP_SIZE_RATIO = 3
-        local newWidth = screenRect.width / PIP_SIZE_RATIO
-        local newHeight = screenRect.height / PIP_SIZE_RATIO
+        -- local width =
+        local widthRatio = CONFIG.client.pip.width
+        local heightRatio = CONFIG.client.pip.height
+        local width = math.floor(screenRect.width * widthRatio) - 2 * c.border_width
+        local height = math.floor(screenRect.height * heightRatio) - 2 * c.border_width
         c:geometry({
-            x = screenRect.x + (screenRect.width - newWidth),
-            y = screenRect.y + (screenRect.height - newHeight),
-            width = newWidth,
-            height = newHeight
+            x = screenRect.x + (screenRect.width - width),
+            y = screenRect.y + (screenRect.height - height),
+            width = width,
+            height = height
         })
     end
 end
