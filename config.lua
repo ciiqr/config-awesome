@@ -1,4 +1,13 @@
 return {
+    plugins = {
+        "theme",
+        "layouts",
+        "keybindings",
+        "rules",
+        "events",
+        "screens",
+        "programs",
+    },
     theme = {
         wallpapers = {
             normalPath = "{theme_path}/backgrounds",

@@ -5,22 +5,12 @@ require("utils.functions")
 require("enums")
 require("errors")
 
-local theme = require("theme")
-local layouts = require("layouts")
-local keybindings = require("keybindings")
-local rules = require("rules")
-local events = require("events")
-local screens = require("screens")
-local programs = require("programs")
-
--- TODO: globals, clean up
+-- TODO: clean up global (by actually using the config we pass into init)
 CONFIG = require("config")
 
--- pretty good, innit
-theme.init()
-layouts.init()
-keybindings.init()
-rules.init()
-events.init()
-screens.init()
-programs.init()
+-- init plugins
+local plugins = CONFIG.plugins
+for i,name in ipairs(plugins) do
+    local plugin = require(name)
+    plugin.init(CONFIG)
+end
