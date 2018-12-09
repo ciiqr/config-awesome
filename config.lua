@@ -73,8 +73,8 @@ return {
             small = 1,
         },
     },
-    startup = {
-        programs = {
+    programs = {
+        startup = {
             -- Awesome
             "compton", -- Composition Manager (Transparency, Inactive Window Dimming, Visual Glitch Fix)
 
