@@ -3,9 +3,6 @@
 
 -- Keys
 SUPER = "Mod4"
-ALT = "Mod1"
-CONTROL = "Control"
-SHIFT = "Shift"
 
 -- Mouse Buttons
 MOUSE_LEFT = 1

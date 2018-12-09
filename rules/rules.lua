@@ -13,8 +13,8 @@ local clientButtons = gears.table.join(
     ,awful.button({SUPER}, MOUSE_LEFT, awful.mouse.client.move)              -- Super + Left Moves
     -- ,awful.button({}, MOUSE_MIDDLE, awful.mouse.client.move)              -- Middle Moves -- TODO: I can't currently use this because it conflicts with 'Insert' paste... (if I can convince Insert to be been as shift+Insert then maybe I can enable this...)
     ,awful.button({SUPER}, MOUSE_RIGHT, awful.mouse.client.resize)               -- Super + Right Resizes
-    ,awful.button({CONTROL}, MOUSE_SCROLL_UP, function()end) -- Prevent ctrl-scroll zoom
-    ,awful.button({CONTROL}, MOUSE_SCROLL_DOWN, function()end) -- Prevent ctrl-scroll zoom
+    ,awful.button({"Control"}, MOUSE_SCROLL_UP, function()end) -- Prevent ctrl-scroll zoom
+    ,awful.button({"Control"}, MOUSE_SCROLL_DOWN, function()end) -- Prevent ctrl-scroll zoom
 )
 
 return {
