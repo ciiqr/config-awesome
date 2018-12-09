@@ -8,7 +8,7 @@ local function viewRelative(direction)
     local tag = screen.selected_tag
     if tag.layout == awful.layout.suit.max then
         -- Determine Index
-        local index = direction == FORWARDS and 1 or #awful.layout.layouts
+        local index = direction == 1 and 1 or #awful.layout.layouts
         --  Set Layout
         tag.layout = awful.layout.layouts[index]
         -- Clear Maximized Layout
@@ -19,11 +19,11 @@ local function viewRelative(direction)
 end
 
 function layout.viewNext()
-    viewRelative(FORWARDS)
+    viewRelative(1)
 end
 
 function layout.viewPrev()
-    viewRelative(BACKWARDS)
+    viewRelative(-1)
 end
 
 function layout.viewMaximized()

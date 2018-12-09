@@ -1,7 +1,6 @@
 require("awful.autofocus")
 require("awful.remote")
 require("functions")
-require("enums")
 require("errors")
 
 -- TODO: clean up global (by actually using the config we pass into init)

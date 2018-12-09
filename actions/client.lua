@@ -10,19 +10,19 @@ local client = {}
 
 -- global
 function client.viewNext()
-    awful.client.focus.byidx(FORWARDS)
+    awful.client.focus.byidx(1)
 end
 
 function client.viewPrev()
-    awful.client.focus.byidx(BACKWARDS)
+    awful.client.focus.byidx(-1)
 end
 
 function client.swapNext()
-    awful.client.swap.byidx(FORWARDS)
+    awful.client.swap.byidx(1)
 end
 
 function client.swapPrev()
-    awful.client.swap.byidx(BACKWARDS)
+    awful.client.swap.byidx(-1)
 end
 
 function client.restore()

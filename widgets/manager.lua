@@ -260,6 +260,7 @@ end
 function WidgetManager.getTagsList(screen)
     -- TODO: not the same as other widget mousebindings, passes in tags
     -- TODO: Consider Moving
+    local SUPER = "Mod4"
     local buttons = gears.table.join(
         awful.button({}, 1, function(t) t:view_only() end), -- Switch to This Tag
         awful.button({SUPER}, 1, function(t) client.focus:move_to_tag(t) end), -- Move Window to This Tag
