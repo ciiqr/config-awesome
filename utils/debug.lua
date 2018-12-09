@@ -10,26 +10,26 @@ end
 
 
 --Debugging
-function debug_string(object, recursion)
+function debugString(object, recursion)
     return inspect(object, recursion or 2)
 end
 
-function debug_editor(object, recursion, editor)
-    return awful.spawn.with_shell("echo \""..debug_string(object, recursion).."\" | "..editor)
+function debugEditor(object, recursion, editor)
+    return awful.spawn.with_shell("echo \""..debugString(object, recursion).."\" | "..editor)
 end
 
-function debug_leaf(object, recursion)
-    return debug_editor(object, recursion, "leafpad")
+function debugLeaf(object, recursion)
+    return debugEditor(object, recursion, "leafpad")
 end
 
-function debug_subl(object, recursion)
-    return debug_editor(object, recursion, "subl3 -n")
+function debugSubl(object, recursion)
+    return debugEditor(object, recursion, "subl3 -n")
 end
 
-function debug_file(object, recursion, file)
+function debugFile(object, recursion, file)
     saveFile(inspect(object, recursion or 1), file or "debug.txt")
 end
 
-function debug_print(object, recursion)
-    notify_send(debug_string(object, recursion))
+function debugPrint(object, recursion)
+    notifySend(debugString(object, recursion))
 end

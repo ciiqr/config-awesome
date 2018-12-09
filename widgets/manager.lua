@@ -191,12 +191,12 @@ function WidgetManager.getTaskBox(screen, is_vertical)
         local layout = wibox.layout.flex.vertical()
 
         local common = require("awful.widget.common")
-        local function list_update(w, buttons, label, data, objects)
+        local function listUpdate(w, buttons, label, data, objects)
             common.list_update(w, buttons, label, data, objects)
             w:set_max_widget_size(200)
         end
 
-        return awful.widget.tasklist(screen, awful.widget.tasklist.filter.allscreen, buttons, nil, list_update, layout) -- Vertical
+        return awful.widget.tasklist(screen, awful.widget.tasklist.filter.allscreen, buttons, nil, listUpdate, layout) -- Vertical
     else
         -- TODO: Consider minimizedcurrenttags for filter, it's pretty interesting, though, I would want it to hide if the bottom if there we're no items, or maybe move it back to the top bar & get rid of the bottom entirely...
         return awful.widget.tasklist(screen, awful.widget.tasklist.filter.currenttags, buttons) -- Normal
@@ -310,8 +310,8 @@ function WidgetManager.getNetUsage(vertical)
     -- TODO
     -- dbus.connect_signal("org.freedesktop.Notifications", function(signal, value)
 
-        -- notify_send("org.freedesktop.Notifications")
-     --    debug_print({signal, value}, 2)
+        -- notifySend("org.freedesktop.Notifications")
+     --    debugPrint({signal, value}, 2)
     -- end)
 
     --dbus.connect_signal("org.freedesktop.Notifications",
@@ -336,14 +336,14 @@ function WidgetManager.getBatteryWidget()
 
         -- On Battery
         if retval[1] == "−" then
-            local function notify_battery_warning(level)
-                notify_send(level.." Battery: "..batteryPercent.."% !", 0, naughty.config.presets.critical)
+            local function notifyBatteryWarning(level)
+                notifySend(level.." Battery: "..batteryPercent.."% !", 0, naughty.config.presets.critical)
             end
             -- Low Battery
             if batteryPercent < CONFIG.battery.warning.critical then
-                notify_battery_warning("Critical")
+                notifyBatteryWarning("Critical")
             elseif batteryPercent < CONFIG.battery.warning.low then
-                notify_battery_warning("Low")
+                notifyBatteryWarning("Low")
             end
         end
         return retval

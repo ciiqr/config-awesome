@@ -178,37 +178,37 @@ end
 
 function client.debug(c)
     -- Window Info
-    -- notify_send("size_hints: "..inspect(c.size_hints))
+    -- notifySend("size_hints: "..inspect(c.size_hints))
 
-    debug_print("name: " .. (c.name or "null"))
-    debug_print("class: " .. (c.class or "null"))
-    debug_print("role: " .. (c.role or "null"))
-    debug_print("type: " .. (c.type or "null"))
+    debugPrint("name: " .. (c.name or "null"))
+    debugPrint("class: " .. (c.class or "null"))
+    debugPrint("role: " .. (c.role or "null"))
+    debugPrint("type: " .. (c.type or "null"))
     if c.transient_for then
         name = c.transient_for.name or "null"
-        debug_print("transient for: " .. inspect(name))
+        debugPrint("transient for: " .. inspect(name))
     end
-    -- debug_print("type: " .. inspect(c.type))
+    -- debugPrint("type: " .. inspect(c.type))
 
     -- Object Info
-    -- notify_send("InfoWibox:"..inspect(infoWibox[awful.screen.focused().index], 2))
+    -- notifySend("InfoWibox:"..inspect(infoWibox[awful.screen.focused().index], 2))
 
-    -- notify_send("InfoLayout:"..inspect(infoWibox[awful.screen.focused().index].drawin.height, 3))
+    -- notifySend("InfoLayout:"..inspect(infoWibox[awful.screen.focused().index].drawin.height, 3))
 
     -- -- infoLayout:set_max_widget_size(100)
-    -- notify_send("InfoLayout:"..inspect(infoLayout, 3))
-    -- notify_send("Drawable:"..inspect(infoWibox[awful.screen.focused().index]._drawable, 2))
-    -- notify_send("Drawable.Widget:"..inspect(infoWibox[awful.screen.focused().index]._drawable.widget, 2))
+    -- notifySend("InfoLayout:"..inspect(infoLayout, 3))
+    -- notifySend("Drawable:"..inspect(infoWibox[awful.screen.focused().index]._drawable, 2))
+    -- notifySend("Drawable.Widget:"..inspect(infoWibox[awful.screen.focused().index]._drawable.widget, 2))
 
     -- Root Object Info
-    -- notify_send(inspect(root, 4))
+    -- notifySend(inspect(root, 4))
     -- for prop,val in pairs(root) do
-    --  notify_send(prop .. inspect(val(), 4))
+    --  notifySend(prop .. inspect(val(), 4))
     -- end
 
     -- DBus
 
-    -- dbus.connect_signal("org.freedesktop.NetworkManager.Device.Wireless.PropertiesChanged", function (body, bodyMarkup, iconStatic) notify_send("Got DBUS Notification!!!") end)
+    -- dbus.connect_signal("org.freedesktop.NetworkManager.Device.Wireless.PropertiesChanged", function (body, bodyMarkup, iconStatic) notifySend("Got DBUS Notification!!!") end)
     -- dbus.request_name("session", "org.freedesktop.NetworkManager.Device.Wireless.PropertiesChanged")
 
     -- dbus.request_name("system", "org.freedesktop.NetworkManager.Device.Wireless")
@@ -216,25 +216,25 @@ function client.debug(c)
     -- dbus.connect_signal("org.freedesktop.NetworkManager.Device.Wireless", function(first, property, ...)
     --  ipAddress = property["Ip4Adress"]
     --  if ipAddress then
-    --      notify_send(ipAddress)
+    --      notifySend(ipAddress)
     --  end
-    --  -- notify_send(inspect(first, 3))
-    --  -- notify_send(inspect(property, 3))
+    --  -- notifySend(inspect(first, 3))
+    --  -- notifySend(inspect(property, 3))
     -- end)
 
     -- dbus.request_name("system", "org.freedesktop.DBus.Properties")
     -- dbus.add_match("system", "interface='org.freedesktop.DBus.Properties',member='GetAll',string='org.freedesktop.NetworkManager.Device.Wireless")
     -- dbus.connect_signal("org.freedesktop.DBus.Properties", function(first, property, third, fourth, fifth, ...)
-    --  notify_send("There is a Dog!")
+    --  notifySend("There is a Dog!")
     --  -- ipAddress = property["Ip4Adress"]
     --  if ipAddress then
-    --      notify_send(ipAddress)
+    --      notifySend(ipAddress)
     --  end
-    --  -- notify_send(inspect(first, 3))
-    --  notify_send(inspect(property, 3))
-    --  notify_send(inspect(third, 3))
-    --  notify_send(inspect(fourth, 3))
-    --  notify_send(inspect(fifth, 3))
+    --  -- notifySend(inspect(first, 3))
+    --  notifySend(inspect(property, 3))
+    --  notifySend(inspect(third, 3))
+    --  notifySend(inspect(fourth, 3))
+    --  notifySend(inspect(fifth, 3))
     -- end)
     --
 
@@ -242,13 +242,13 @@ function client.debug(c)
     -- dbus.request_name("system", "org.freedesktop.NetworkManager")
     -- dbus.add_match("system", "interface='org.freedesktop.NetworkManager',member='PropertiesChanged'")
     -- dbus.connect_signal("org.freedesktop.NetworkManager", function(first, second, ...) -- Doesn't seem to be a third
-    --  -- debug_leaf(first)
-    --  -- debug_leaf(second)
+    --  -- debugLeaf(first)
+    --  -- debugLeaf(second)
 
     --  if second.Connectivity and second.Connectivity == 4 then
-    --      notify_send("DBUS: Connected to WIFI");
+    --      notifySend("DBUS: Connected to WIFI");
     --  elseif second.Connectivity and second.Connectivity == 1 then
-    --      notify_send("DBUS: Disconnected from WIFI");
+    --      notifySend("DBUS: Disconnected from WIFI");
     --  end
     -- end)
 end

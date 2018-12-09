@@ -64,7 +64,7 @@ function quake:display()
     client.floating = true
     client.border_width = self.border
     client.size_hints_honor = false
-    client:geometry(self.geometry[self.screen] or self:compute_size())
+    client:geometry(self.geometry[self.screen] or self:computeSize())
 
     -- Set not sticky and on top
     client.sticky = false
@@ -94,7 +94,7 @@ function quake:display()
     return client
 end
 
-function quake:compute_size()
+function quake:computeSize()
     -- skip if we already have a geometry for this screen
     if not self.geometry[self.screen] then
         local geom

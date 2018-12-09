@@ -166,7 +166,7 @@ return {
                         -- c:move_to_tag(tags[6]) -- TODO: Add constant for Social Tag Index...
                     else
                         -- Print Name So I Can Possibly Change Other Names
-                        -- notify_send(debug_print(c.name), 2)
+                        -- notifySend(debugPrint(c.name), 2)
                     end
                     -- Clear Client From Callback Array
                     c:disconnect_signal("property::name", name_callback[c])
@@ -198,7 +198,7 @@ return {
                 if geom.width == 960 or geom.width == 451 or geom.width == 490 then
                     c:kill();
                 end
-                notify_send("Sublime\nHis name was Robert.. Oh I Mean '".. (c.name or "nil") .."'", 3);
+                notifySend("Sublime\nHis name was Robert.. Oh I Mean '".. (c.name or "nil") .."'", 3);
             end
         }
     }

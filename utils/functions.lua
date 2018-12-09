@@ -15,7 +15,7 @@ function expandUser(path)
 end
 
 --Naughty
-function notify_send(text, timeout, preset)
+function notifySend(text, timeout, preset)
     naughty.notify({
         preset = preset or naughty.config.presets.normal,
         text = text,
