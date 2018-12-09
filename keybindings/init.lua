@@ -1,5 +1,3 @@
-local awful = require("awful")
-
 local keybindings = {}
 
 function keybindings.init()

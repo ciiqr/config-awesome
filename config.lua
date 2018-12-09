@@ -23,7 +23,35 @@ return {
         },
         temperature = {
             interval = 10,
-        }
+        },
+        volume = {
+            mousebindings = {
+                ["ScrollUp"] = {action = "volume.change", args = {"+", 1}},
+                ["ScrollDown"] = {action = "volume.change", args = {"-", 1}},
+                ["Left"] = {action = "popup.toggle", args = {"audio"}},
+            },
+        },
+        memory = {
+            mousebindings = {
+                ["Left"] = {action = "popup.toggle", args = {"mem"}},
+            },
+        },
+        cpu = {
+            mousebindings = {
+                ["Left"] = {action = "popup.toggle", args = {"cpu"}},
+            },
+        },
+        ip = {
+            mousebindings = {
+                ["Left"] = {action = "command.run", args = {"ipInfo"}},
+            },
+        },
+        layout = {
+            mousebindings = {
+                ["Left"] = "layout.viewNext",
+                ["Right"] = "layout.viewPrev",
+            },
+        },
     },
     clients = {
         sublime = {
@@ -101,10 +129,11 @@ return {
             name = "keepass",
             options = {app = "keepassx2", name = "keepassx2", height = 0.75, width = 0.5},
         },
-        -- {
-        --     name = "audio",
-        --     options = {app = "pavucontrol", name = "Volume Control", argname = "", height = 0.75, width = 0.5},
-        -- },
+        -- TODO: fix...
+        {
+            name = "audio",
+            options = {app = "pavucontrol", name = "Volume Control", argname = "", height = 0.75, width = 0.5},
+        },
     },
     keybindings = {
         -- Switch Between Tags
@@ -180,7 +209,6 @@ return {
         ["Super + Shift + c"] = {action = "popup.toggle", args = {"cpu"}},
         ["Super + Shift + m"] = {action = "popup.toggle", args = {"mem"}},
         ["Super + Shift + k"] = {action = "popup.toggle", args = {"keepass"}},
-        -- ["Super + Shift + a"] = {action = "popup.toggle", args = {"audio"}},
         -- Tag keys
         ["Ctrl + Alt + {1-9}"] = "tag.viewIndex",
         ["Super + Shift + {1-9}"] = "tag.toggleIndex",

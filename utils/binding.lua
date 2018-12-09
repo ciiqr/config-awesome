@@ -129,6 +129,7 @@ local function createKeyBinding(spec, action, environment)
     return awfulKeys
 end
 
+-- TODO: integrate: gears.table.join(unpack(keys))
 function binding.createKeys(keybindings, environment)
     local keys = {}
     for spec, action in pairs(keybindings) do
@@ -153,6 +154,7 @@ local function createMouseBinding(spec, action, environment)
     return awful.button(parts, key, mapAction(action, environment, {}))
 end
 
+-- TODO: integrate: gears.table.join(unpack(buttons))
 function binding.createMouseBindings(mouseBindings, environment)
     local keys = {}
     for spec, action in pairs(mouseBindings) do

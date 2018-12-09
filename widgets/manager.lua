@@ -8,6 +8,7 @@ local volume = require("system.volume")
 local network = require("system.network")
 local battery = require("system.battery")
 local popup = require("actions.popup")
+local mousebindings = require("mousebindings")
 
 -- TODO: it's been great but I think it's time for us to split
 
@@ -94,12 +95,8 @@ end
 function WidgetManager.getVolume()
     local widget = wibox.widget.textbox()
 
-    -- buttons
-    widget:buttons(gears.table.join(
-        awful.button({}, MOUSE_SCROLL_UP, function() volume.change("+", CONFIG.volume.change.small) end),
-        awful.button({}, MOUSE_SCROLL_DOWN, function() volume.change("-", CONFIG.volume.change.small) end),
-        awful.button({}, 1, function() run_once("pavucontrol") end)
-    ))
+    local buttons = mousebindings.widget(CONFIG.widgets.volume.mousebindings)
+    widget:buttons(buttons)
 
     -- TODO: see if we can listen for pulse audio dbus updates
 
@@ -125,9 +122,10 @@ function WidgetManager.getMemory(vertical)
         memory:set_align("center")
     end
     vicious.register(memory, vicious.widgets.mem, "<span fgcolor='#138dff' weight='bold'>$1% $2MB</span>", 13) --DFDFDF
-    memory:buttons(gears.table.join(
-        awful.button({}, 1, function() popup.toggle('cpu') end)
-    ))
+
+    local buttons = mousebindings.widget(CONFIG.widgets.memory.mousebindings)
+    memory:buttons(buttons)
+
     return memory
 end
 
@@ -140,9 +138,9 @@ function WidgetManager.getCPU(vertical)
     cpuwidget:set_background_color("#494B4F00") --55
     cpuwidget:set_color({ type = "linear", from = { 25, 0 }, to = { 25,22 }, stops = { {0, "#FF0000" }, {0.5, "#de5705"}, {1, "#00ff00"} }  })
     vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
-    cpuwidget:buttons(gears.table.join(
-        awful.button({}, 1, function() popup.toggle('mem') end)
-    ))
+
+    local buttons = mousebindings.widget(CONFIG.widgets.cpu.mousebindings)
+    cpuwidget:buttons(buttons)
     return cpuwidget
 end
 
@@ -151,9 +149,8 @@ function WidgetManager.getIP()
     local widget = wibox.widget.textbox()
     widget:set_align("center")
 
-    widget:buttons(gears.table.join(
-     awful.button({}, 1, function() awful.spawn(CONFIG.commands.ipInfo) end)
-    ))
+    local buttons = mousebindings.widget(CONFIG.widgets.ip.mousebindings)
+    widget:buttons(buttons)
 
     -- update func
     local function update()
@@ -184,6 +181,8 @@ end
 
 function WidgetManager.getTaskBox(screen, is_vertical)
     local clientActions = require("actions.client")
+
+    -- TODO: these aren't the same sort of widget bindings since they pass in the clients
     local buttons = gears.table.join(
         awful.button({}, 1, clientActions.toggleMinimized)
     )
@@ -259,6 +258,7 @@ end
 
 -- TagsList
 function WidgetManager.getTagsList(screen)
+    -- TODO: not the same as other widget mousebindings, passes in tags
     -- TODO: Consider Moving
     local buttons = gears.table.join(
         awful.button({}, 1, function(t) t:view_only() end), -- Switch to This Tag
@@ -278,13 +278,10 @@ end
 
 -- LayoutBox
 function WidgetManager.getLayoutBox(screen)
-    local layoutActions = require("actions.layout")
-
     local layoutBox = awful.widget.layoutbox(screen)
-    layoutBox:buttons(gears.table.join(
-        awful.button({}, 1, layoutActions.viewNext)
-        ,awful.button({}, 3, layoutActions.viewPrev)
-    ))
+
+    local buttons = mousebindings.widget(CONFIG.widgets.layout.mousebindings)
+    layoutBox:buttons(buttons)
 
     return layoutBox
 end
@@ -303,6 +300,8 @@ function WidgetManager.getNetUsage(vertical)
     })
 
     vicious.register(netwidget, vicious.widgets.net, '<span foreground="#97D599" weight="bold">↑${'..networkDevice..' up_mb}</span> <span foreground="#CE5666" weight="bold">↓${'..networkDevice..' down_mb}</span>', 1) --#585656
+
+    -- TODO: move to config
     netwidget:buttons(gears.table.join(
         awful.button({}, 1, function() awful.spawn(networkTrafficCmd) end)
     ))
