@@ -1,11 +1,5 @@
 local naughty = require("naughty")
 
-local capi =
-{
-    screen = screen,
-    client = client,
-}
-
 --Utility
 function evalTemplate(template, data)
     return template:gsub("{([%w_]+)}", data)
@@ -19,7 +13,7 @@ function notifySend(text, timeout, preset)
     naughty.notify({
         preset = preset or naughty.config.presets.normal,
         text = text,
-        screen = capi.screen.count(),
+        screen = "primary",
         timeout = timeout or 0
     })
 end
