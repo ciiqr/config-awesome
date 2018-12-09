@@ -177,80 +177,15 @@ function client.toggleMinimized(c)
 end
 
 function client.debug(c)
-    -- Window Info
-    -- notifySend("size_hints: "..inspect(c.size_hints))
-
     debugPrint("name: " .. (c.name or "null"))
     debugPrint("class: " .. (c.class or "null"))
     debugPrint("role: " .. (c.role or "null"))
     debugPrint("type: " .. (c.type or "null"))
     if c.transient_for then
         name = c.transient_for.name or "null"
-        debugPrint("transient for: " .. inspect(name))
+        debugPrint("transient for:")
+        debugPrint(name)
     end
-    -- debugPrint("type: " .. inspect(c.type))
-
-    -- Object Info
-    -- notifySend("InfoWibox:"..inspect(infoWibox[awful.screen.focused().index], 2))
-
-    -- notifySend("InfoLayout:"..inspect(infoWibox[awful.screen.focused().index].drawin.height, 3))
-
-    -- -- infoLayout:set_max_widget_size(100)
-    -- notifySend("InfoLayout:"..inspect(infoLayout, 3))
-    -- notifySend("Drawable:"..inspect(infoWibox[awful.screen.focused().index]._drawable, 2))
-    -- notifySend("Drawable.Widget:"..inspect(infoWibox[awful.screen.focused().index]._drawable.widget, 2))
-
-    -- Root Object Info
-    -- notifySend(inspect(root, 4))
-    -- for prop,val in pairs(root) do
-    --  notifySend(prop .. inspect(val(), 4))
-    -- end
-
-    -- DBus
-
-    -- dbus.connect_signal("org.freedesktop.NetworkManager.Device.Wireless.PropertiesChanged", function (body, bodyMarkup, iconStatic) notifySend("Got DBUS Notification!!!") end)
-    -- dbus.request_name("session", "org.freedesktop.NetworkManager.Device.Wireless.PropertiesChanged")
-
-    -- dbus.request_name("system", "org.freedesktop.NetworkManager.Device.Wireless")
-    -- dbus.add_match("system", "interface='org.freedesktop.NetworkManager.Device.Wireless',member='PropertiesChanged'")
-    -- dbus.connect_signal("org.freedesktop.NetworkManager.Device.Wireless", function(first, property, ...)
-    --  ipAddress = property["Ip4Adress"]
-    --  if ipAddress then
-    --      notifySend(ipAddress)
-    --  end
-    --  -- notifySend(inspect(first, 3))
-    --  -- notifySend(inspect(property, 3))
-    -- end)
-
-    -- dbus.request_name("system", "org.freedesktop.DBus.Properties")
-    -- dbus.add_match("system", "interface='org.freedesktop.DBus.Properties',member='GetAll',string='org.freedesktop.NetworkManager.Device.Wireless")
-    -- dbus.connect_signal("org.freedesktop.DBus.Properties", function(first, property, third, fourth, fifth, ...)
-    --  notifySend("There is a Dog!")
-    --  -- ipAddress = property["Ip4Adress"]
-    --  if ipAddress then
-    --      notifySend(ipAddress)
-    --  end
-    --  -- notifySend(inspect(first, 3))
-    --  notifySend(inspect(property, 3))
-    --  notifySend(inspect(third, 3))
-    --  notifySend(inspect(fourth, 3))
-    --  notifySend(inspect(fifth, 3))
-    -- end)
-    --
-
-    -- Working
-    -- dbus.request_name("system", "org.freedesktop.NetworkManager")
-    -- dbus.add_match("system", "interface='org.freedesktop.NetworkManager',member='PropertiesChanged'")
-    -- dbus.connect_signal("org.freedesktop.NetworkManager", function(first, second, ...) -- Doesn't seem to be a third
-    --  -- debugLeaf(first)
-    --  -- debugLeaf(second)
-
-    --  if second.Connectivity and second.Connectivity == 4 then
-    --      notifySend("DBUS: Connected to WIFI");
-    --  elseif second.Connectivity and second.Connectivity == 1 then
-    --      notifySend("DBUS: Disconnected from WIFI");
-    --  end
-    -- end)
 end
 
 return client

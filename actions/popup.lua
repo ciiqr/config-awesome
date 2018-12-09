@@ -1,6 +1,6 @@
 local awful = require("awful")
 local gears = require("gears")
-local quake = require("quake")
+local quake = require("utils.quake")
 
 local popup = {}
 

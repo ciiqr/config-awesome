@@ -1,7 +1,6 @@
 require("awful.autofocus")
 require("awful.remote")
-require("utils.debug")
-require("utils.functions")
+require("functions")
 require("enums")
 require("errors")
 

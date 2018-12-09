@@ -189,7 +189,7 @@ return {
         properties = {
             callback = function(c)
                 -- NOTE: except_any didn't seem to actually be behaving as I expected and was matching on a leafpad window, so we're doing the class check here instead
-                if table.indexOf({"Subl3", "Sublime_text"}, c.class) == nil then
+                if tableIndexOf({"Subl3", "Sublime_text"}, c.class) == nil then
                     return
                 end
 
