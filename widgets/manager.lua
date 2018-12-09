@@ -183,8 +183,9 @@ function WidgetManager.getClock()
 end
 
 function WidgetManager.getTaskBox(screen, is_vertical)
+    local clientActions = require("actions.client")
     local buttons = gears.table.join(
-        awful.button({}, 1, toggleClient)
+        awful.button({}, 1, clientActions.toggleMinimized)
     )
     if is_vertical then
         local layout = wibox.layout.flex.vertical()

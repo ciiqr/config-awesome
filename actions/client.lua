@@ -164,6 +164,18 @@ function client.togglePip(c)
     end
 end
 
+function client.toggleMinimized(c)
+  if c == capi.client.focus then
+    c.minimized = true
+  else
+    c.minimized = false
+    if not c:isvisible() and c.first_tag then
+        c.first_tag:view_only()
+    end
+    capi.client.focus = c
+  end
+end
+
 function client.debug(c)
     -- Window Info
     -- notify_send("size_hints: "..inspect(c.size_hints))

@@ -1,3 +1,4 @@
+local screens = require("screens")
 local capi =
 {
     screen = screen,
@@ -10,12 +11,12 @@ function screen.init()
     capi.screen.connect_signal("added", screen.added)
 end
 
-function screen.propertyGeometry(s)
-    screenSetWallpaper(s)
+function screen.propertyGeometry(screen)
+    screens.setWallpaper(screen)
 end
 
-function screen.added(s)
-    screenInit(s)
+function screen.added(screen)
+    screens.setup(screen)
 end
 
 return screen
