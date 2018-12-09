@@ -212,6 +212,15 @@ return {
             -- Debug Info
             ["Super + g"] = "client.debug",
         },
+        mousebindings = {
+            ["Left"] = "client.focus",
+            ["Super + Left"] = "awful.mouse.client.move",
+            -- ["Middle"] = "awful.mouse.client.move", -- TODO: I can't currently use this because it conflicts with 'Insert' paste... (if I can convince Insert to be been as shift+Insert then maybe I can enable this...)
+            ["Super + Right"] = "awful.mouse.client.resize",
+            -- Prevent ctrl-scroll zoom
+            ["Ctrl + ScrollUp"] = "noop",
+            ["Ctrl + ScrollDown"] = "noop",
+        },
         pip = {
             width = 0.3333,
             height = 0.3333,

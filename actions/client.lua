@@ -188,4 +188,9 @@ function client.debug(c)
     end
 end
 
+function client.focus(c)
+    capi.client.focus = c
+    c:raise()
+end
+
 return client
