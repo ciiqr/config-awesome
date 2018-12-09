@@ -16,16 +16,7 @@ local function extractParts(spec)
     return parts
 end
 
-local function mapKeys(parts)
-    local keyMap = {
-        Super = "Mod4",
-        Alt = "Mod1",
-        -- Ctrl = "Control",
-        Enter = "Return",
-        PageDown = "Next",
-        PageUp = "Prior",
-    }
-
+local function mapKeys(parts, keyMap)
     local modifiers = {}
     for i, part in ipairs(parts) do
         table.insert(modifiers, keyMap[part] or part)
@@ -118,8 +109,15 @@ local function evalKeyPattern(key)
     return result
 end
 
-local function createBinding(spec, action, environment)
-    local parts = mapKeys(extractParts(spec))
+local function createKeyBinding(spec, action, environment)
+    local parts = mapKeys(extractParts(spec), {
+        Super = "Mod4",
+        Alt = "Mod1",
+        -- Ctrl = "Control",
+        Enter = "Return",
+        PageDown = "Next",
+        PageUp = "Prior",
+    })
     local keyPattern = table.remove(parts)
     local keys = evalKeyPattern(keyPattern)
 
@@ -134,7 +132,31 @@ end
 function binding.createKeys(keybindings, environment)
     local keys = {}
     for spec, action in pairs(keybindings) do
-        table.insert(keys, createBinding(spec, action, environment))
+        table.insert(keys, createKeyBinding(spec, action, environment))
+    end
+    return keys
+end
+
+local function createMouseBinding(spec, action, environment)
+    local parts = mapKeys(extractParts(spec), {
+        Super = "Mod4",
+        Alt = "Mod1",
+        -- Ctrl = "Control",
+        Left = 1,
+        Middle = 2,
+        Right = 3,
+        ScrollUp = 4,
+        ScrollDown = 5,
+    })
+    local key = table.remove(parts)
+
+    return awful.button(parts, key, mapAction(action, environment, {}))
+end
+
+function binding.createMouseBindings(mouseBindings, environment)
+    local keys = {}
+    for spec, action in pairs(mouseBindings) do
+        table.insert(keys, createMouseBinding(spec, action, environment))
     end
     return keys
 end
