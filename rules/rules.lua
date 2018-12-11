@@ -25,58 +25,58 @@ return {
             size_hints_honor = false,
             -- awesome docs suggests these...
             screen = awful.screen.preferred,
-            placement = awful.placement.no_overlap+awful.placement.no_offscreen
-        }
-    }
-    ,{ -- Floating
+            placement = awful.placement.no_overlap+awful.placement.no_offscreen,
+        },
+    },
+    { -- Floating
         rule_any = {
             class = {"speedcrunch", "pinentry", "MPlayer", "Plugin-container", "Exe", "Gtimer", "Vmware-modconfig", "freerdp", "Seafile-applet", "Pavucontrol", "mainframe", "Fuzzy-windows"},
             name = {"Tab Organizer", "Firefox Preferences", "xev-is-special"},
             type = {"dialog", "menu"},
-            role = {"toolbox_window"} -- , "pop-up" TODO: Decide if I really like pop-up, cause honestly a lot of things are pop-up's & it's rather annoying ("pop-up")
+            role = {"toolbox_window"}, -- , "pop-up" TODO: Decide if I really like pop-up, cause honestly a lot of things are pop-up's & it's rather annoying ("pop-up")
         },
         properties = {
-            floating = true
-        }
-    }
+            floating = true,
+        },
+    },
     -- ,{ -- Ignore Size Hints
     --  rule_any = {
     --      name = {"MonoDevelop", "7zFM", "Vmware", "FrostWire"},
-    --      class = {"XTerm", "Ghb", "Skype", "Google-chrome-stable", "Chromium", "Subl3", "Sublime_text", "SmartSVN", "SmartGit"}
+    --      class = {"XTerm", "Ghb", "Skype", "Google-chrome-stable", "Chromium", "Subl3", "Sublime_text", "SmartSVN", "SmartGit"},
     --  },
     --  properties = {
-    --      size_hints_honor = false -- TODO: Consider this for the default rule set, probably won't like, but worth a try anyways
-    --  }
-    -- }
-    ,{ -- Popover dialogs will not receive borders
+    --      size_hints_honor = false, -- TODO: Consider this for the default rule set, probably won't like, but worth a try anyways
+    --  },
+    -- },
+    { -- Popover dialogs will not receive borders
         rule = {
             type = "dialog",
-            skip_taskbar = true
+            skip_taskbar = true,
         },
         properties = {
-            border_width = 0
-        }
-    }
-    ,{
+            border_width = 0,
+        },
+    },
+    {
         rule_any = {
-            class = {"URxvt"}
+            class = {"URxvt"},
         },
         properties = {
-            opacity = 0.8
-        }
-    }
-    ,{
-        rule = {
-            class = "XTerm"
+            opacity = 0.8,
         },
-        properties = {
-            opacity = 0.8
-        }
-    }
-    ,{
+    },
+    {
         rule = {
             class = "XTerm",
-            name = "MonoDevelop External Console"
+        },
+        properties = {
+            opacity = 0.8,
+        },
+    },
+    {
+        rule = {
+            class = "XTerm",
+            name = "MonoDevelop External Console",
         },
         properties = {
             floating = true,
@@ -91,46 +91,46 @@ return {
                     width = newWidth,
                     height = (workingArea.height / 4 * 3)
                 })
-            end
-        }
-    }
-    ,{
+            end,
+        },
+    },
+    {
         rule = {
             class = "MonoDevelop",
-            skip_taskbar = true
+            skip_taskbar = true,
         },
         properties = {
             border_width = 0
-        }
-    }
-    ,{
+        },
+    },
+    {
         rule = {
-            class = "albert"
+            class = "albert",
         },
         properties = {
             border_width = 0,
-            skip_taskbar = true
-        }
-    }
-    ,{
+            skip_taskbar = true,
+        },
+    },
+    {
         rule = {
             class = "Spacefm",
-            name = "Choose An Application"
+            name = "Choose An Application",
         },
         properties = {
-            callback = function(c) c:geometry({width = 500, height = 600}) end
+            callback = function(c) c:geometry({width = 500, height = 600}) end,
         },
-    }
-    ,{
+    },
+    {
         rule = {
             class = "Chromium",
-            name = "Authy"
+            name = "Authy",
         },
         properties = {
-            floating = true
-        }
-    }
-    ,{
+            floating = true,
+        },
+    },
+    {
         rule = {
             class = "Chromium",
         },
@@ -165,15 +165,15 @@ return {
                 c:connect_signal("property::name", name_callback[c])
             end
         },
-    }
-    ,{
+    },
+    {
         rule = {
-            type = "dialog"
+            type = "dialog",
         },
         except_any = {
             name = {
                 "O", "S", "E"
-            }
+            },
         },
         properties = {
             callback = function(c)
@@ -189,20 +189,20 @@ return {
                 end
                 notifySend("Sublime\nHis name was Robert.. Oh I Mean '".. (c.name or "nil") .."'", 3);
             end
-        }
-    }
-    ,{
+        },
+    },
+    {
         rule_any = {
             class = {"Subl3", "Sublime_text"},
         },
         except_any = {
             type = {
                 "dialog"
-            }
+            },
         },
         properties = {
-            switchtotag = true
-            ,callback = function(c)
+            switchtotag = true,
+            callback = function(c)
                 local clientName = c.name
                 if clientName then
 
@@ -221,14 +221,14 @@ return {
                         end
                     end
                 end
-            end
-        }
+            end,
+        },
 
-    }
-    ,{
+    },
+    {
         rule = {
             class = "Seafile-applet",
-            type = "normal"
+            type = "normal",
         },
         properties = {
             border_width = 0,
@@ -240,15 +240,15 @@ return {
                     x = screenDimens.width - width,
                     y = screenDimens.y,
                     width = width,
-                    height = height
+                    height = height,
                 })
-            end
-        }
-    }
-    ,{
+            end,
+        },
+    },
+    {
         rule = {
             class = "Seafile-applet",
-            type = "dialog"
+            type = "dialog",
         },
         properties = {
             callback = function(c)
@@ -256,14 +256,14 @@ return {
                 local clientDimens = c:geometry()
                 c:geometry({
                     x = (screenDimens.width - clientDimens.width) / 2,
-                    y = (screenDimens.height - clientDimens.height) / 2
+                    y = (screenDimens.height - clientDimens.height) / 2,
                 })
             end
-        }
-    }
-    ,{
+        },
+    },
+    {
         rule = {
-            class = "Pavucontrol"
+            class = "Pavucontrol",
         },
         properties = {
             callback = function(c)
@@ -275,14 +275,14 @@ return {
                     x = screenDimens.width - width,
                     y = screenDimens.y,
                     width = width,
-                    height = height
+                    height = height,
                 })
             end
-        }
-    }
-    ,{
+        },
+    },
+    {
         rule = {
-            class = "Fuzzy-windows"
+            class = "Fuzzy-windows",
         },
         properties = {
             callback = function(c)
@@ -291,72 +291,48 @@ return {
                 c:geometry({
                     x = (screenDimens.width - clientDimens.width) / 2,
                     y = (screenDimens.height - clientDimens.height) / 2,
-                    width = 700, height = 235
+                    width = 700, height = 235,
                 })
             end --
         },
-    }
-    ,{
+    },
+    {
         rule = {
-            name = "PlayOnLinux Warning"
+            name = "PlayOnLinux Warning",
         },
         properties = {
-            callback = function(c) c:kill() end
-        }
-    }
-    -- ,{
-    --     rule_any = {
-    --         class = {"Skype", "yakyak"},
-    --     },
-    --     properties = {
-    --         tag = awful.screen.focused().tags[6]
-    --         -- callback = function(c)
-    --         --  -- Floating Windows have a north west gravity, others have static
-    --         --  -- False Assumption
-    --         --  -- if c.size_hints.win_gravity == "north_west" then
-    --         --  --  c.floating = true
-    --         --  -- end
-    --         -- end
-    --     }
-    -- }
-    ,{
+            callback = function(c) c:kill() end,
+        },
+    },
+    {
         rule = {
             class = "Nautilus",
-            name = "File Operations"
+            name = "File Operations",
         },
         properties = {
-            ontop = true
-        }
-    }
-    ,{
+            ontop = true,
+        },
+    },
+    {
         rule = {
-            class = "Plugin-container"
+            class = "Plugin-container",
         },
         properties = {
-            callback = function(c) c.fullscreen = true end
-        }
-    }
-    -- ,{
-    --     rule_any = {
-    --         class = {"Vmware"},
-    --         instance = {"TeamViewer.exe"}
-    --     },
-    --     properties = {
-    --         tag = awful.screen.focused().tags[5]
-    --     }
-    -- }
-    ,{
+            callback = function(c) c.fullscreen = true end,
+        },
+    },
+    {
         rule = {
             instance = "TeamViewer.exe",
-            name = "Computers & Contacts"
+            name = "Computers & Contacts",
         },
         properties = {
-            floating = true
-        }
-    }
-    ,{
+            floating = true,
+        },
+    },
+    {
         rule = {
-            role = "GtkFileChooserDialog"
+            role = "GtkFileChooserDialog",
         },
         properties = {
             callback = function(c)
@@ -368,16 +344,16 @@ return {
                     c:geometry({
                         y = (screenDimens.height - height) / 2,
                         width = screenDimens.width * 0.5,
-                        height = height
+                        height = height,
                     })
                 -- end
             end
-        }
-    }
-    -- ,{
+        },
+    },
+    -- {
     --  rule = {
-    --      class = "Vlc"
-    --      ,name = "VLCINBACKGROUNDMODE"
+    --      class = "Vlc",
+    --      name = "VLCINBACKGROUNDMODE",
     --  },
     --  properties = {
     --      floating = true,
@@ -397,18 +373,18 @@ return {
     --          },
     --          user_size = {
     --              width = 1920,
-    --              height = 1080
+    --              height = 1080,
     --          },
     --          program_size = {
     --              width = 1920,
-    --              height = 1080
-    --          }
+    --              height = 1080,
+    --          },
     --      },
     --      callback = function(c)
     --          c:lower()
-    --      end
-    --  }
-    -- }
+    --      end,
+    --  },
+    -- },
 
 
     -- TODO: Add a rule so that the toggle-able windows are floating by default
