@@ -7,7 +7,7 @@ local name_callback = {}
 -- TODO: improve
 
 return {
-    {
+    { -- Default
         rule = {},
         properties = {
             -- Border
@@ -39,15 +39,6 @@ return {
             floating = true,
         },
     },
-    -- ,{ -- Ignore Size Hints
-    --  rule_any = {
-    --      name = {"MonoDevelop", "7zFM", "Vmware", "FrostWire"},
-    --      class = {"XTerm", "Ghb", "Skype", "Google-chrome-stable", "Chromium", "Subl3", "Sublime_text", "SmartSVN", "SmartGit"},
-    --  },
-    --  properties = {
-    --      size_hints_honor = false, -- TODO: Consider this for the default rule set, probably won't like, but worth a try anyways
-    --  },
-    -- },
     { -- Popover dialogs will not receive borders
         rule = {
             type = "dialog",
@@ -57,22 +48,25 @@ return {
             border_width = 0,
         },
     },
-    {
+    { -- Terminals transparent
         rule_any = {
-            class = {"URxvt"},
+            class = {"URxvt", "XTerm"},
         },
         properties = {
             opacity = 0.8,
         },
     },
-    {
+    { -- Launchers, no border or taskbar
         rule = {
-            class = "XTerm",
+            class = "albert",
         },
         properties = {
-            opacity = 0.8,
+            border_width = 0,
+            skip_taskbar = true,
         },
     },
+
+    -- monodevelop
     {
         rule = {
             class = "XTerm",
@@ -103,24 +97,19 @@ return {
             border_width = 0
         },
     },
-    {
-        rule = {
-            class = "albert",
-        },
-        properties = {
-            border_width = 0,
-            skip_taskbar = true,
-        },
-    },
-    {
+
+    -- spacefm
+    { -- TODO: not working...
         rule = {
             class = "Spacefm",
-            name = "Choose An Application",
+            name = "Choose Application",
         },
         properties = {
             callback = function(c) c:geometry({width = 500, height = 600}) end,
         },
     },
+
+    -- chromium
     {
         rule = {
             class = "Chromium",
@@ -166,6 +155,8 @@ return {
             end
         },
     },
+
+    -- sublime
     {
         rule = {
             type = "dialog",
@@ -223,8 +214,9 @@ return {
                 end
             end,
         },
-
     },
+
+    -- seafile
     {
         rule = {
             class = "Seafile-applet",
@@ -261,6 +253,8 @@ return {
             end
         },
     },
+
+    -- pavucontrol
     {
         rule = {
             class = "Pavucontrol",
@@ -280,22 +274,8 @@ return {
             end
         },
     },
-    {
-        rule = {
-            class = "Fuzzy-windows",
-        },
-        properties = {
-            callback = function(c)
-                local screenDimens = awful.screen.focused().workarea
-                local clientDimens = c:geometry()
-                c:geometry({
-                    x = (screenDimens.width - clientDimens.width) / 2,
-                    y = (screenDimens.height - clientDimens.height) / 2,
-                    width = 700, height = 235,
-                })
-            end --
-        },
-    },
+
+    -- playonlinux
     {
         rule = {
             name = "PlayOnLinux Warning",
@@ -304,6 +284,8 @@ return {
             callback = function(c) c:kill() end,
         },
     },
+
+    -- nautilus
     {
         rule = {
             class = "Nautilus",
@@ -313,23 +295,8 @@ return {
             ontop = true,
         },
     },
-    {
-        rule = {
-            class = "Plugin-container",
-        },
-        properties = {
-            callback = function(c) c.fullscreen = true end,
-        },
-    },
-    {
-        rule = {
-            instance = "TeamViewer.exe",
-            name = "Computers & Contacts",
-        },
-        properties = {
-            floating = true,
-        },
-    },
+
+    -- gtk file chooser dialog
     {
         rule = {
             role = "GtkFileChooserDialog",
@@ -350,42 +317,6 @@ return {
             end
         },
     },
-    -- {
-    --  rule = {
-    --      class = "Vlc",
-    --      name = "VLCINBACKGROUNDMODE",
-    --  },
-    --  properties = {
-    --      floating = true,
-    --      sticky = true,
-    --      below = true,
-    --      skip_taskbar = true,
-    --      border_width = 0,
-    --      fullscreen = true,
-    --      size_hints = {
-    --          user_position = {
-    --              x = 0,
-    --              y = 0
-    --          },
-    --          program_position = {
-    --              x = 0,
-    --              y = 0
-    --          },
-    --          user_size = {
-    --              width = 1920,
-    --              height = 1080,
-    --          },
-    --          program_size = {
-    --              width = 1920,
-    --              height = 1080,
-    --          },
-    --      },
-    --      callback = function(c)
-    --          c:lower()
-    --      end,
-    --  },
-    -- },
-
 
     -- TODO: Add a rule so that the toggle-able windows are floating by default
 }
