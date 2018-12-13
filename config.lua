@@ -51,7 +51,7 @@ return {
                 ["Left"] = {action = "command.run", args = {"ipInfo"}},
             },
         },
-        layout = {
+        layoutbox = {
             mousebindings = {
                 ["Left"] = "layout.viewNext",
                 ["Right"] = "layout.viewPrev",

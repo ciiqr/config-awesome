@@ -16,6 +16,7 @@ local Ip = require("widgets.ip")
 local Clock = require("widgets.clock")
 local Tasklist = require("widgets.tasklist")
 local Taglist = require("widgets.taglist")
+local Layoutbox = require("widgets.layoutbox")
 
 -- TODO: it's been great but I think it's time for us to split
 
@@ -55,7 +56,7 @@ function WidgetManager.initWiboxes(s)
                     wibox.widget.systray(),
                 },
             },
-            WidgetManager.getLayoutBox(s)
+            Layoutbox(CONFIG.widgets.layoutbox, s),
         },
     }
 
@@ -150,16 +151,6 @@ function WidgetManager.getSysInfoWibox(s)
     s:connect_signal("property::workarea", sizeWibox)
 
     return aWibox
-end
-
--- LayoutBox
-function WidgetManager.getLayoutBox(screen)
-    local layoutBox = awful.widget.layoutbox(screen)
-
-    local buttons = mousebindings.widget(CONFIG.widgets.layout.mousebindings)
-    layoutBox:buttons(buttons)
-
-    return layoutBox
 end
 
 -- Net Usage
