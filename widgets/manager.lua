@@ -11,6 +11,7 @@ local mousebindings = require("mousebindings")
 local Volume = require("widgets.volume")
 local Temperature = require("widgets.temperature")
 local Memory = require("widgets.memory")
+local Cpu = require("widgets.cpu")
 
 -- TODO: it's been great but I think it's time for us to split
 
@@ -46,7 +47,7 @@ function WidgetManager.initWiboxes(s)
                     Temperature(CONFIG.widgets.temperature),
                     Volume(CONFIG.widgets.volume),
                     Memory(CONFIG.widgets.memory),
-                    WidgetManager.getCPU(),
+                    Cpu(CONFIG.widgets.cpu),
                     wibox.widget.systray(),
                 },
             },
@@ -89,23 +90,8 @@ function WidgetManager.initWiboxes(s)
 
         -- sysInfoLabel("System"),
         -- WidgetManager.getMemory(),
-        -- WidgetManager.getCPU(true),
+        -- Cpu(CONFIG.widgets.cpu, true),
     }
-end
-
--- CPU
-function WidgetManager.getCPU(vertical)
-    local cpuwidget = wibox.widget.graph()
-    if not vertical then
-        cpuwidget:set_width(50)
-    end
-    cpuwidget:set_background_color("#494B4F00") --55
-    cpuwidget:set_color({ type = "linear", from = { 25, 0 }, to = { 25,22 }, stops = { {0, "#FF0000" }, {0.5, "#de5705"}, {1, "#00ff00"} }  })
-    vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
-
-    local buttons = mousebindings.widget(CONFIG.widgets.cpu.mousebindings)
-    cpuwidget:buttons(buttons)
-    return cpuwidget
 end
 
 -- IP
