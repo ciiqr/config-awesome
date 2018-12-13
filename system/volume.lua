@@ -29,3 +29,5 @@ return volume
 
 -- TODO: would be nice if we could treat this like other global signals and do volume.connect_signal instead of below :
 -- volume:connect_signal(volume.CHANGED, function()...end)
+
+-- TODO: see if we can listen for pulse audio dbus updates

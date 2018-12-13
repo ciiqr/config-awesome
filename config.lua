@@ -25,6 +25,7 @@ return {
             interval = 10,
         },
         volume = {
+            text = '<span foreground="#ffaf5f" weight="bold">%s</span>',
             mousebindings = {
                 ["ScrollUp"] = {action = "volume.change", args = {"+", 1}},
                 ["ScrollDown"] = {action = "volume.change", args = {"-", 1}},

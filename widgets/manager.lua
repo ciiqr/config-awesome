@@ -4,11 +4,11 @@ local awful = require("awful")
 local wibox = require("wibox")
 local naughty = require("naughty")
 local gears = require("gears")
-local volume = require("system.volume")
 local network = require("system.network")
 local battery = require("system.battery")
 local popup = require("actions.popup")
 local mousebindings = require("mousebindings")
+local Volume = require("widgets.volume")
 
 -- TODO: it's been great but I think it's time for us to split
 
@@ -42,7 +42,7 @@ function WidgetManager.initWiboxes(s)
                     WidgetManager.getNetUsage(),
                     WidgetManager.getBatteryWidget(),
                     require("widgets.temperature"):init(),
-                    WidgetManager.getVolume(),
+                    Volume(CONFIG.widgets.volume),
                     WidgetManager.getMemory(),
                     WidgetManager.getCPU(),
                     wibox.widget.systray(),
@@ -89,30 +89,6 @@ function WidgetManager.initWiboxes(s)
         -- WidgetManager.getMemory(true),
         -- WidgetManager.getCPU(true),
     }
-end
-
--- Volume
-function WidgetManager.getVolume()
-    local widget = wibox.widget.textbox()
-
-    local buttons = mousebindings.widget(CONFIG.widgets.volume.mousebindings)
-    widget:buttons(buttons)
-
-    -- TODO: see if we can listen for pulse audio dbus updates
-
-    -- update func
-    local function update()
-        local displayValue = volume.isMuted() and 'Off' or volume.getVolume()
-
-        -- 🔇 -- Mute icon --
-        widget:set_markup('<span foreground="#ffaf5f" weight="bold">🔈 '..displayValue..'</span>')
-    end
-
-    -- signal
-    volume:connect_signal(volume.CHANGED, update)
-
-    update()
-    return widget
 end
 
 -- Memory
@@ -306,15 +282,6 @@ function WidgetManager.getNetUsage(vertical)
     netwidget:buttons(gears.table.join(
         awful.button({}, 1, function() awful.spawn(networkTrafficCmd) end)
     ))
-
-    -- TODO
-    -- dbus.connect_signal("org.freedesktop.Notifications", function(signal, value)
-
-        -- notifySend("org.freedesktop.Notifications")
-     --    debugPrint({signal, value}, 2)
-    -- end)
-
-    --dbus.connect_signal("org.freedesktop.Notifications",
 
     return netwidget
 end
