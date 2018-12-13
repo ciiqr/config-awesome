@@ -14,6 +14,7 @@ local Memory = require("widgets.memory")
 local Cpu = require("widgets.cpu")
 local Ip = require("widgets.ip")
 local Clock = require("widgets.clock")
+local Tasklist = require("widgets.tasklist")
 
 -- TODO: it's been great but I think it's time for us to split
 
@@ -60,13 +61,13 @@ function WidgetManager.initWiboxes(s)
     -- Bottom Wibar
     s.bottomWibar = awful.wibar({position = "bottom", screen = s, height = panel_height})
     s.bottomWibar:setup {
-        widget = WidgetManager.getTaskBox(s),
+        widget = Tasklist(CONFIG.widgets.tasklist, s),
     }
 
     -- All Windows Wibox
     s.allWindowsWibox = WidgetManager.getAllWindowsWibox(s)
     s.allWindowsWibox:setup {
-        widget = WidgetManager.getTaskBox(s, true),
+        widget = Tasklist(CONFIG.widgets.tasklist, s, true),
     }
 
     -- System Info wibox
@@ -94,29 +95,6 @@ function WidgetManager.initWiboxes(s)
         -- WidgetManager.getMemory(),
         -- Cpu(CONFIG.widgets.cpu, true),
     }
-end
-
-function WidgetManager.getTaskBox(screen, is_vertical)
-    local clientActions = require("actions.client")
-
-    -- TODO: these aren't the same sort of widget bindings since they pass in the clients
-    local buttons = gears.table.join(
-        awful.button({}, 1, clientActions.toggleMinimized)
-    )
-    if is_vertical then
-        local layout = wibox.layout.flex.vertical()
-
-        local common = require("awful.widget.common")
-        local function listUpdate(w, buttons, label, data, objects)
-            common.list_update(w, buttons, label, data, objects)
-            w:set_max_widget_size(200)
-        end
-
-        return awful.widget.tasklist(screen, awful.widget.tasklist.filter.allscreen, buttons, nil, listUpdate, layout) -- Vertical
-    else
-        -- TODO: Consider minimizedcurrenttags for filter, it's pretty interesting, though, I would want it to hide if the bottom if there we're no items, or maybe move it back to the top bar & get rid of the bottom entirely...
-        return awful.widget.tasklist(screen, awful.widget.tasklist.filter.currenttags, buttons) -- Normal
-    end
 end
 
 function WidgetManager.getAllWindowsWibox(s)
