@@ -18,6 +18,7 @@ local Tasklist = require("widgets.tasklist")
 local Taglist = require("widgets.taglist")
 local Layoutbox = require("widgets.layoutbox")
 local Netusage = require("widgets.netusage")
+local Battery = require("widgets.battery")
 
 -- TODO: it's been great but I think it's time for us to split
 
@@ -49,7 +50,7 @@ function WidgetManager.initWiboxes(s)
                     layout = wibox.layout.fixed.horizontal,
                     spacing = beautiful.spacer_size,
                     Netusage(CONFIG.widgets.netusage),
-                    WidgetManager.getBatteryWidget(),
+                    Battery(CONFIG.widgets.battery),
                     Temperature(CONFIG.widgets.temperature),
                     Volume(CONFIG.widgets.volume),
                     Memory(CONFIG.widgets.memory),
@@ -89,13 +90,13 @@ function WidgetManager.initWiboxes(s)
 
         -- sysInfoLabel("Network"),
         Ip(CONFIG.widgets.ip),
-        -- WidgetManager.getNetUsage(),
+        -- Netusage(CONFIG.widgets.netusage),
 
         -- sysInfoLabel("Temperature"),
         -- Temperature(CONFIG.widgets.temperature),
 
         -- sysInfoLabel("System"),
-        -- WidgetManager.getMemory(),
+        -- Memory(CONFIG.widgets.memory),
         -- Cpu(CONFIG.widgets.cpu, true),
     }
 end
@@ -152,42 +153,6 @@ function WidgetManager.getSysInfoWibox(s)
     s:connect_signal("property::workarea", sizeWibox)
 
     return aWibox
-end
-
--- Battery
-function WidgetManager.getBatteryWidget()
-    -- TODO: Make so we can update from acpi, ie. DBus acpi notifications
-    local widget = wibox.widget.textbox()
-    function customWrapper(format, warg)
-
-        local retval = vicious.widgets.bat(format, warg) -- state, percent, time, wear
-        local batteryPercent = retval[2]
-
-        if retval[3] == "N/A" then -- Time
-            retval[3] = ""
-        else
-            retval[3] = " "..retval[3]
-        end
-
-        -- On Battery
-        if retval[1] == "−" then
-            local function notifyBatteryWarning(level)
-                notifySend(level.." Battery: "..batteryPercent.."% !", 0, naughty.config.presets.critical)
-            end
-            -- Low Battery
-            if batteryPercent < CONFIG.battery.warning.critical then
-                notifyBatteryWarning("Critical")
-            elseif batteryPercent < CONFIG.battery.warning.low then
-                notifyBatteryWarning("Low")
-            end
-        end
-        return retval
-    end
-    if battery.hasBattery() then
-        vicious.register(widget, customWrapper, '<span foreground="#ffcc00" weight="bold">$1$2%$3</span>', 120, battery.getDevice()) --585656
-    end
-
-    return widget
 end
 
 return WidgetManager

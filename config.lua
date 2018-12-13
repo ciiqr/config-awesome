@@ -61,6 +61,14 @@ return {
             text = '<span foreground="#97D599" weight="bold">↑${%s up_mb}</span> <span foreground="#CE5666" weight="bold">↓${%s down_mb}</span>', --#585656
             interval = 1,
         },
+        battery = {
+            text = '<span foreground="#ffcc00" weight="bold">$1$2%$3</span>', --585656
+            interval = 120,
+            warning = {
+                low = 10,
+                critical = 5,
+            },
+        }
     },
     -- TODO: hmm...
     clients = {
