@@ -21,6 +21,7 @@ function M:init(config)
     -- markup
     self.markup = config.text or ''
 
+    -- TODO: consider moving polling to temperature...
     -- update every X seconds
     self.updateTimer = gears.timer({timeout = config.interval})
     self.updateTimer:connect_signal("timeout", function() self:update() end)

@@ -34,6 +34,8 @@ return {
             },
         },
         memory = {
+            text = '<span fgcolor="#138dff" weight="bold">$1% $2MB</span>', --DFDFDF
+            interval = 13,
             mousebindings = {
                 ["Left"] = {action = "popup.toggle", args = {"mem"}},
             },

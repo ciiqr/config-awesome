@@ -10,6 +10,7 @@ local popup = require("actions.popup")
 local mousebindings = require("mousebindings")
 local Volume = require("widgets.volume")
 local Temperature = require("widgets.temperature")
+local Memory = require("widgets.memory")
 
 -- TODO: it's been great but I think it's time for us to split
 
@@ -44,7 +45,7 @@ function WidgetManager.initWiboxes(s)
                     WidgetManager.getBatteryWidget(),
                     Temperature(CONFIG.widgets.temperature),
                     Volume(CONFIG.widgets.volume),
-                    WidgetManager.getMemory(),
+                    Memory(CONFIG.widgets.memory),
                     WidgetManager.getCPU(),
                     wibox.widget.systray(),
                 },
@@ -87,23 +88,9 @@ function WidgetManager.initWiboxes(s)
         -- Temperature(CONFIG.widgets.temperature),
 
         -- sysInfoLabel("System"),
-        -- WidgetManager.getMemory(true),
+        -- WidgetManager.getMemory(),
         -- WidgetManager.getCPU(true),
     }
-end
-
--- Memory
-function WidgetManager.getMemory(vertical)
-    local memory = wibox.widget.textbox()
-    if vertical then
-        memory:set_align("center")
-    end
-    vicious.register(memory, vicious.widgets.mem, "<span fgcolor='#138dff' weight='bold'>$1% $2MB</span>", 13) --DFDFDF
-
-    local buttons = mousebindings.widget(CONFIG.widgets.memory.mousebindings)
-    memory:buttons(buttons)
-
-    return memory
 end
 
 -- CPU
