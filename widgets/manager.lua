@@ -13,6 +13,7 @@ local Temperature = require("widgets.temperature")
 local Memory = require("widgets.memory")
 local Cpu = require("widgets.cpu")
 local Ip = require("widgets.ip")
+local Clock = require("widgets.clock")
 
 -- TODO: it's been great but I think it's time for us to split
 
@@ -33,7 +34,7 @@ function WidgetManager.initWiboxes(s)
         },
         {
             layout = wibox.layout.flex.horizontal,
-            WidgetManager.getClock(),
+            Clock(CONFIG.widgets.clock),
         },
         {
             layout = wibox.layout.fixed.horizontal,
@@ -93,16 +94,6 @@ function WidgetManager.initWiboxes(s)
         -- WidgetManager.getMemory(),
         -- Cpu(CONFIG.widgets.cpu, true),
     }
-end
-
--- Text Clock
-function WidgetManager.getClock()
-    local clock = wibox.widget.textclock(CONFIG.widgets.clock.text, 10)
-
-    -- add popup calendar
-    require("widgets.cal").register(clock)
-
-    return clock
 end
 
 function WidgetManager.getTaskBox(screen, is_vertical)

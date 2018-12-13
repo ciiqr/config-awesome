@@ -58,7 +58,7 @@ function cal.register(mywidget)
 
     -- clicks go back/forth through time
     mywidget:buttons(gears.table.join(
-        awful.button({ }, 1, function (k, l) debugPrint(k);cal:call_calendar(-1) end),
+        awful.button({ }, 1, function (k, l) cal:call_calendar(-1) end),
         awful.button({ }, 3, function () cal:call_calendar( 1) end),
         awful.button({"Shift"}, 1, function () cal:call_calendar(-1) end),
         awful.button({"Shift"}, 3, function () cal:call_calendar( 1) end)
