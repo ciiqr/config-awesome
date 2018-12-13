@@ -9,6 +9,7 @@ local battery = require("system.battery")
 local popup = require("actions.popup")
 local mousebindings = require("mousebindings")
 local Volume = require("widgets.volume")
+local Temperature = require("widgets.temperature")
 
 -- TODO: it's been great but I think it's time for us to split
 
@@ -41,7 +42,7 @@ function WidgetManager.initWiboxes(s)
                     spacing = beautiful.spacer_size,
                     WidgetManager.getNetUsage(),
                     WidgetManager.getBatteryWidget(),
-                    require("widgets.temperature"):init(),
+                    Temperature(CONFIG.widgets.temperature),
                     Volume(CONFIG.widgets.volume),
                     WidgetManager.getMemory(),
                     WidgetManager.getCPU(),

@@ -1,39 +1,41 @@
-local wibox = require("wibox")
 local gears = require("gears")
-local systemTemperature = require("system.temperature")
+local textbox = require("wibox.widget.textbox")
+local mousebindings = require("mousebindings")
+local temperature = require("system.temperature")
 
-temperature = wibox.widget.textbox()
-temperature:set_align("center")
+local M = {}; M.__index = M
 
-temperature.reload = function(self)
-    local temperature = systemTemperature.get()
-    self:set_markup('<span weight="bold">' .. temperature .. "°" .. '</span>')
-end
+local function construct(_, config)
+    local self = textbox()
+    setmetatable(self, M)
 
-temperature.init = function(self)
-    self:reload()
-
-    -- Timer for every 10 seconds
-    self.updateTimer = gears.timer({timeout = CONFIG.widgets.temperature.interval})
-
-    -- Event Handler
-    self.updateTimer:connect_signal("timeout", function()
-        self:reload()
-    end)
-
-    -- Start Timer
-    self.updateTimer:start()
+    self:init(config)
 
     return self
 end
 
--- Signals
-temperature:connect_signal("button::press", function(self, x, y, button, t)
-    self:reload()
+function M:init(config)
+    -- markup
+    self.markup = config.text or ''
 
-    -- Update
-    self:emit_signal("widget::updated")
-end)
+    -- update every X seconds
+    self.updateTimer = gears.timer({timeout = config.interval})
+    self.updateTimer:connect_signal("timeout", function() self:update() end)
+    self.updateTimer:start()
 
--- Return Created Instance
-return temperature
+    -- TODO: move to config
+    -- signals
+    self:connect_signal("button::press", function() self:update() end)
+
+    -- first update
+    self:update()
+end
+
+function M:update()
+    local displayValue = temperature.get()
+    local markup = string.format(self.markup, displayValue)
+
+    self:set_markup(markup)
+end
+
+return setmetatable(M, {__call = construct})

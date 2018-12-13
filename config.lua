@@ -22,6 +22,7 @@ return {
             text = '<span foreground="#94738c">%A, %B %d</span>  <span foreground="#ecac13">%I:%M %p</span>',
         },
         temperature = {
+            text = '<span weight="bold">%s°</span>',
             interval = 10,
         },
         volume = {
