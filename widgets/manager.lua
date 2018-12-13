@@ -12,6 +12,7 @@ local Volume = require("widgets.volume")
 local Temperature = require("widgets.temperature")
 local Memory = require("widgets.memory")
 local Cpu = require("widgets.cpu")
+local Ip = require("widgets.ip")
 
 -- TODO: it's been great but I think it's time for us to split
 
@@ -82,7 +83,7 @@ function WidgetManager.initWiboxes(s)
         wibox.widget.textbox(' '),
 
         -- sysInfoLabel("Network"),
-        WidgetManager.getIP(),
+        Ip(CONFIG.widgets.ip),
         -- WidgetManager.getNetUsage(true),
 
         -- sysInfoLabel("Temperature"),
@@ -92,31 +93,6 @@ function WidgetManager.initWiboxes(s)
         -- WidgetManager.getMemory(),
         -- Cpu(CONFIG.widgets.cpu, true),
     }
-end
-
--- IP
-function WidgetManager.getIP()
-    local widget = wibox.widget.textbox()
-    widget:set_align("center")
-
-    local buttons = mousebindings.widget(CONFIG.widgets.ip.mousebindings)
-    widget:buttons(buttons)
-
-    -- update func
-    local function update()
-        local ip = network.getIp()
-        widget:set_text(ip)
-    end
-
-    -- signal
-    dbus.request_name("system", "org.freedesktop.NetworkManager")
-    dbus.add_match("system", "interface='org.freedesktop.NetworkManager',member='PropertiesChanged'")
-    dbus.connect_signal("org.freedesktop.NetworkManager", function(first, second, ...) -- Doesn't seem to be a third
-        update()
-    end)
-
-    update()
-    return widget
 end
 
 -- Text Clock
