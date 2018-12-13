@@ -17,6 +17,7 @@ local Clock = require("widgets.clock")
 local Tasklist = require("widgets.tasklist")
 local Taglist = require("widgets.taglist")
 local Layoutbox = require("widgets.layoutbox")
+local Netusage = require("widgets.netusage")
 
 -- TODO: it's been great but I think it's time for us to split
 
@@ -47,7 +48,7 @@ function WidgetManager.initWiboxes(s)
                 {
                     layout = wibox.layout.fixed.horizontal,
                     spacing = beautiful.spacer_size,
-                    WidgetManager.getNetUsage(),
+                    Netusage(CONFIG.widgets.netusage),
                     WidgetManager.getBatteryWidget(),
                     Temperature(CONFIG.widgets.temperature),
                     Volume(CONFIG.widgets.volume),
@@ -88,7 +89,7 @@ function WidgetManager.initWiboxes(s)
 
         -- sysInfoLabel("Network"),
         Ip(CONFIG.widgets.ip),
-        -- WidgetManager.getNetUsage(true),
+        -- WidgetManager.getNetUsage(),
 
         -- sysInfoLabel("Temperature"),
         -- Temperature(CONFIG.widgets.temperature),
@@ -151,29 +152,6 @@ function WidgetManager.getSysInfoWibox(s)
     s:connect_signal("property::workarea", sizeWibox)
 
     return aWibox
-end
-
--- Net Usage
-function WidgetManager.getNetUsage(vertical)
-    -- TODO: Make some changes
-    local netwidget = wibox.widget.textbox()
-    if vertical then
-        netwidget:set_align("center")
-    end
-
-    local networkDevice = network.getPrimaryDevice()
-    local networkTrafficCmd = evalTemplate(CONFIG.commands.networkTraffic, {
-        device = networkDevice,
-    })
-
-    vicious.register(netwidget, vicious.widgets.net, '<span foreground="#97D599" weight="bold">↑${'..networkDevice..' up_mb}</span> <span foreground="#CE5666" weight="bold">↓${'..networkDevice..' down_mb}</span>', 1) --#585656
-
-    -- TODO: move to config
-    netwidget:buttons(gears.table.join(
-        awful.button({}, 1, function() awful.spawn(networkTrafficCmd) end)
-    ))
-
-    return netwidget
 end
 
 -- Battery

@@ -57,6 +57,10 @@ return {
                 ["Right"] = "layout.viewPrev",
             },
         },
+        netusage = {
+            text = '<span foreground="#97D599" weight="bold">↑${%s up_mb}</span> <span foreground="#CE5666" weight="bold">↓${%s down_mb}</span>', --#585656
+            interval = 1,
+        },
     },
     -- TODO: hmm...
     clients = {
