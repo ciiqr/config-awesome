@@ -15,6 +15,9 @@ local function construct(_, config)
 end
 
 function M:init(config)
+    -- only matters on vertical wiboxes
+    self:set_align("center")
+
     -- markup
     self.markup = config.text or ''
 

@@ -84,7 +84,7 @@ function WidgetManager.initWiboxes(s)
         -- WidgetManager.getNetUsage(true),
 
         -- sysInfoLabel("Temperature"),
-        -- require("widgets.temperature"):init(),
+        -- Temperature(CONFIG.widgets.temperature),
 
         -- sysInfoLabel("System"),
         -- WidgetManager.getMemory(true),
