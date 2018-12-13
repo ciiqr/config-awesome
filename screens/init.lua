@@ -2,7 +2,7 @@ local awful = require("awful")
 local gears = require("gears")
 local beautiful = require("beautiful")
 local popup = require("actions.popup")
-local widgetManager = require("widgets.manager")
+local wiboxes = require("wiboxes")
 
 local capi =
 {
@@ -22,14 +22,14 @@ function screens.setup(s)
     -- Wallpaper
     screens.setWallpaper(s)
 
-    --Tags
+    -- Tags
     awful.tag(CONFIG.screens.tags, s, awful.layout.layouts[1])
 
     -- Popup Terminal/Process Info/Notes/etc
     popup.init(s)
 
-    --Wiboxes w/ Widgets
-    widgetManager.initWiboxes(s)
+    -- Wiboxes w/ Widgets
+    wiboxes.setup(s)
 end
 
 function screens.setWallpaper(s)

@@ -1,13 +1,6 @@
-local beautiful = require("beautiful")
-local vicious = require("vicious")
 local awful = require("awful")
 local wibox = require("wibox")
-local naughty = require("naughty")
-local gears = require("gears")
-local network = require("system.network")
-local battery = require("system.battery")
-local popup = require("actions.popup")
-local mousebindings = require("mousebindings")
+local beautiful = require("beautiful")
 local Volume = require("widgets.volume")
 local Temperature = require("widgets.temperature")
 local Memory = require("widgets.memory")
@@ -20,12 +13,14 @@ local Layoutbox = require("widgets.layoutbox")
 local Netusage = require("widgets.netusage")
 local Battery = require("widgets.battery")
 
--- TODO: it's been great but I think it's time for us to split
+local capi =
+{
+    screen = screen,
+}
 
-local WidgetManager = {}
+local wiboxes = {}
 
--- Wibars/Wiboxes
-function WidgetManager.initWiboxes(s)
+function wiboxes.setup(s)
     local panel_height = beautiful.panel.height(s)
 
     -- Top Wibar
@@ -69,7 +64,7 @@ function WidgetManager.initWiboxes(s)
     }
 
     -- All Windows Wibox
-    s.allWindowsWibox = WidgetManager.getAllWindowsWibox(s)
+    s.allWindowsWibox = wiboxes.getAllWindowsWibox(s)
     s.allWindowsWibox:setup {
         widget = Tasklist(CONFIG.widgets.tasklist, s, true),
     }
@@ -82,7 +77,7 @@ function WidgetManager.initWiboxes(s)
         return label
     end
 
-    s.sysInfoWibox = WidgetManager.getSysInfoWibox(s)
+    s.sysInfoWibox = wiboxes.getSysInfoWibox(s)
     s.sysInfoWibox:setup {
         layout = wibox.layout.fixed.vertical,
 
@@ -101,7 +96,7 @@ function WidgetManager.initWiboxes(s)
     }
 end
 
-function WidgetManager.getAllWindowsWibox(s)
+function wiboxes.getAllWindowsWibox(s)
     local aWibox = wibox({
         position = "left",
         screen = s,
@@ -125,7 +120,7 @@ function WidgetManager.getAllWindowsWibox(s)
     return aWibox
 end
 
-function WidgetManager.getSysInfoWibox(s)
+function wiboxes.getSysInfoWibox(s)
     local width = beautiful.system_info_width
     local aWibox = wibox({
         position = "right",
@@ -155,4 +150,4 @@ function WidgetManager.getSysInfoWibox(s)
     return aWibox
 end
 
-return WidgetManager
+return wiboxes
