@@ -15,6 +15,7 @@ local Cpu = require("widgets.cpu")
 local Ip = require("widgets.ip")
 local Clock = require("widgets.clock")
 local Tasklist = require("widgets.tasklist")
+local Taglist = require("widgets.taglist")
 
 -- TODO: it's been great but I think it's time for us to split
 
@@ -31,7 +32,7 @@ function WidgetManager.initWiboxes(s)
         expand = "none",
         {
             layout = wibox.layout.fixed.horizontal,
-            WidgetManager.getTagsList(s),
+            Taglist(CONFIG.widgets.taglist, s),
         },
         {
             layout = wibox.layout.flex.horizontal,
@@ -149,27 +150,6 @@ function WidgetManager.getSysInfoWibox(s)
     s:connect_signal("property::workarea", sizeWibox)
 
     return aWibox
-end
-
--- TagsList
-function WidgetManager.getTagsList(screen)
-    -- TODO: not the same as other widget mousebindings, passes in tags
-    -- TODO: Consider Moving
-    local SUPER = "Mod4"
-    local buttons = gears.table.join(
-        awful.button({}, 1, function(t) t:view_only() end), -- Switch to This Tag
-        awful.button({SUPER}, 1, function(t) client.focus:move_to_tag(t) end), -- Move Window to This Tag
-        awful.button({}, 3, awful.tag.viewtoggle), -- Toggle This Tag
-        awful.button({SUPER}, 3, function(t)
-            if client.focus then
-                client.focus:toggle_tag(t)
-            end
-        end)--, -- Toggle This Tag For The current Window
-    )
-
-    --TagList
-    -- return awful.widget.taglist(screen, awful.widget.taglist.filter.noempty, buttons)
-    return awful.widget.taglist(screen, awful.widget.taglist.filter.all, buttons)
 end
 
 -- LayoutBox
