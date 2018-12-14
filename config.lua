@@ -9,6 +9,7 @@ return {
         "programs",
     },
     theme = {
+        colourScheme = "sea",
         wallpapers = {
             normalPath = "{theme_path}/backgrounds",
             resolutionPath = "~/Dropbox/Wallpapers/{width}x{height}",
