@@ -76,12 +76,11 @@ local primaryColourContrast = scheme.primaryColourContrast or "#000000";
 local paleYellow = "#DCDCCC" -- Almost White
 local lightRed = "#CD2323"
 local darkGrey = "#3F3F3F"
-local slightlyLighterGrey = "#424242" -- Matches GTK Theme
 
 
 -- Variables --
 --===========--
--- BAR_TRANSPARENCY = true
+local BAR_TRANSPARENCY = false
 local themePath = beautiful.theme_path
 local themePathLayouts = themePath .. "/layouts/"
 
