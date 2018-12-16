@@ -89,11 +89,11 @@ local theme = {
     theme_path = themePath,
 
     -- Fonts
-    font = "DejaVu Sans Book 9", -- Roboto 9
-    -- font_bold = "sans bold 10",
-    -- tasklist_font = "DejaVu Sans Book 9",
+    font = "DejaVu Sans Book 9", --
 
-    -- Colours
+
+    -- colours --
+    ----------
     fg_normal  = paleYellow, -- Normal Text Colour
     fg_focus   = alternateColour, --"#F0DFAF"
     fg_urgent  = lightRed,
@@ -103,8 +103,6 @@ local theme = {
     bg_urgent  = darkGrey,
 
     -- Borders
-    border_width  = dpi(2),
-    border_thin_width = dpi(1),
     border_normal = darkGrey,
     border_focus  = primaryColour,
     border_marked = lightRed,
@@ -122,8 +120,9 @@ local theme = {
     bg_systray = (BAR_TRANSPARENCY and "#2b2726" or "#000000"), -- bg_normal
 
 
-    -- Icons --
-    --=======--
+    -- icons --
+    -----------
+
     -- Taglist
     taglist_squares_sel   = themePath .. "/taglist/squarefz-double-height"..scale_factor_path..".png",
     taglist_squares_unsel = themePath .. "/taglist/squarez"..scale_factor_path..".png",
@@ -137,21 +136,33 @@ local theme = {
     layout_floating   = themePathLayouts .. "floating.png",
     layout_thrizen    = gears.filesystem.get_configuration_dir() .. "/layouts/thrizen/themes/default/thrizen.png",
 
+
+    -- size --
+    ----------
+
     -- layout details
     column_count = 2,
     master_width_factor = 1/3,
 
-    --
+    -- TODO: maybe these properties can be set based on screen via rules which we dynamically set/remove when screens are...
+    -- Borders
+    border_width  = dpi(2),
+    border_thin_width = dpi(1),
+
+    -- wibars
     panel = {
         height = function(screen)
             return dpi(15, screen)
         end
     },
 
+    -- widgets
     spacer_size = 14,
 
+    -- cal
     rounded_rect_corner_radius = dpi(4),
 
+    -- wiboxes
     global_windows_list_width = dpi(300),
     system_info_width = dpi(120),
 }
