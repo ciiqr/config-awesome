@@ -164,6 +164,9 @@ local theme = {
     -- widgets
     spacer_size = 14,
 
+    -- systray
+    -- systray_icon_spacing = 7,
+
     -- cal
     rounded_rect_corner_radius = dpi(4),
 

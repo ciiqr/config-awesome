@@ -138,20 +138,19 @@ return {
         },
         {
             name = "cpu",
-            options = {app = "urxvt", argname = "-name %s -e ".."sudo htop --delay 5 --sort-key PERCENT_CPU", name = "QUAKE_COMMAND_TASK_MANAGER_CPU", height = 0.75, width = 0.5, horiz = "right"},
+            options = {app = "urxvt", argname = "-name %s", extra = "-e sudo htop --delay 5 --sort-key PERCENT_CPU", name = "QUAKE_COMMAND_TASK_MANAGER_CPU", height = 0.75, width = 0.5, horiz = "right"},
         },
         {
             name = "mem",
-            options = {app = "urxvt", argname = "-name %s -e ".."sudo htop --delay 5 --sort-key PERCENT_MEM", name = "QUAKE_COMMAND_TASK_MANAGER_MEM", height = 0.75, width = 0.5, horiz = "left"},
+            options = {app = "urxvt", argname = "-name %s", extra = "-e sudo htop --delay 5 --sort-key PERCENT_MEM", name = "QUAKE_COMMAND_TASK_MANAGER_MEM", height = 0.75, width = 0.5, horiz = "left"},
         },
         {
             name = "keepass",
             options = {app = "keepassx2", name = "keepassx2", height = 0.75, width = 0.5},
         },
-        -- TODO: fix...
         {
             name = "audio",
-            options = {app = "pavucontrol", name = "Volume Control", argname = "", height = 0.75, width = 0.5},
+            options = {app = "pavucontrol", name = "Volume Control", argname = "--name=%s", name = "AUDIO_POPUP", height = 0.75, width = 0.5, horiz = "right"},
         },
     },
     keybindings = {

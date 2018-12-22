@@ -67,7 +67,7 @@ function quake:display()
     client:geometry(self.geometry[self.screen] or self:computeSize())
 
     -- Set not sticky and on top
-    client.sticky = false
+    client.sticky = true
     client.ontop = true
     client.above = true
     client.skip_taskbar = true
