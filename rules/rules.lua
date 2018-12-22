@@ -6,6 +6,9 @@ local name_callback = {}
 
 -- TODO: improve
 
+-- TODO: v4 introduced custom user rules, should use to help us configify the rules
+    -- https://awesomewm.org/apidoc/documentation/89-NEWS.md.html#v4
+
 return {
     { -- Default
         rule = {},

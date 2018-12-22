@@ -144,6 +144,11 @@ local theme = {
     column_count = 2,
     master_width_factor = 1/3,
 
+    -- naughty
+
+    -- TODO: once this is released, I want it
+    -- notification_icon_size = dpi(85),
+
     -- TODO: maybe these properties can be set based on screen via rules which we dynamically set/remove when screens are...
     -- Borders
     border_width  = dpi(2),

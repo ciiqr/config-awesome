@@ -25,7 +25,7 @@ function M:init(config)
     dbus.request_name("system", "org.freedesktop.NetworkManager")
     dbus.add_match("system", "interface='org.freedesktop.NetworkManager',member='PropertiesChanged'")
     dbus.connect_signal("org.freedesktop.NetworkManager", function(first, second, ...) -- Doesn't seem to be a third
-        update()
+        self:update()
     end)
 
     -- first update
