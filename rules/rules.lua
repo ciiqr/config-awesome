@@ -178,7 +178,7 @@ return {
 
                 -- TODO: Fix this up...
                 local geom = c:geometry()
-                if geom.width == 960 or geom.width == 451 or geom.width == 490 then
+                if geom.width == 924 and geom.height == 282 then
                     c:kill();
                 end
                 notifySend("Sublime\nHis name was Robert.. Oh I Mean '".. (c.name or "nil") .."'", 3);
