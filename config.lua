@@ -146,11 +146,11 @@ return {
         },
         {
             name = "keepass",
-            options = {app = "keepassx2", name = "keepassx2", height = 0.75, width = 0.5},
+            options = {app = "keepassx2", name = "keepassx2", height = 0.5, width = 0.5},
         },
         {
             name = "audio",
-            options = {app = "pavucontrol", name = "Volume Control", argname = "--name=%s", name = "AUDIO_POPUP", height = 0.75, width = 0.5, horiz = "right"},
+            options = {app = "pavucontrol", name = "Volume Control", argname = "--name=%s", name = "AUDIO_POPUP", height = 0.5, width = 0.3333, horiz = "right"},
         },
     },
     keybindings = {
