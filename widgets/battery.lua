@@ -17,7 +17,7 @@ local function customWrapper(format, warg)
     end
 
     -- On Battery
-    if retval[1] == "−" then
+    if retval[1] == "−" or retval[1] == "-" then
         local function notifyBatteryWarning(level)
             notifySend(level.." Battery: "..batteryPercent.."% !", 0, naughty.config.presets.critical)
         end
