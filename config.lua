@@ -130,27 +130,33 @@ return {
         -- TODO: reasonable default for options.name, options.height, options.width
         {
             name = "terminal",
-            options = {app = "urxvt", height = 0.35, width = 0.5},
+            geometry = {height = 0.35, width = 0.5},
+            options = {app = "urxvt"},
         },
         {
             name = "note",
-            options = {app = "leafpad", argname = "--name=%s", name = "LEAFPAD_QUICK_NOTE", height = 0.35, width = 0.5},
+            geometry = {height = 0.35, width = 0.5},
+            options = {app = "leafpad", argname = "--name=%s", name = "LEAFPAD_QUICK_NOTE"},
         },
         {
             name = "cpu",
-            options = {app = "urxvt", argname = "-name %s", extra = "-e sudo htop --delay 5 --sort-key PERCENT_CPU", name = "QUAKE_COMMAND_TASK_MANAGER_CPU", height = 0.75, width = 0.5, horiz = "right"},
+            geometry = {height = 0.75, width = 0.5, horiz = "right"},
+            options = {app = "urxvt", argname = "-name %s", extra = "-e sudo htop --delay 5 --sort-key PERCENT_CPU", name = "POPUP_CPU"},
         },
         {
             name = "mem",
-            options = {app = "urxvt", argname = "-name %s", extra = "-e sudo htop --delay 5 --sort-key PERCENT_MEM", name = "QUAKE_COMMAND_TASK_MANAGER_MEM", height = 0.75, width = 0.5, horiz = "left"},
+            geometry = {height = 0.75, width = 0.5, horiz = "left"},
+            options = {app = "urxvt", argname = "-name %s", extra = "-e sudo htop --delay 5 --sort-key PERCENT_MEM", name = "POPUP_MEM"},
         },
         {
             name = "keepass",
-            options = {app = "keepassx2", name = "keepassx2", height = 0.5, width = 0.5},
+            geometry = {height = 0.5, width = 0.5},
+            options = {app = "keepassx2", name = "keepassx2"},
         },
         {
             name = "audio",
-            options = {app = "pavucontrol", name = "Volume Control", argname = "--name=%s", name = "AUDIO_POPUP", height = 0.5, width = 0.3333, horiz = "right"},
+            geometry = {height = 0.5, width = 0.3333, horiz = "right"},
+            options = {app = "pavucontrol", name = "AUDIO_POPUP", argname = "--name=%s"},
         },
     },
     keybindings = {

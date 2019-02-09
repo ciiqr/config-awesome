@@ -18,7 +18,8 @@ function popup.init(screen)
             border = 0,
         }
         local options = popup.options or {}
-        local quakeOptions = gears.table.join(defaults, options)
+        local geometry = popup.geometry or {}
+        local quakeOptions = gears.table.join(defaults, geometry, options)
 
         -- Create Popup
         screen.quake[popup.name] = quake(quakeOptions)
