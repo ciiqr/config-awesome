@@ -6,4 +6,4 @@ local environment = {
 }
 -- Client Key Bindings
 local keys = binding.createKeys(CONFIG.client.keybindings, environment)
-return gears.table.join(unpack(keys))
+return gears.table.join(table.unpack(keys))

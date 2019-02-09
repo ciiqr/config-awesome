@@ -10,4 +10,4 @@ local environment = {
 
 -- Client Mouse Bindings
 local buttons = binding.createMouseBindings(CONFIG.client.mousebindings, environment)
-return gears.table.join(unpack(buttons))
+return gears.table.join(table.unpack(buttons))

@@ -1,5 +1,6 @@
 require("awful.autofocus")
 require("awful.remote")
+require("compatibility")
 require("functions")
 require("errors")
 

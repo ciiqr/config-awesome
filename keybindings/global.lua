@@ -19,4 +19,4 @@ local environment = {
 
 -- Global Key Bindings
 local keys = binding.createKeys(CONFIG.keybindings, environment)
-return gears.table.join(unpack(keys))
+return gears.table.join(table.unpack(keys))

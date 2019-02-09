@@ -111,7 +111,7 @@ function XRandR:cycle()
         label, icon = "Keep the current configuration", self.display_icon
         self.iterator = nil
     else
-        label, action, icon = unpack(next)
+        label, action, icon = table.unpack(next)
     end
     self.id = naughty.notify({
         text = label,

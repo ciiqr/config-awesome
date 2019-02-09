@@ -27,7 +27,7 @@ function mousebindings.widget(bindings)
 
     -- Client Mouse Bindings
     local buttons = binding.createMouseBindings(bindings, environment)
-    return gears.table.join(unpack(buttons))
+    return gears.table.join(table.unpack(buttons))
 
 end
 
