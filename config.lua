@@ -110,10 +110,12 @@ return {
         },
     },
     commands = {
-        terminal = "urxvt",
+        terminal = "xterm",
         fileManager = "spacefm",
+        -- TODO: fix gksudo
         rootFileManager = "gksudo spacefm",
         editor = "sublime",
+        -- TODO: fix gksudo
         rootEditor = "gksudo sublime",
         sleep = "~/.scripts/power.sh suspend",
         screenshot = "scrot ~/Dropbox/Screenshots/$(date '+%Y-%m-%d-%T')-$(lsb_release -sc).png",
@@ -121,8 +123,8 @@ return {
         fileOpener = "xdg-open \"$(locate \"\" | dmenu -i -p Open -l 20 -fn \"Nimbus Sans L-10\")\"",
         windowSwitcher = "rofi -modi window -show",
         setWallpaper = "feh --xinerama-index {screen} --randomize --bg-fill {directory}/*",
-        ipInfo = "urxvt -e bash -c 'ip addr show; cat'",
-        networkTraffic = "urxvt -e bash -c 'sudo nethogs {device}'",
+        ipInfo = "xterm -e bash -c 'ip addr show; cat'",
+        networkTraffic = "xterm -e bash -c 'sudo nethogs {device}'",
         pastePrimary = "xdotool click 2",
     },
     popups = {
@@ -131,7 +133,7 @@ return {
         {
             name = "terminal",
             geometry = {height = 0.35, width = 0.5},
-            options = {app = "urxvt"},
+            options = {app = "xterm"},
         },
         {
             name = "note",
@@ -141,12 +143,12 @@ return {
         {
             name = "cpu",
             geometry = {height = 0.75, width = 0.5, horiz = "right"},
-            options = {app = "urxvt", argname = "-name %s", extra = "-e sudo htop --delay 5 --sort-key PERCENT_CPU", name = "POPUP_CPU"},
+            options = {app = "xterm", argname = "-name %s", extra = "-e sudo htop --delay 5 --sort-key PERCENT_CPU", name = "POPUP_CPU"},
         },
         {
             name = "mem",
             geometry = {height = 0.75, width = 0.5, horiz = "left"},
-            options = {app = "urxvt", argname = "-name %s", extra = "-e sudo htop --delay 5 --sort-key PERCENT_MEM", name = "POPUP_MEM"},
+            options = {app = "xterm", argname = "-name %s", extra = "-e sudo htop --delay 5 --sort-key PERCENT_MEM", name = "POPUP_MEM"},
         },
         {
             name = "keepass",
