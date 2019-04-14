@@ -5,7 +5,7 @@ local binding = require("utils.binding")
 local environment = {
     chromium = {
         quit = function()
-            awful.spawn.with_shell('sleep 0.1;xdotool key "alt+f";xdotool key "x"')
+            awful.spawn.with_shell('sleep 0.1;xdotool key --clearmodifiers "alt+f";xdotool key --clearmodifiers "x"')
         end
     },
 }
