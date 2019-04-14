@@ -105,7 +105,7 @@ function wiboxes.getAllWindowsWibox(s)
         visible = false})
 
     -- Function to resize the wibox
-    local sizeWibox = function(screen)
+    local function sizeWibox(screen)
         -- Adjust the AllWindowsWibox's height when the working area changes
         aWibox.y = screen.workarea.y
         aWibox.height = screen.workarea.height
@@ -136,7 +136,7 @@ function wiboxes.getSysInfoWibox(s)
     })
 
     -- Function to resize the wibox
-    local sizeWibox = function(screen)
+    local function sizeWibox(screen)
         -- Adjust the AllWindowsWibox's height when the working area changes
         aWibox.y = screen.workarea.y
         aWibox.height = screen.workarea.height

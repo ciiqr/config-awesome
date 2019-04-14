@@ -280,4 +280,10 @@ return {
             height = 0.3333,
         },
     },
+    -- TODO: decide the structure for app specific keybindings
+    chromium = {
+        keybindings = {
+            ["Ctrl + q"] = "chromium.quit",
+        },
+    },
 }

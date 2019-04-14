@@ -4,6 +4,7 @@ local thrizen = require("layouts.thrizen")
 local layouts = {}
 
 function layouts.init()
+    -- TODO: move to config
     awful.layout.layouts = {
         thrizen,
         awful.layout.suit.tile,

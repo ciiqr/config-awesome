@@ -127,6 +127,7 @@ return {
             class = "Chromium",
         },
         properties = {
+            keys = require("keybindings.clients.chromium"),
             callback = function(c)
                 -- Function to recheck name
                 name_callback[c] = function(c)

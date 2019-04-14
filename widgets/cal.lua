@@ -9,7 +9,7 @@ local defaultStyle = {
     padding = 2,
 }
 
-local roundedRect = function(cr, width, height)
+local function roundedRect(cr, width, height)
     gears.shape.rounded_rect(cr, width, height, beautiful.rounded_rect_corner_radius)
 end
 
@@ -47,7 +47,7 @@ local cal = calendar_popup.month({
 
 function cal.register(mywidget)
     -- hover shows
-    local toggle = function(visible)
+    local function toggle(visible)
         return function()
             cal:call_calendar(0)
             cal.visible = visible
