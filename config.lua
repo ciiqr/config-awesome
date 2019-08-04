@@ -112,10 +112,8 @@ return {
     commands = {
         terminal = "xterm",
         fileManager = "spacefm",
-        -- TODO: fix gksudo
         rootFileManager = "gksudo spacefm",
         editor = "sublime",
-        -- TODO: fix gksudo
         rootEditor = "gksudo sublime",
         sleep = "~/.scripts/power.sh suspend",
         screenshot = "scrot ~/Dropbox/Screenshots/$(date '+%Y-%m-%d-%T')-$(lsb_release -sc).png",

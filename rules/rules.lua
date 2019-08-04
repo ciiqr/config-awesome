@@ -322,5 +322,16 @@ return {
         },
     },
 
+    -- Android Studio - dialogs
+    {
+        rule = {
+            class = "jetbrains-studio",
+            type = "dialog",
+        },
+        properties = {
+            floating = true,
+        },
+    },
+
     -- TODO: Add a rule so that the toggle-able windows are floating by default
 }
