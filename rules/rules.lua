@@ -53,10 +53,10 @@ return {
     },
     { -- Terminals transparent
         rule_any = {
-            class = {"URxvt", "XTerm"},
+            class = {"URxvt", "XTerm", "Alacritty"},
         },
         properties = {
-            opacity = 0.8,
+            opacity = 0.95,
         },
     },
     { -- Launchers, no border or taskbar
