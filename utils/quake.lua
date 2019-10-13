@@ -33,7 +33,7 @@ function quake:display()
     local i = 0
     for c in awful.client.iterate(function (c)
         -- c.name may be changed!
-        return c.instance == self.name
+        return (c.instance == self.name or (c.instance == 'Alacritty' and c.name == self.name))
     end, nil, toscan)
     do
         i = i + 1
@@ -143,12 +143,13 @@ function quake:new(config)
     local dropdown = setmetatable(conf, { __index = quake })
 
     capi.client.connect_signal("manage", function(c)
-        if c.instance == dropdown.name and c.screen == dropdown.screen then
+        if (c.instance == dropdown.name or (c.instance == 'Alacritty' and c.name == dropdown.name)) and c.screen == dropdown.screen then
             dropdown:display()
         end
     end)
     capi.client.connect_signal("unmanage", function(c)
-        if c.instance == dropdown.name and c.screen == dropdown.screen then
+        -- TODO: handle c.name == dropdown.name here & elsewhere but only for Alacritty
+        if (c.instance == dropdown.name or (c.instance == 'Alacritty' and c.name == dropdown.name)) and c.screen == dropdown.screen then
             dropdown.visible = false
         end
      end)
