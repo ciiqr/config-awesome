@@ -22,6 +22,7 @@ return {
             keys = require("keybindings.client"),
             buttons = require("mousebindings.client"),
             -- Prevent Clients Maximized on Start
+            maximized = false,
             maximized_vertical   = false,
             maximized_horizontal = false,
             -- Perfect, I never have to worry about this crap again!
