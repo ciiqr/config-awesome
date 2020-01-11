@@ -107,6 +107,7 @@ return {
             "redshift-gtk",
             "nm-applet",
             "dropbox start -i",
+            "syncthing-gtk --minimized",
         },
     },
     commands = {
