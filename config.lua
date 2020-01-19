@@ -12,7 +12,7 @@ return {
         colourScheme = "sea",
         wallpapers = {
             normalPath = "{theme_path}/backgrounds",
-            resolutionPath = "~/Dropbox/Wallpapers/{width}x{height}",
+            resolutionPath = "~/.wallpapers/{width}x{height}",
         },
     },
     screens = {
@@ -117,8 +117,8 @@ return {
         editor = "sublime",
         rootEditor = "gksudo sublime",
         sleep = "~/.scripts/power.sh suspend",
-        screenshot = "scrot ~/Dropbox/Screenshots/$(date '+%Y-%m-%d-%T')-$(lsb_release -sc).png",
-        screenshotSelect = "gm import ~/Dropbox/Screenshots/$(date '+%Y-%m-%d-%T')-$(lsb_release -sc).png",
+        screenshot = "scrot ~/Screenshots/$(date '+%Y-%m-%d-%H-%M-%S')-$(lsb_release -sc).png",
+        screenshotSelect = "gm import ~/Screenshots/$(date '+%Y-%m-%d-%H-%M-%S')-$(lsb_release -sc).png",
         fileOpener = "xdg-open \"$(locate \"\" | dmenu -i -p Open -l 20 -fn \"Nimbus Sans L-10\")\"",
         windowSwitcher = "rofi -modi window -show",
         setWallpaper = "feh --xinerama-index {screen} --randomize --bg-fill {directory}/*",
