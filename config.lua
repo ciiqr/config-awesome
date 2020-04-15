@@ -16,7 +16,7 @@ return {
         },
     },
     screens = {
-        tags = {"➊","➋","➌","➍","➎","➏","➐","➑","➒"}
+        tags = {"➊","➋","➌","➍","➎"}
     },
     widgets = {
         clock = {
@@ -106,8 +106,8 @@ return {
             -- Tray's
             "redshift-gtk",
             "nm-applet",
-            "dropbox start -i",
             "syncthing-gtk --minimized",
+            "blueman-applet",
         },
     },
     commands = {

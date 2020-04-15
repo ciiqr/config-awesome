@@ -126,6 +126,15 @@ return {
     {
         rule = {
             class = "Chromium",
+            role = "bubble",
+        },
+        properties = {
+            floating = true,
+        },
+    },
+    {
+        rule = {
+            class = "Chromium",
         },
         properties = {
             keys = require("keybindings.clients.chromium"),
