@@ -25,6 +25,8 @@ return {
             maximized = false,
             maximized_vertical   = false,
             maximized_horizontal = false,
+            -- Prevent Clients preserving their tags on Start
+            tags = {""},
             -- Perfect, I never have to worry about this crap again!
             size_hints_honor = false,
             -- awesome docs suggests these...
