@@ -8,7 +8,6 @@ local environment = {
     command = require("actions.command"),
     layout = require("actions.layout"),
     popup = require("actions.popup"),
-    screenshot = require("actions.screenshot"),
     tag = require("actions.tag"),
     wibar = require("actions.wibar"),
     wibox = require("actions.wibox"),

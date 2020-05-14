@@ -117,8 +117,8 @@ return {
         editor = "sublime",
         rootEditor = "gksudo sublime",
         sleep = "~/.scripts/power.sh suspend",
-        screenshot = "scrot ~/Screenshots/$(date '+%Y-%m-%d-%H-%M-%S')-$(lsb_release -sc).png",
-        screenshotSelect = "gm import ~/Screenshots/$(date '+%Y-%m-%d-%H-%M-%S')-$(lsb_release -sc).png",
+        screenshot = "scrot ~/Screenshots/$(date '+%Y-%m-%d-%H-%M-%S')-$(lsb_release -sc).png && notify-send -t 1000 'Screenshot Taken'",
+        screenshotSelect = "gm import ~/Screenshots/$(date '+%Y-%m-%d-%H-%M-%S')-$(lsb_release -sc).png && notify-send -t 1000 'Screenshot Taken'",
         fileOpener = "xdg-open \"$(locate \"\" | dmenu -i -p Open -l 20 -fn \"Nimbus Sans L-10\")\"",
         windowSwitcher = "rofi -modi window -show",
         setWallpaper = "feh --xinerama-index {screen} --randomize --bg-fill {directory}/*",
@@ -222,8 +222,8 @@ return {
         ["Shift + XF86MonBrightnessUp"] = {action = "brightness.change", args = {"+", 1}}, -- TODO: change to use CONFIG.brightness.change.small
         ["Shift + XF86MonBrightnessDown"] = {action = "brightness.change", args = {"-", 1}},
         -- Screenshot
-        ["Print"] = "screenshot.capture",
-        ["Super + Print"] = "screenshot.snip",
+        ["Print"] = {action = "command.run", args = {"screenshot"}},
+        ["Super + Print"] = {action = "command.run", args = {"screenshotSelect"}},
         -- Copypasta
         ["Insert"] = {action = "command.run", args = {"pastePrimary"}}, -- If I stop using, put 'keycode 118 = ' back in .Xmodmap
         -- Cycle Displays
