@@ -79,7 +79,6 @@ local darkGrey = "#3F3F3F"
 
 
 -- Variables --
---===========--
 local BAR_TRANSPARENCY = false
 local themePath = beautiful.theme_path
 local themePathLayouts = themePath .. "/layouts/"

@@ -17,7 +17,7 @@ function screens.init()
     end
 end
 
---Signals
+-- Signals
 function screens.setup(s)
     -- Wallpaper
     screens.setWallpaper(s)
