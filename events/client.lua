@@ -69,7 +69,7 @@ function client.manage(c)
 
     -- Subwindows Sticky
     if c.transient_for and transientShouldBeSticky(c) then
-        notifySend("Transient's UNITE!")
+        notifySend("Transients UNITE!")
         c.sticky = true
     end
 
