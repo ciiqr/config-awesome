@@ -115,6 +115,17 @@ return {
         },
     },
 
+    -- google chrome
+    {
+        rule = {
+            class = "Google-chrome",
+        },
+        properties = {
+            -- NOTE: this should have been caught by the global rules...
+            maximized = false,
+        },
+    },
+
     -- chromium
     {
         rule = {

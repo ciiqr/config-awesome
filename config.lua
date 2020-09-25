@@ -112,6 +112,7 @@ return {
     },
     commands = {
         terminal = "alacritty",
+        browser = "gtk-launch chromium", -- TODO: switch back to google-chrome once void-package install is automated
         fileManager = "spacefm",
         rootFileManager = "gksudo spacefm",
         editor = "sublime",
@@ -208,6 +209,7 @@ return {
         ["Super + Shift + Enter"] = {action = "command.run", args = {"rootFileManager"}},
         ["Super + o"] = {action = "command.run", args = {"editor"}},
         ["Super + Shift + o"] = {action = "command.run", args = {"rootEditor"}},
+        ["Super + u"] = {action = "command.run", args = {"browser"}},
         -- awesome
         ["Super + Ctrl + r"] = "awesome.restart",
         -- Volume
