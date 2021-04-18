@@ -1,4 +1,5 @@
 local awful = require("awful")
+local gears = require("gears")
 
 local layout = {}
 
@@ -7,12 +8,7 @@ local function viewRelative(direction)
     local screen = awful.screen.focused()
     local tag = screen.selected_tag
     if tag.layout == awful.layout.suit.max then
-        -- Determine Index
-        local index = direction == 1 and 1 or #awful.layout.layouts
-        --  Set Layout
-        tag.layout = awful.layout.layouts[index]
-        -- Clear Maximized Layout
-        tag.preMaximizeLayout = nil
+        layout.revertMaximized()
     else
         awful.layout.inc(direction)
     end
@@ -27,12 +23,13 @@ function layout.viewPrev()
 end
 
 function layout.viewMaximized()
-    -- If No Layout Stored Then
+    -- If no layout stored then
     local screen = awful.screen.focused()
     local tag = screen.selected_tag
     if (not tag.preMaximizeLayout) then
-        -- Store Current Layout
+        -- Store current layout
         tag.preMaximizeLayout = tag.layout
+        tag.preMaximizeLayouts = gears.table.clone(tag.layouts, false)
         -- Change to Maximized
         tag.layout = awful.layout.suit.max
     end
@@ -42,8 +39,12 @@ function layout.revertMaximized()
     local screen = awful.screen.focused()
     local tag = screen.selected_tag
     if (tag.layout == awful.layout.suit.max) then
+        -- Restore layout
         tag.layout = tag.preMaximizeLayout
+        tag.layouts = tag.preMaximizeLayouts
+        -- Reset cached layouts
         tag.preMaximizeLayout = nil
+        tag.preMaximizeLayouts = nil
     end
 end
 
