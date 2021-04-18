@@ -1,7 +1,7 @@
 return {
     plugins = {
         "theme",
-        "layouts",
+        "layout",
         "keybindings",
         "rules",
         "events",
@@ -13,6 +13,13 @@ return {
         wallpapers = {
             normalPath = "{theme_path}/backgrounds",
             resolutionPath = "~/.wallpapers/{width}x{height}",
+        },
+    },
+    layout = {
+        layouts = {
+            'layout.thrizen',
+            'awful.layout.suit.tile',
+            'awful.layout.suit.fair',
         },
     },
     screens = {

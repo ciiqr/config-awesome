@@ -133,7 +133,7 @@ local theme = {
     layout_fairh      = themePathLayouts .. "fairh.png",
     layout_max        = themePathLayouts .. "max.png",
     layout_floating   = themePathLayouts .. "floating.png",
-    layout_thrizen    = gears.filesystem.get_configuration_dir() .. "/layouts/thrizen/themes/default/thrizen.png",
+    layout_thrizen    = gears.filesystem.get_configuration_dir() .. "/layout/thrizen/themes/default/thrizen.png",
 
 
     -- size --

@@ -1,4 +1,4 @@
 [submodule "layouts/thrizen"]
-	path = layouts/thrizen
+	path = layout/thrizen
 	url = git@github.com:ciiqr/thrizen.git
 	branch = master
