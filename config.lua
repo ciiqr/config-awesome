@@ -94,8 +94,8 @@ return {
     },
     programs = {
         startup = {
-            -- Awesome
-            "compton", -- Composition Manager (Transparency, Inactive Window Dimming, Visual Glitch Fix)
+            -- Composition Manager (Transparency, Inactive Window Dimming, Visual Glitch Fix)
+            "picom",
 
             -- Daemons
             "spacefm -d",
@@ -106,7 +106,8 @@ return {
             -- Tray's
             "redshift-gtk",
             "nm-applet",
-            "syncthing-gtk --minimized",
+            -- "syncthing-gtk --minimized",
+            "syncthingtray",
             "blueman-applet",
         },
     },
