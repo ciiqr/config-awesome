@@ -83,10 +83,7 @@ local function evalKeyPattern(key)
     local match = key:match("{(%d+-%d+)}")
     if match then
         -- split match on -
-        local parts = {}
-        for part in string.gmatch(match, "[^-]+") do
-            table.insert(parts, part)
-        end
+        local parts = gears.string.split(match, '-')
         assert(#parts == 2, "KEY_PATTERN_IMPOSSIBLE: ")
 
         -- create keys for range
