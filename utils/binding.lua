@@ -5,10 +5,7 @@ local binding = {}
 
 local function extractParts(spec)
     -- extract parts from key spec
-    local parts = {}
-    for part in string.gmatch(spec, "[^%s+]+") do
-        table.insert(parts, part)
-    end
+    local parts = gears.string.split(spec, '[%s+]+')
 
     -- ensure at least 1 part
     assert(#parts ~= 0, "INVALID_KEY_SPEC: " .. spec)
@@ -27,10 +24,7 @@ end
 
 local function extractAction(action)
     -- extract parts from action
-    local parts = {}
-    for part in string.gmatch(action, "[^.]+") do
-        table.insert(parts, part)
-    end
+    local parts = gears.string.split(action, '%.')
 
     -- ensure at least 1 part
     assert(#parts ~= 0, "EMPTY_ACTION: " .. action)
@@ -51,6 +45,12 @@ local function mapAction(action, environment, keyArgs)
     else
         actionName = action.action
         args = action.args or {}
+        -- TODO: if no action, assume it's a list of actions, and run all. Then change wibar.toggle to a single wibar.
+        -- TODO: should still be able to add support for the {"command.run", "sleep"} syntax by simply checking the subtables first value to see if it's a string
+        -- ["Super + ["] = {
+        --     {action = "wibar.toggle", args = {"top"}},
+        --     {action = "wibar.toggle", args = {"bottom"}},
+        -- },
     end
 
     -- get action function from environment
