@@ -120,7 +120,7 @@ return {
     },
     commands = {
         terminal = "alacritty",
-        browser = "gtk-launch chromium", -- TODO: switch back to google-chrome once void-package install is automated
+        browser = "gtk-launch google-chrome",
         fileManager = "spacefm",
         rootFileManager = "gksudo spacefm",
         editor = "sublime",
@@ -190,14 +190,14 @@ return {
         ["Super + Next"] = "client.viewNext",
         ["Super + Prior"] = "client.viewPrev",
         -- ClientRestore
-        ["Super + Control + Up"] = "client.restore",
+        ["Super + Ctrl + Up"] = "client.restore",
         -- Maximize
         ["Super + Up"] = "layout.viewMaximized",
         -- Revert Maximize
         ["Super + Down"] = "layout.revertMaximized",
         -- Sleep
         ["XF86Sleep"] = {action = "command.run", args = {"sleep"}},
-        ["Super + Control + q"] = {action = "command.run", args = {"sleep"}},
+        ["Super + Ctrl + q"] = {action = "command.run", args = {"sleep"}},
         -- Change Position
         ["Super + Left"] = "client.swapPrev",
         ["Super + Right"] = "client.swapNext",
@@ -257,7 +257,7 @@ return {
             ["Super + Alt + Down"] = "client.moveToLastTagAndFollow",
             ["Super + Alt + {1-9}"] = "client.moveToTagAndFollow",
             -- Toggle Tags
-            ["Super + Ctrl + Alt + {1-9}"] = "client.toggleTag", -- TODO: Change to Control, Alt Shift to be more like mod shift for toggling a tag visibility
+            ["Super + Ctrl + Alt + {1-9}"] = "client.toggleTag", -- TODO: Change to Ctrl, Alt Shift to be more like mod shift for toggling a tag visibility
             -- Kill
             ["Super + q"] = "client.kill",
             -- Fullscreen
