@@ -116,6 +116,16 @@ return {
     },
 
     -- google chrome
+    -- TODO: setup for chrome if we need it
+    -- {
+    --     rule = {
+    --         class = "Chromium",
+    --         role = "bubble",
+    --     },
+    --     properties = {
+    --         floating = true,
+    --     },
+    -- },
     {
         rule = {
             class = "Google-chrome",
@@ -123,33 +133,7 @@ return {
         properties = {
             -- NOTE: this should have been caught by the global rules...
             maximized = false,
-        },
-    },
 
-    -- chromium
-    {
-        rule = {
-            class = "Chromium",
-            name = "Authy",
-        },
-        properties = {
-            floating = true,
-        },
-    },
-    {
-        rule = {
-            class = "Chromium",
-            role = "bubble",
-        },
-        properties = {
-            floating = true,
-        },
-    },
-    {
-        rule = {
-            class = "Chromium",
-        },
-        properties = {
             keys = require("keybindings.clients.chromium"),
             callback = function(c)
                 -- Function to recheck name
@@ -162,13 +146,6 @@ return {
                         local screenDimens = awful.screen.focused().workarea
                         local screenHeight = screenDimens.height
                         c:geometry({width = screenDimens.width - (2 * beautiful.border_width), height = screenHeight / 2, y = screenHeight/  4, x=0})
-                    elseif string.find(c.name, "Select the email service you use") then -- Properties
-                        c.floating = true
-                    elseif string.find(c.name, "Hangouts") then -- Properties
-                        c.floating = false
-                        -- -- On Social Tag
-                        -- local tags = c.screen.tags
-                        -- c:move_to_tag(tags[6]) -- TODO: Add constant for Social Tag Index...
                     else
                         -- Print Name So I Can Possibly Change Other Names
                         -- notifySend(debugPrint(c.name), 2)
