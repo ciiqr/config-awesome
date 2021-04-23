@@ -159,9 +159,9 @@ return {
             options = {app = "alacritty", argname = "--title %s", extra = "-e sudo htop --delay 5 --sort-key PERCENT_MEM", name = "POPUP_MEM"},
         },
         {
-            name = "keepass",
+            name = "1password",
             geometry = {height = 0.5, width = 0.5},
-            options = {app = "keepassx2", name = "keepassx2"},
+            options = {app = "1password", name = "1password"},
         },
         {
             name = "audio",
@@ -243,7 +243,7 @@ return {
         ["Super + Shift + n"] = {action = "popup.toggle", args = {"note"}},
         ["Super + Shift + c"] = {action = "popup.toggle", args = {"cpu"}},
         ["Super + Shift + m"] = {action = "popup.toggle", args = {"mem"}},
-        ["Super + Shift + k"] = {action = "popup.toggle", args = {"keepass"}},
+        ["Super + Shift + k"] = {action = "popup.toggle", args = {"1password"}},
         -- Tag keys
         ["Ctrl + Alt + {1-9}"] = "tag.viewIndex",
         ["Super + Shift + {1-9}"] = "tag.toggleIndex",
