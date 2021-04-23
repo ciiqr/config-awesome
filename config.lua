@@ -23,7 +23,7 @@ return {
         },
     },
     screens = {
-        tags = {"➊","➋","➌","➍","➎"}
+        tags = {"➊", "➋", "➌", "➍", "➎"}
     },
     widgets = {
         clock = {
