@@ -17,8 +17,8 @@ return {
     },
     layout = {
         layouts = {
-            'layout.thrizen',
             'awful.layout.suit.tile',
+            'layout.thrizen',
             'awful.layout.suit.fair',
         },
     },
