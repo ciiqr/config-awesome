@@ -69,6 +69,13 @@ return {
         properties = {
             border_width = 0,
             skip_taskbar = true,
+            placement = function(c)
+                return awful.placement.centered(c, {
+                    offset = {
+                        y = -(c.screen.workarea.height / 5),
+                    },
+                })
+            end,
         },
     },
 
